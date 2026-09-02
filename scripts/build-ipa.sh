@@ -25,6 +25,7 @@ xcodebuild archive \
   -configuration Release \
   -archivePath "$ARCHIVE_PATH" \
   -destination "generic/platform=iOS" \
+  -allowProvisioningUpdates \
   CODE_SIGN_STYLE=Automatic
 
 echo "==> Exportando el .ipa"
