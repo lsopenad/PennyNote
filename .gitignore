@@ -13,3 +13,6 @@ DerivedData/
 # Swift Package Manager
 .build/
 .swiftpm/
+
+# Artefactos de release (.xcarchive / .ipa generados por scripts/build-ipa.sh)
+/build/
