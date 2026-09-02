@@ -47,11 +47,19 @@ Si `xcodebuild` se queja de que hay varios equipos de firma disponibles, añade 
 
 (lo encuentras en Xcode → Settings → Accounts → tu Apple ID → "Team ID", o en developer.apple.com/account).
 
-## Instalar con AltStore PAL
+## Instalar con AltStore Classic
 
-Al estar en la UE, [AltStore PAL](https://altstore.io) instala la app sin el límite de 7 días de las firmas de cuenta gratuita:
+[AltStore Classic](https://altstore.io) usa tu Apple ID gratuito para firmar; la firma caduca a los 7 días y hay que refrescarla (AltServer lo hace solo si el Mac y el iPhone comparten Wi-Fi de vez en cuando).
 
-1. Instala AltStore PAL en tu iPhone (marketplace notarizado por Apple para la UE).
-2. Copia el `.ipa` generado a tu iPhone (AirDrop, Mail, iCloud Drive, etc.) o ábrelo directamente desde el Mac con AltStore PAL conectado.
-3. Ábrelo con AltStore PAL e inicia sesión con tu Apple ID cuando te lo pida — AltStore vuelve a firmar el `.ipa` con un certificado propio antes de instalarlo, así que no hace falta que el `.ipa` ya esté firmado de forma especial.
-4. Tras instalar, añade el widget desde "Editar pantalla de inicio" y desde la personalización de la pantalla de bloqueo (esto no se puede hacer desde el `.ipa`, es un paso manual en el propio iPhone).
+**Una sola vez:**
+1. Instala **AltServer** en el Mac (altstore.io → AltStore Classic → descarga de escritorio). Es una app de menú (icono en la barra de menús).
+2. Conecta el iPhone por cable y confía en el ordenador si te lo pide.
+3. Desde el icono de AltServer en la barra de menús → **Install AltStore** → elige tu iPhone → introduce tu Apple ID (si tienes verificación en dos pasos, puede pedirte una [contraseña de aplicación](https://appleid.apple.com) en vez de la normal).
+4. En el iPhone: Ajustes → General → VPN y gestión de dispositivos → confía en el certificado de tu Apple ID. Ya tienes la app **AltStore** en la pantalla de inicio.
+
+**Cada vez que quieras instalar/actualizar PennyNote:**
+1. Genera el `.ipa`: `./scripts/build-ipa.sh` (queda en `build/export/PennyNote.ipa`).
+2. Con el iPhone conectado (USB o misma Wi-Fi que el Mac), arrastra `PennyNote.ipa` sobre el icono de **AltServer** en la barra de menús → **Install App** → elige tu iPhone. AltServer lo firma con el certificado que generó en el paso anterior y lo instala sin pasar por AirDrop ni Ficheros.
+3. Tras instalar, añade el widget desde "Editar pantalla de inicio" y desde la personalización de la pantalla de bloqueo (paso manual en el propio iPhone, no viene con el `.ipa`).
+
+**Mantenimiento:** dejar el Mac con AltServer abierto y el iPhone en la misma Wi-Fi de vez en cuando hace que se refresque solo antes de los 7 días; si caduca, basta con repetir el paso 2 de "cada vez que quieras instalar".
