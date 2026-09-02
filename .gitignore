@@ -1,0 +1,15 @@
+# Generado por xcodegen a partir de project.yml — no se versiona, se regenera con `xcodegen generate`.
+/PennyNote.xcodeproj/
+/Generated/
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+
+# macOS
+.DS_Store
+
+# Swift Package Manager
+.build/
+.swiftpm/

@@ -1,0 +1,28 @@
+import SwiftUI
+import SwiftData
+
+struct RootView: View {
+    @Environment(\.modelContext) private var modelContext
+    @State private var router = AppRouter()
+
+    var body: some View {
+        ExpenseListView()
+            .environment(router)
+            .sheet(isPresented: routerAddBinding) {
+                AddEditExpenseView(expense: router.expenseToEdit)
+            }
+            .task {
+                SeedDataService.seedIfNeeded(context: modelContext)
+            }
+            .onOpenURL { url in
+                DeepLinkHandler.handle(url, router: router)
+            }
+    }
+
+    private var routerAddBinding: Binding<Bool> {
+        Binding(
+            get: { router.isAddExpensePresented },
+            set: { router.isAddExpensePresented = $0 }
+        )
+    }
+}
