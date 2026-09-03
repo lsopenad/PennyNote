@@ -6,9 +6,16 @@ struct ExpenseListView: View {
     @Environment(AppRouter.self) private var router
 
     @Query(sort: \Expense.date, order: .reverse) private var allExpenses: [Expense]
+    @State private var searchText = ""
 
     private var expenses: [Expense] {
-        allExpenses.filter { !$0.isDeleted }
+        let notDeleted = allExpenses.filter { !$0.isDeleted }
+        let trimmed = searchText.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else { return notDeleted }
+        return notDeleted.filter {
+            $0.note.localizedCaseInsensitiveContains(trimmed) ||
+            ($0.category?.name.localizedCaseInsensitiveContains(trimmed) ?? false)
+        }
     }
 
     private var groupedExpenses: [(day: Date, items: [Expense])] {
@@ -57,6 +64,7 @@ struct ExpenseListView: View {
                 .padding(20)
             }
             .navigationTitle("PennyNote")
+            .searchable(text: $searchText, prompt: "Buscar gastos")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink(destination: SettingsView()) {

@@ -7,16 +7,15 @@ enum MonthlyTotalStore {
     // Guardado como String (no Double) para no perder precisión decimal al cruzar el App Group.
     static func write(total: Decimal, monthStart: Date) {
         let defaults = AppGroupConstants.sharedDefaults
-        let previous = defaults.string(forKey: AppGroupConstants.Keys.monthlyTotalAmount)
         let newValue = NSDecimalNumber(decimal: total).stringValue
 
         defaults.set(newValue, forKey: AppGroupConstants.Keys.monthlyTotalAmount)
         defaults.set(monthStart, forKey: AppGroupConstants.Keys.monthlyTotalMonthStart)
         defaults.set(Date.now, forKey: AppGroupConstants.Keys.monthlyTotalLastUpdated)
 
-        if previous != newValue {
-            WidgetCenter.shared.reloadAllTimelines()
-        }
+        // Siempre recarga: comparar strings para "ahorrar" recargas no compensa el riesgo
+        // de que una comparación falle y el widget se quede pillado con un valor viejo.
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     static func read() -> (total: Decimal, monthStart: Date)? {

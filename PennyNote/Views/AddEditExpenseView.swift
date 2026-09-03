@@ -34,8 +34,12 @@ struct AddEditExpenseView: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Cantidad", text: $amountText)
-                        .keyboardType(.decimalPad)
+                    HStack {
+                        TextField("Cantidad", text: $amountText)
+                            .keyboardType(.decimalPad)
+                        Text("€")
+                            .foregroundStyle(.secondary)
+                    }
                     DatePicker("Fecha", selection: $date, displayedComponents: .date)
                     CategoryPickerView(selection: $category)
                 }
