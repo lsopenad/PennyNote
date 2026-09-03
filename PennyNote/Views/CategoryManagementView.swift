@@ -7,6 +7,8 @@ struct CategoryManagementView: View {
 
     @State private var newCategoryName = ""
     @State private var errorMessage: String?
+    @State private var pendingDeleteOffsets: IndexSet?
+    @State private var isDeleteConfirmationPresented = false
 
     var body: some View {
         List {
@@ -14,7 +16,10 @@ struct CategoryManagementView: View {
                 ForEach(categories) { category in
                     Label(category.name, systemImage: category.symbolName)
                 }
-                .onDelete(perform: delete)
+                .onDelete { offsets in
+                    pendingDeleteOffsets = offsets
+                    isDeleteConfirmationPresented = true
+                }
             }
 
             Section {
@@ -34,6 +39,22 @@ struct CategoryManagementView: View {
             }
         }
         .navigationTitle("Categorías")
+        .confirmationDialog(
+            "¿Eliminar categoría?",
+            isPresented: $isDeleteConfirmationPresented,
+            titleVisibility: .visible
+        ) {
+            Button("Eliminar", role: .destructive) { confirmPendingDeletion() }
+            Button("Cancelar", role: .cancel) { pendingDeleteOffsets = nil }
+        } message: {
+            Text("Los gastos de esta categoría pasarán a la categoría por defecto.")
+        }
+    }
+
+    private func confirmPendingDeletion() {
+        guard let pendingDeleteOffsets else { return }
+        delete(at: pendingDeleteOffsets)
+        self.pendingDeleteOffsets = nil
     }
 
     private func addCategory() {
