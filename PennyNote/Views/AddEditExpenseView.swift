@@ -9,14 +9,16 @@ struct AddEditExpenseView: View {
 
     @State private var amountText: String
     @State private var date: Date
-    @State private var note: String
+    @State private var title: String
+    @State private var paymentMethod: PaymentMethod
     @State private var category: ExpenseCategory?
 
     init(expense: Expense? = nil) {
         self.expenseToEdit = expense
         _amountText = State(initialValue: expense.map { "\($0.amount)" } ?? "")
         _date = State(initialValue: expense?.date ?? .now)
-        _note = State(initialValue: expense?.note ?? "")
+        _title = State(initialValue: expense?.title ?? "")
+        _paymentMethod = State(initialValue: expense?.paymentMethod ?? .card)
         _category = State(initialValue: expense?.category)
     }
 
@@ -35,16 +37,25 @@ struct AddEditExpenseView: View {
             Form {
                 Section {
                     HStack {
-                        TextField("Cantidad", text: $amountText)
+                        Text("Título")
+                        TextField("", text: $title)
+                    }
+                    HStack {
+                        Text("Cantidad")
+                        Spacer()
+                        TextField("0,00", text: $amountText)
                             .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
                         Text("€")
                             .foregroundStyle(.secondary)
                     }
-                    DatePicker("Fecha", selection: $date, displayedComponents: .date)
                     CategoryPickerView(selection: $category)
-                }
-                Section {
-                    TextField("Nota", text: $note)
+                    Picker("Método de pago", selection: $paymentMethod) {
+                        ForEach(PaymentMethod.allCases) { method in
+                            Text(method.rawValue).tag(method)
+                        }
+                    }
+                    DatePicker("Fecha", selection: $date, displayedComponents: .date)
                 }
             }
             .navigationTitle(expenseToEdit == nil ? "Añadir gasto" : "Editar gasto")
@@ -69,12 +80,20 @@ struct AddEditExpenseView: View {
                 expense,
                 amount: amount,
                 date: date,
-                note: note,
+                title: title,
+                paymentMethod: paymentMethod,
                 category: category,
                 context: modelContext
             )
         } else {
-            ExpenseRepository.addExpense(amount: amount, date: date, note: note, category: category, context: modelContext)
+            ExpenseRepository.addExpense(
+                amount: amount,
+                date: date,
+                title: title,
+                paymentMethod: paymentMethod,
+                category: category,
+                context: modelContext
+            )
         }
 
         dismiss()

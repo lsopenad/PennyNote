@@ -6,7 +6,8 @@ final class Expense {
     var id: UUID
     var amount: Decimal
     var date: Date
-    var note: String
+    var title: String
+    var paymentMethod: PaymentMethod
     var category: ExpenseCategory?
 
     var createdAt: Date
@@ -25,13 +26,15 @@ final class Expense {
         id: UUID = UUID(),
         amount: Decimal,
         date: Date = .now,
-        note: String = "",
+        title: String = "",
+        paymentMethod: PaymentMethod = .card,
         category: ExpenseCategory? = nil
     ) {
         self.id = id
         self.amount = amount
         self.date = date
-        self.note = note
+        self.title = title
+        self.paymentMethod = paymentMethod
         self.category = category
         self.createdAt = .now
         self.localLastModified = .now

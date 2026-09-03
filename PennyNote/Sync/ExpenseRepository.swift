@@ -1,12 +1,20 @@
 import Foundation
 import SwiftData
+import os
 
 // Único punto de escritura de la app (Views y LogExpenseIntent): evita duplicar en cada sitio
 // la lógica de "guardar + marcar pending + recalcular total + programar sync".
 @MainActor
 enum ExpenseRepository {
-    static func addExpense(amount: Decimal, date: Date, note: String, category: ExpenseCategory?, context: ModelContext) {
-        let expense = Expense(amount: amount, date: date, note: note, category: category)
+    static func addExpense(
+        amount: Decimal,
+        date: Date,
+        title: String = "",
+        paymentMethod: PaymentMethod = .card,
+        category: ExpenseCategory?,
+        context: ModelContext
+    ) {
+        let expense = Expense(amount: amount, date: date, title: title, paymentMethod: paymentMethod, category: category)
         context.insert(expense)
         afterMutation(context: context)
     }
@@ -15,13 +23,15 @@ enum ExpenseRepository {
         _ expense: Expense,
         amount: Decimal,
         date: Date,
-        note: String,
+        title: String,
+        paymentMethod: PaymentMethod,
         category: ExpenseCategory?,
         context: ModelContext
     ) {
         expense.amount = amount
         expense.date = date
-        expense.note = note
+        expense.title = title
+        expense.paymentMethod = paymentMethod
         expense.category = category
         expense.localLastModified = .now
         expense.syncStatus = .pending
@@ -37,11 +47,21 @@ enum ExpenseRepository {
 
     @discardableResult
     static func addCategory(name: String, symbolName: String, context: ModelContext) -> ExpenseCategory {
-        let existing = (try? context.fetch(FetchDescriptor<ExpenseCategory>())) ?? []
+        let existing: [ExpenseCategory]
+        do {
+            existing = try context.fetch(FetchDescriptor<ExpenseCategory>())
+        } catch {
+            Log.data.error("Fallo al leer categorías existentes al añadir '\(name)': \(error.localizedDescription)")
+            existing = []
+        }
         let nextOrder = (existing.map(\.sortOrder).max() ?? -1) + 1
         let category = ExpenseCategory(name: name, symbolName: symbolName, sortOrder: nextOrder)
         context.insert(category)
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            Log.data.error("Fallo al guardar la nueva categoría '\(name)': \(error.localizedDescription)")
+        }
         Task { await SyncEngine.shared.pushCategorySchema() }
         return category
     }
@@ -49,7 +69,13 @@ enum ExpenseRepository {
     // false si no se puede borrar (es la última categoría restante).
     @discardableResult
     static func deleteCategory(_ category: ExpenseCategory, context: ModelContext) -> Bool {
-        let all = (try? context.fetch(FetchDescriptor<ExpenseCategory>())) ?? []
+        let all: [ExpenseCategory]
+        do {
+            all = try context.fetch(FetchDescriptor<ExpenseCategory>())
+        } catch {
+            Log.data.error("Fallo al leer categorías existentes al borrar '\(category.name)': \(error.localizedDescription)")
+            all = []
+        }
         guard all.count > 1 else { return false }
 
         let fallback = SeedDataService.fallbackCategory(context: context) ?? all.first { $0 !== category }
@@ -59,7 +85,11 @@ enum ExpenseRepository {
             expense.syncStatus = .pending
         }
         context.delete(category)
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            Log.data.error("Fallo al guardar tras borrar la categoría '\(category.name)': \(error.localizedDescription)")
+        }
         Task { await SyncEngine.shared.pushCategorySchema() }
         return true
     }

@@ -4,16 +4,25 @@ import Foundation
 // Se usa [String: Any] en vez de Codable estricto porque el JSON de "properties" de Notion
 // tiene una forma muy heterogénea según el tipo de cada propiedad (title/number/date/select).
 enum NotionMapper {
-    static func properties(amount: Decimal, date: Date, note: String, categoryName: String?) -> [String: Any] {
+    static func properties(
+        amount: Decimal,
+        date: Date,
+        title: String,
+        paymentMethod: PaymentMethod,
+        categoryName: String?
+    ) -> [String: Any] {
         var properties: [String: Any] = [
-            NotionPropertyName.note: [
-                "title": [["text": ["content": note.isEmpty ? "Gasto" : note]]]
+            NotionPropertyName.title: [
+                "title": [["text": ["content": title.isEmpty ? "Gasto" : title]]]
             ],
             NotionPropertyName.amount: [
                 "number": NSDecimalNumber(decimal: amount).doubleValue
             ],
             NotionPropertyName.date: [
                 "date": ["start": isoDateOnly(date)]
+            ],
+            NotionPropertyName.paymentMethod: [
+                "select": ["name": paymentMethod.rawValue]
             ],
         ]
         if let categoryName {
@@ -24,20 +33,28 @@ enum NotionMapper {
 
     static func databaseSchemaProperties(categoryNames: [String]) -> [String: Any] {
         [
-            NotionPropertyName.note: ["title": [String: Any]()],
+            NotionPropertyName.title: ["title": [String: Any]()],
             NotionPropertyName.amount: ["number": ["format": "euro"]],
             NotionPropertyName.date: ["date": [String: Any]()],
             NotionPropertyName.category: [
                 "select": ["options": categoryNames.map { ["name": $0] }]
             ],
+            NotionPropertyName.paymentMethod: [
+                "select": ["options": PaymentMethod.allCases.map { ["name": $0.rawValue] }]
+            ],
         ]
     }
 
+    // También se usa para sanar el esquema de bases de datos ya conectadas antes de que
+    // existiera el campo Método de pago (se llama en cada sync, ver SyncEngine).
     static func categorySchemaProperties(categoryNames: [String]) -> [String: Any] {
         [
             NotionPropertyName.category: [
                 "select": ["options": categoryNames.map { ["name": $0] }]
-            ]
+            ],
+            NotionPropertyName.paymentMethod: [
+                "select": ["options": PaymentMethod.allCases.map { ["name": $0.rawValue] }]
+            ],
         ]
     }
 
@@ -51,18 +68,20 @@ enum NotionMapper {
 
         let archived = json["archived"] as? Bool ?? false
 
-        var note = ""
-        if let noteProp = properties[NotionPropertyName.note] as? [String: Any],
-           let titleArray = noteProp["title"] as? [[String: Any]],
+        var title = ""
+        if let titleProp = properties[NotionPropertyName.title] as? [String: Any],
+           let titleArray = titleProp["title"] as? [[String: Any]],
            let first = titleArray.first,
            let text = first["plain_text"] as? String {
-            note = text
+            title = text
         }
 
         var amount: Decimal = 0
         if let amountProp = properties[NotionPropertyName.amount] as? [String: Any],
            let number = amountProp["number"] as? Double {
-            amount = Decimal(number)
+            // Nunca Decimal(double) directo: se convierte vía texto para evitar artefactos binarios
+            // (p. ej. 19.99 → 19.989999999999998) que se colarían en el modelo local en cada pull.
+            amount = Decimal(string: String(format: "%.2f", number)) ?? Decimal(number)
         }
 
         var date = Date.now
@@ -80,13 +99,22 @@ enum NotionMapper {
             categorySelectID = select["id"] as? String
         }
 
+        var paymentMethod = PaymentMethod.card
+        if let paymentProp = properties[NotionPropertyName.paymentMethod] as? [String: Any],
+           let select = paymentProp["select"] as? [String: Any],
+           let name = select["name"] as? String,
+           let matched = PaymentMethod(rawValue: name) {
+            paymentMethod = matched
+        }
+
         return ParsedNotionPage(
             id: id,
             lastEditedTime: lastEditedTime,
             archived: archived,
             amount: amount,
             date: date,
-            note: note,
+            title: title,
+            paymentMethod: paymentMethod,
             categoryName: categoryName,
             categorySelectID: categorySelectID
         )

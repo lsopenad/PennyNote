@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import os
 
 actor SyncEngine {
     static let shared = SyncEngine()
@@ -27,6 +28,9 @@ actor SyncEngine {
         let client = NotionClient(token: token)
 
         do {
+            // Sana el esquema remoto (categorías + campos Título/Método de pago) antes de
+            // sincronizar, por si la base de datos se conectó antes de que existieran estos campos.
+            await pushCategorySchema()
             try await push(context: context, client: client, databaseID: databaseID)
             try await pull(context: context, client: client, databaseID: databaseID)
             try context.save()
@@ -43,10 +47,20 @@ actor SyncEngine {
     func pushCategorySchema() async {
         guard let modelContainer, let token = NotionCredentialsStore.token, let databaseID = SyncStateStore.notionDatabaseID else { return }
         let context = ModelContext(modelContainer)
-        let categories = (try? context.fetch(FetchDescriptor<ExpenseCategory>())) ?? []
+        let categories: [ExpenseCategory]
+        do {
+            categories = try context.fetch(FetchDescriptor<ExpenseCategory>())
+        } catch {
+            Log.sync.error("Fallo al leer categorías para sincronizar el esquema con Notion: \(error.localizedDescription)")
+            return
+        }
         let names = categories.map(\.name)
         let client = NotionClient(token: token)
-        try? await client.updateCategorySchema(databaseID: databaseID, categoryNames: names)
+        do {
+            try await client.updateCategorySchema(databaseID: databaseID, categoryNames: names)
+        } catch {
+            Log.sync.error("Fallo al actualizar el esquema de categorías en Notion: \(error.localizedDescription)")
+        }
     }
 
     // MARK: - Push
@@ -65,7 +79,8 @@ actor SyncEngine {
                                 pageID: pageID,
                                 amount: expense.amount,
                                 date: expense.date,
-                                note: expense.note,
+                                title: expense.title,
+                                paymentMethod: expense.paymentMethod,
                                 categoryName: expense.category?.name,
                                 archived: true
                             )
@@ -81,7 +96,8 @@ actor SyncEngine {
                             pageID: pageID,
                             amount: expense.amount,
                             date: expense.date,
-                            note: expense.note,
+                            title: expense.title,
+                            paymentMethod: expense.paymentMethod,
                             categoryName: expense.category?.name,
                             archived: false
                         )
@@ -94,7 +110,8 @@ actor SyncEngine {
                             databaseID: databaseID,
                             amount: expense.amount,
                             date: expense.date,
-                            note: expense.note,
+                            title: expense.title,
+                            paymentMethod: expense.paymentMethod,
                             categoryName: expense.category?.name
                         )
                     }
@@ -104,6 +121,7 @@ actor SyncEngine {
                 }
             } catch {
                 // Se reintenta en el siguiente ciclo de sync; no bloquea el resto del lote.
+                Log.sync.error("Fallo al sincronizar el gasto \(expense.id) con Notion: \(error.localizedDescription)")
                 continue
             }
         }
@@ -153,13 +171,20 @@ actor SyncEngine {
                 if shouldRemoteWin {
                     local.amount = remotePage.amount
                     local.date = remotePage.date
-                    local.note = remotePage.note
+                    local.title = remotePage.title
+                    local.paymentMethod = remotePage.paymentMethod
                     local.category = matchedCategory
                     local.notionLastEditedTime = remotePage.lastEditedTime
                     local.syncStatus = .synced
                 }
             } else {
-                let newExpense = Expense(amount: remotePage.amount, date: remotePage.date, note: remotePage.note, category: matchedCategory)
+                let newExpense = Expense(
+                    amount: remotePage.amount,
+                    date: remotePage.date,
+                    title: remotePage.title,
+                    paymentMethod: remotePage.paymentMethod,
+                    category: matchedCategory
+                )
                 newExpense.notionPageID = remotePage.id
                 newExpense.notionLastEditedTime = remotePage.lastEditedTime
                 newExpense.syncStatus = .synced

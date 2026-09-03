@@ -30,10 +30,17 @@ actor NotionClient {
         _ = try await send(request)
     }
 
-    func createPage(databaseID: String, amount: Decimal, date: Date, note: String, categoryName: String?) async throws -> ParsedNotionPage {
+    func createPage(
+        databaseID: String,
+        amount: Decimal,
+        date: Date,
+        title: String,
+        paymentMethod: PaymentMethod,
+        categoryName: String?
+    ) async throws -> ParsedNotionPage {
         let body: [String: Any] = [
             "parent": ["database_id": databaseID],
-            "properties": NotionMapper.properties(amount: amount, date: date, note: note, categoryName: categoryName),
+            "properties": NotionMapper.properties(amount: amount, date: date, title: title, paymentMethod: paymentMethod, categoryName: categoryName),
         ]
         let request = try NotionRequestBuilder.request(path: "pages", method: "POST", token: token, body: body)
         let json = try await send(request)
@@ -41,9 +48,17 @@ actor NotionClient {
         return page
     }
 
-    func updatePage(pageID: String, amount: Decimal, date: Date, note: String, categoryName: String?, archived: Bool) async throws -> ParsedNotionPage {
+    func updatePage(
+        pageID: String,
+        amount: Decimal,
+        date: Date,
+        title: String,
+        paymentMethod: PaymentMethod,
+        categoryName: String?,
+        archived: Bool
+    ) async throws -> ParsedNotionPage {
         var body: [String: Any] = ["archived": archived]
-        body["properties"] = NotionMapper.properties(amount: amount, date: date, note: note, categoryName: categoryName)
+        body["properties"] = NotionMapper.properties(amount: amount, date: date, title: title, paymentMethod: paymentMethod, categoryName: categoryName)
         let request = try NotionRequestBuilder.request(path: "pages/\(pageID)", method: "PATCH", token: token, body: body)
         let json = try await send(request)
         guard let page = NotionMapper.parsePage(json) else { throw NotionError.decoding }

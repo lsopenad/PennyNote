@@ -1,6 +1,7 @@
 import AppIntents
 import SwiftData
 import Foundation
+import os
 
 struct LogExpenseIntent: AppIntent {
     static var title: LocalizedStringResource = "Registrar gasto"
@@ -9,8 +10,8 @@ struct LogExpenseIntent: AppIntent {
     @Parameter(title: "Cantidad")
     var amount: Double
 
-    @Parameter(title: "Comercio o nota")
-    var merchantNote: String
+    @Parameter(title: "Título")
+    var expenseTitle: String
 
     // Sin valor por defecto a propósito: es lo que permite que Atajos ofrezca "Preguntar cada vez".
     @Parameter(title: "Categoría")
@@ -23,7 +24,13 @@ struct LogExpenseIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult {
         let context = ModelContext(SharedModelContainer.container)
-        let categories = (try? context.fetch(FetchDescriptor<ExpenseCategory>())) ?? []
+        let categories: [ExpenseCategory]
+        do {
+            categories = try context.fetch(FetchDescriptor<ExpenseCategory>())
+        } catch {
+            Log.data.error("Fallo al buscar categorías al registrar gasto desde Atajos: \(error.localizedDescription)")
+            categories = []
+        }
         let matchedCategory = categories.first { $0.id == category.id }
 
         // Nunca Decimal(double) directo: se convierte vía texto para evitar artefactos binarios.
@@ -32,7 +39,7 @@ struct LogExpenseIntent: AppIntent {
         ExpenseRepository.addExpense(
             amount: amountDecimal,
             date: .now,
-            note: merchantNote,
+            title: expenseTitle,
             category: matchedCategory,
             context: context
         )

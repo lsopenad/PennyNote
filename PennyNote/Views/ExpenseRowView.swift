@@ -10,6 +10,15 @@ struct ExpenseRowView: View {
         return formatter.string(from: expense.amount as NSDecimalNumber) ?? "\(expense.amount) €"
     }
 
+    private var headline: String {
+        if !expense.title.isEmpty { return expense.title }
+        return expense.category?.name ?? "Sin categoría"
+    }
+
+    private var showsCategorySubtitle: Bool {
+        !expense.title.isEmpty
+    }
+
     var body: some View {
         HStack(spacing: 12) {
             Image(systemName: expense.category?.symbolName ?? "questionmark.circle")
@@ -19,9 +28,9 @@ struct ExpenseRowView: View {
                 .background(.tint.opacity(0.12), in: Circle())
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(expense.note.isEmpty ? (expense.category?.name ?? "Sin categoría") : expense.note)
+                Text(headline)
                     .font(.body)
-                if !expense.note.isEmpty {
+                if showsCategorySubtitle {
                     Text(expense.category?.name ?? "Sin categoría")
                         .font(.caption)
                         .foregroundStyle(.secondary)
