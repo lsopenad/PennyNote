@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import os
 
 enum MonthlyTotalCalculator {
     static func total(for referenceDate: Date = .now, in context: ModelContext) -> Decimal {
@@ -16,7 +17,13 @@ enum MonthlyTotalCalculator {
             }
         )
 
-        let expenses = (try? context.fetch(descriptor)) ?? []
+        let expenses: [Expense]
+        do {
+            expenses = try context.fetch(descriptor)
+        } catch {
+            Log.data.error("Fallo al calcular el total mensual: \(error.localizedDescription)")
+            expenses = []
+        }
         return expenses.reduce(Decimal.zero) { $0 + $1.amount }
     }
 }

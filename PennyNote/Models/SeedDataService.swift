@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import os
 
 enum SeedDataService {
     // Set clásico de 7 categorías que cubre la mayoría de gastos diarios sin abrumar el picker.
@@ -15,7 +16,13 @@ enum SeedDataService {
 
     static func seedIfNeeded(context: ModelContext) {
         let descriptor = FetchDescriptor<ExpenseCategory>()
-        let existingCount = (try? context.fetchCount(descriptor)) ?? 0
+        let existingCount: Int
+        do {
+            existingCount = try context.fetchCount(descriptor)
+        } catch {
+            Log.data.error("Fallo al comprobar categorías existentes antes de sembrar: \(error.localizedDescription)")
+            existingCount = 0
+        }
         guard existingCount == 0 else { return }
 
         for (index, seed) in defaultCategories.enumerated() {
@@ -35,6 +42,11 @@ enum SeedDataService {
             predicate: #Predicate { $0.name == "Otros" }
         )
         descriptor.fetchLimit = 1
-        return try? context.fetch(descriptor).first
+        do {
+            return try context.fetch(descriptor).first
+        } catch {
+            Log.data.error("Fallo al buscar la categoría de fallback: \(error.localizedDescription)")
+            return nil
+        }
     }
 }
