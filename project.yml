@@ -2,14 +2,14 @@ name: PennyNote
 options:
   bundleIdPrefix: com.pennynote
   deploymentTarget:
-    iOS: "17.4"
+    iOS: "18.0"
   createIntermediateGroups: true
 
 targets:
   PennyNote:
     type: application
     platform: iOS
-    deploymentTarget: "17.4"
+    deploymentTarget: "18.0"
     sources:
       - path: PennyNote
     info:
@@ -45,10 +45,11 @@ targets:
   PennyNoteWidgetExtension:
     type: app-extension
     platform: iOS
-    deploymentTarget: "17.4"
+    deploymentTarget: "18.0"
     sources:
       - path: PennyNoteWidget
       - path: PennyNote/AppGroup
+      - path: PennyNote/Intents/OpenAddExpenseIntent.swift
     info:
       path: Generated/PennyNoteWidgetExtension-Info.plist
       properties:

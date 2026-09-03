@@ -17,6 +17,9 @@ struct RootView: View {
             .onOpenURL { url in
                 DeepLinkHandler.handle(url, router: router)
             }
+            .onReceive(NotificationCenter.default.publisher(for: .pennyNoteOpenAddExpense)) { _ in
+                router.presentAdd()
+            }
     }
 
     private var routerAddBinding: Binding<Bool> {

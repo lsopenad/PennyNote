@@ -6,5 +6,6 @@ struct PennyNoteWidgetBundle: WidgetBundle {
     var body: some Widget {
         HomeScreenWidget()
         LockScreenWidget()
+        AddExpenseControl()
     }
 }
