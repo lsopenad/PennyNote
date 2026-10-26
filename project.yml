@@ -1,6 +1,9 @@
 name: PennyNote
 options:
   bundleIdPrefix: com.pennynote
+  # La interfaz solo está en español: sin esto la app declara inglés y las fechas que formatea el
+  # sistema (cabeceras de día, «hace 8 segundos») salen en inglés aunque el iPhone esté en español.
+  developmentLanguage: es
   deploymentTarget:
     iOS: "18.0"
   createIntermediateGroups: true
