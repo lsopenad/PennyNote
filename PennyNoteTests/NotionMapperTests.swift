@@ -76,6 +76,14 @@ struct NotionMapperTests {
         #expect(NotionMapper.isoDateOnly(page.date) == "2026-03-14")
     }
 
+    @Test func joinsAllTitleFragments() throws {
+        var json = pageJSON()
+        var properties = try #require(json["properties"] as? [String: Any])
+        properties[NotionPropertyName.title] = ["title": [["plain_text": "Cena con "], ["plain_text": "Ana"]]]
+        json["properties"] = properties
+        #expect(try #require(NotionMapper.parsePage(json)).title == "Cena con Ana")
+    }
+
     @Test func parsesArchivedFlag() throws {
         var json = pageJSON()
         json["archived"] = true

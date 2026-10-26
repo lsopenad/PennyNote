@@ -51,8 +51,9 @@ enum NotionMapper {
             let properties = json["properties"] as? [String: Any]
         else { return nil }
 
-        let title = (property(NotionPropertyName.title, in: properties)?["title"] as? [[String: Any]])?
-            .first?["plain_text"] as? String ?? ""
+        // Un título con formato, enlaces o menciones llega partido en varios fragmentos de texto.
+        let titleFragments = property(NotionPropertyName.title, in: properties)?["title"] as? [[String: Any]] ?? []
+        let title = titleFragments.compactMap { $0["plain_text"] as? String }.joined()
 
         let number = property(NotionPropertyName.amount, in: properties)?["number"] as? Double
         if number == nil {
