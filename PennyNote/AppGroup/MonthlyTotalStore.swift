@@ -11,7 +11,6 @@ enum MonthlyTotalStore {
 
         defaults.set(newValue, forKey: AppGroupConstants.Keys.monthlyTotalAmount)
         defaults.set(monthStart, forKey: AppGroupConstants.Keys.monthlyTotalMonthStart)
-        defaults.set(Date.now, forKey: AppGroupConstants.Keys.monthlyTotalLastUpdated)
 
         // Siempre recarga: comparar strings para "ahorrar" recargas no compensa el riesgo
         // de que una comparación falle y el widget se quede pillado con un valor viejo.

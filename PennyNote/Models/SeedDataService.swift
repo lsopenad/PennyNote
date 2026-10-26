@@ -3,6 +3,10 @@ import SwiftData
 import os
 
 enum SeedDataService {
+    // Categoría a la que se reasignan los gastos al borrar la suya; se identifica por nombre
+    // (isDefault no sirve: marca todas las categorías sembradas, no solo esta).
+    static let fallbackCategoryName = "Otros"
+
     // Set clásico de 7 categorías que cubre la mayoría de gastos diarios sin abrumar el picker.
     static let defaultCategories: [(name: String, symbolName: String)] = [
         ("Comida", "fork.knife"),
@@ -11,7 +15,7 @@ enum SeedDataService {
         ("Hogar", "house.fill"),
         ("Salud", "cross.case.fill"),
         ("Compras", "bag.fill"),
-        ("Otros", "ellipsis.circle.fill"),
+        (fallbackCategoryName, "ellipsis.circle.fill"),
     ]
 
     static func seedIfNeeded(context: ModelContext) {
@@ -36,17 +40,11 @@ enum SeedDataService {
         }
     }
 
-    // La categoría "Otros" siempre debe existir como fallback de reasignación al borrar categorías.
+    // nil si el usuario la ha borrado o renombrado; quien la usa elige entonces otra categoría.
     static func fallbackCategory(context: ModelContext) -> ExpenseCategory? {
-        var descriptor = FetchDescriptor<ExpenseCategory>(
-            predicate: #Predicate { $0.name == "Otros" }
-        )
+        let name = fallbackCategoryName
+        var descriptor = FetchDescriptor<ExpenseCategory>(predicate: #Predicate { $0.name == name })
         descriptor.fetchLimit = 1
-        do {
-            return try context.fetch(descriptor).first
-        } catch {
-            Log.data.error("Fallo al buscar la categoría de fallback: \(error.localizedDescription)")
-            return nil
-        }
+        return context.fetchOrEmpty(descriptor, failureMessage: "Fallo al buscar la categoría de fallback").first
     }
 }

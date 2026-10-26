@@ -21,12 +21,14 @@ final class Expense {
     }
     var category: ExpenseCategory?
 
+    // Se rellena al crear el gasto pero aún no se lee en ningún sitio.
     var createdAt: Date
     // Se actualiza en cada mutación local; es la base de la comparación last-write-wins.
     var localLastModified: Date
 
-    // Todo lo relacionado con Notion queda a nil hasta que exista sync (fase 2).
+    // nil hasta que el primer push crea la página en Notion.
     var notionPageID: String?
+    // Se guarda en cada push/pull pero la resolución de conflictos usa el lastEditedTime remoto recibido.
     var notionLastEditedTime: Date?
     var syncStatus: SyncStatus
 

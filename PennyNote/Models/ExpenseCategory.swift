@@ -7,8 +7,10 @@ final class ExpenseCategory {
     var name: String
     var symbolName: String
     var sortOrder: Int
+    // Marca las categorías creadas por el seed; ahora mismo no se lee.
     var isDefault: Bool
-    // ID de la opción "select" en Notion, para mantener el mapeo estable si se renombra la categoría.
+    // Reservado para mapear la opción "select" de Notion por ID; hoy nunca se rellena y el pull
+    // empareja las categorías por nombre. Se conserva para no alterar el esquema.
     var notionSelectOptionID: String?
 
     @Relationship(deleteRule: .nullify, inverse: \Expense.category)

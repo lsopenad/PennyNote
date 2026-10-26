@@ -10,6 +10,5 @@ enum AppGroupConstants {
     enum Keys {
         static let monthlyTotalAmount = "monthlyTotal.amount"
         static let monthlyTotalMonthStart = "monthlyTotal.monthStartDate"
-        static let monthlyTotalLastUpdated = "monthlyTotal.lastUpdated"
     }
 }

@@ -2,9 +2,9 @@ import Foundation
 import SwiftData
 import os
 
-// Contenedor único compartido por la app y por LogExpenseIntent (Atajos), para que ambos
-// lean/escriban exactamente el mismo almacén SwiftData. Debe vivir en el App Group: si no,
-// cada proceso (app vs. extensión de Atajos) puede acabar leyendo/escribiendo un store distinto.
+// Contenedor único compartido por la app, el SyncEngine y LogExpenseIntent (Atajos), para que
+// todos lean/escriban exactamente el mismo almacén SwiftData. Vive en el App Group para que
+// cualquier otro proceso que se añada (p. ej. una extensión) apunte al mismo store.
 enum SharedModelContainer {
     static let container: ModelContainer = {
         let schema = Schema([Expense.self, ExpenseCategory.self])
@@ -17,7 +17,11 @@ enum SharedModelContainer {
         } catch {
             Log.data.fault("Fallo al crear el ModelContainer compartido, se usa uno en memoria como último recurso: \(error.localizedDescription)")
             let fallbackConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-            return try! ModelContainer(for: schema, configurations: [fallbackConfiguration])
+            do {
+                return try ModelContainer(for: schema, configurations: [fallbackConfiguration])
+            } catch {
+                fatalError("No se pudo crear ni siquiera el ModelContainer en memoria: \(error)")
+            }
         }
     }()
 }
