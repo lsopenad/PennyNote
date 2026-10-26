@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 // Único punto de escritura de la app (Views y LogExpenseIntent): evita duplicar en cada sitio
-// la lógica de "guardar + marcar pending + recalcular total + programar sync".
+// la lógica de "guardar + marcar pending + recalcular el widget".
 @MainActor
 enum ExpenseRepository {
     static func addExpense(
@@ -53,7 +53,6 @@ enum ExpenseRepository {
         let category = ExpenseCategory(name: name, symbolName: symbolName, sortOrder: nextOrder, color: color)
         context.insert(category)
         context.saveOrLog(failureMessage: "Fallo al guardar la nueva categoría")
-        Task { await SyncEngine.shared.pushCategorySchema() }
         return category
     }
 
@@ -77,11 +76,10 @@ enum ExpenseRepository {
         context.saveOrLog(failureMessage: "Fallo al guardar tras borrar una categoría")
         // Los gastos han cambiado de categoría: el widget muestra las categorías principales.
         MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
-        Task { await SyncEngine.shared.pushCategorySchema() }
         return true
     }
 
-    // El color es solo local, así que no marca nada como pendiente ni dispara sync.
+    // El color no marca nada como pendiente: es un dato de la categoría, no de sus gastos.
     static func setColor(_ color: CategoryColor, for category: ExpenseCategory, context: ModelContext) {
         category.color = color
         context.saveOrLog(failureMessage: "Fallo al guardar el color de la categoría")
@@ -95,6 +93,5 @@ enum ExpenseRepository {
 
     private static func afterMutation(context: ModelContext) {
         MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
-        SyncTrigger.shared.scheduleDebouncedSync()
     }
 }

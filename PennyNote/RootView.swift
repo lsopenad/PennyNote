@@ -12,6 +12,7 @@ struct RootView: View {
                 AddEditExpenseView(expense: router.expenseToEdit)
             }
             .task {
+                LegacyNotionCleanup.runIfNeeded()
                 SeedDataService.seedIfNeeded(context: modelContext)
                 SeedDataService.assignMissingColors(context: modelContext)
                 MonthlyTotalCalculator.refreshWidgetSnapshot(in: modelContext)

@@ -1,6 +1,6 @@
 # PennyNote
 
-A fast expense tracker for iPhone that syncs to your own Notion database. No accounts, no login: expenses are stored on the device and pushed to Notion in the background.
+A fast expense tracker for iPhone. No accounts, no login: expenses are stored on the device.
 
 <p align="center">
   <img src="docs/screenshots/main.png" width="250" alt="Main screen with the month's total, the comparison with the previous month and a daily spending chart">
@@ -16,7 +16,6 @@ A fast expense tracker for iPhone that syncs to your own Notion database. No acc
 - Statistics: spending per day, per category and per payment method, and the last six months.
 - Home Screen widgets (small and medium) with the month's chart and top categories, and Lock Screen widgets with the total.
 - Control Center button and Siri/Shortcuts action to add an expense.
-- Two-way sync with a Notion database you own. The app works offline and syncs when it can.
 
 ## Requirements
 
@@ -36,13 +35,6 @@ PennyNote is not on the App Store. It is installed with [AltStore Classic](https
 4. Optionally add the widgets from the Home Screen and Lock Screen editors.
 
 Apps signed with a free Apple ID expire after 7 days. AltStore refreshes them automatically while AltServer is running on a computer on the same Wi-Fi network.
-
-## Setting up Notion
-
-1. Create an integration at [notion.so/my-integrations](https://www.notion.so/my-integrations) and copy its token.
-2. In PennyNote, open **Ajustes** (Settings) → **Notion** and paste the token.
-3. In Notion, share the page where the expenses database should live with your integration, then paste that page's URL into **URL o ID de la página padre**.
-4. Tap **Conectar con Notion** to create the database (only once), then **Sincronizar ahora** to sync.
 
 ## Development
 

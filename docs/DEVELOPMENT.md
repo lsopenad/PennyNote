@@ -22,7 +22,7 @@ Vuelve a ejecutar `xcodegen generate` cada vez que `project.yml` cambie (por eje
 
 ## Tests
 
-Los tests (Swift Testing, target `PennyNoteTests`) cubren la lógica pura: mapeo con Notion, cálculo del total mensual, estadísticas de gasto, datos del widget y parseo del ID de página. Se ejecutan con Cmd+U en Xcode o desde terminal:
+Los tests (Swift Testing, target `PennyNoteTests`) cubren la lógica pura: cálculo del total mensual, estadísticas de gasto y datos del widget. Se ejecutan con Cmd+U en Xcode o desde terminal:
 
 ```bash
 xcodebuild test -project PennyNote.xcodeproj -scheme PennyNote -destination 'platform=iOS Simulator,name=iPhone 17'
