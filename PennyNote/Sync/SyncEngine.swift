@@ -40,7 +40,7 @@ actor SyncEngine {
             try context.save()
             SyncStateStore.lastSyncDate = .now
             SyncStateStore.lastSyncError = nil
-            MonthlyTotalCalculator.refreshSharedTotal(in: context)
+            MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
         } catch {
             Log.sync.error("Fallo en la sincronización con Notion: \(error.localizedDescription)")
             SyncStateStore.lastSyncError = error.localizedDescription

@@ -14,6 +14,7 @@ struct RootView: View {
             .task {
                 SeedDataService.seedIfNeeded(context: modelContext)
                 SeedDataService.assignMissingColors(context: modelContext)
+                MonthlyTotalCalculator.refreshWidgetSnapshot(in: modelContext)
             }
             .onOpenURL { url in
                 DeepLinkHandler.handle(url, router: router)

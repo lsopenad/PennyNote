@@ -75,6 +75,8 @@ enum ExpenseRepository {
         }
         context.delete(category)
         context.saveOrLog(failureMessage: "Fallo al guardar tras borrar una categoría")
+        // Los gastos han cambiado de categoría: el widget muestra las categorías principales.
+        MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
         Task { await SyncEngine.shared.pushCategorySchema() }
         return true
     }
@@ -83,6 +85,7 @@ enum ExpenseRepository {
     static func setColor(_ color: CategoryColor, for category: ExpenseCategory, context: ModelContext) {
         category.color = color
         context.saveOrLog(failureMessage: "Fallo al guardar el color de la categoría")
+        MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
     }
 
     private static func markPending(_ expense: Expense) {
@@ -91,7 +94,7 @@ enum ExpenseRepository {
     }
 
     private static func afterMutation(context: ModelContext) {
-        MonthlyTotalCalculator.refreshSharedTotal(in: context)
+        MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
         SyncTrigger.shared.scheduleDebouncedSync()
     }
 }

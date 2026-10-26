@@ -51,7 +51,10 @@ targets:
     sources:
       - path: PennyNoteWidget
       - path: PennyNote/AppGroup
+      - path: PennyNote/Logging.swift
       - path: PennyNote/Intents/OpenAddExpenseIntent.swift
+      # Solo por AccentColor: así las gráficas del widget usan el mismo verde que la app.
+      - path: PennyNote/Resources/Assets.xcassets
     info:
       path: Generated/PennyNoteWidgetExtension-Info.plist
       properties:
@@ -67,6 +70,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pennynote.app.widget
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         MARKETING_VERSION: "1.1.0"
         CURRENT_PROJECT_VERSION: "2"
         SWIFT_VERSION: "5.0"
