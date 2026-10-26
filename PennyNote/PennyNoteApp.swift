@@ -7,11 +7,6 @@ struct PennyNoteApp: App {
 
     let modelContainer = SharedModelContainer.container
 
-    init() {
-        let container = modelContainer
-        Task { await SyncEngine.shared.configure(container: container) }
-    }
-
     var body: some Scene {
         WindowGroup {
             RootView()

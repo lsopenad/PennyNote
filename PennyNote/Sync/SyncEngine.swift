@@ -5,22 +5,16 @@ import os
 actor SyncEngine {
     static let shared = SyncEngine()
 
-    private var modelContainer: ModelContainer?
+    // Se usa directamente el contenedor compartido: configurarlo desde App.init en un Task suelto
+    // dejaba una ventana en la que el primer sync (al pasar a .active) no hacía nada.
+    private let modelContainer = SharedModelContainer.container
     private var isSyncing = false
 
     private init() {}
 
-    func configure(container: ModelContainer) {
-        modelContainer = container
-    }
-
     func syncNow() async {
         guard !isSyncing else {
             Log.sync.debug("Sync omitido: ya hay uno en curso")
-            return
-        }
-        guard let modelContainer else {
-            Log.sync.error("Sync omitido: el SyncEngine aún no tiene ModelContainer")
             return
         }
         guard let token = NotionCredentialsStore.token, let databaseID = SyncStateStore.notionDatabaseID else {
@@ -53,7 +47,7 @@ actor SyncEngine {
     }
 
     func pushCategorySchema() async {
-        guard let modelContainer, let token = NotionCredentialsStore.token, let databaseID = SyncStateStore.notionDatabaseID else { return }
+        guard let token = NotionCredentialsStore.token, let databaseID = SyncStateStore.notionDatabaseID else { return }
         let context = ModelContext(modelContainer)
         let categories: [ExpenseCategory]
         do {
