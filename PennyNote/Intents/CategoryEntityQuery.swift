@@ -13,9 +13,8 @@ struct CategoryEntityQuery: EntityQuery {
 
     func suggestedEntities() async throws -> [CategoryEntity] {
         let context = ModelContext(SharedModelContainer.container)
-        let descriptor = FetchDescriptor<ExpenseCategory>(sortBy: [SortDescriptor(\.sortOrder)])
         return context
-            .fetchOrEmpty(descriptor, failureMessage: "Fallo al sugerir categorías desde Atajos")
+            .categories(failureMessage: "Fallo al sugerir categorías desde Atajos")
             .map(CategoryEntity.init)
     }
 }

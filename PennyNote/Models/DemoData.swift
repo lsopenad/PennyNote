@@ -41,10 +41,7 @@ enum DemoData {
 
     private static func populate(_ context: ModelContext) {
         SeedDataService.seedIfNeeded(context: context)
-        let categories = context.fetchOrEmpty(
-            FetchDescriptor<ExpenseCategory>(sortBy: [SortDescriptor(\.sortOrder)]),
-            failureMessage: "Fallo al leer las categorías de la demo"
-        )
+        let categories = context.categories(failureMessage: "Fallo al leer las categorías de la demo")
         guard categories.count == SeedDataService.defaultCategories.count else { return }
 
         // Semilla fija: la demo sale igual cada vez, salvo por la fecha de hoy.

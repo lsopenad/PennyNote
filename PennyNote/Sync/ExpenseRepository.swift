@@ -50,10 +50,7 @@ enum ExpenseRepository {
 
     @discardableResult
     static func addCategory(name: String, symbolName: String, context: ModelContext) -> ExpenseCategory {
-        let existing = context.fetchOrEmpty(
-            FetchDescriptor<ExpenseCategory>(),
-            failureMessage: "Fallo al leer categorías existentes al añadir una categoría"
-        )
+        let existing = context.categories(failureMessage: "Fallo al leer categorías existentes al añadir una categoría")
         let nextOrder = (existing.map(\.sortOrder).max() ?? -1) + 1
         let color = CategoryColor.nextAvailable(excluding: existing.compactMap(\.color))
         let category = ExpenseCategory(
@@ -71,10 +68,7 @@ enum ExpenseRepository {
     // false si no se puede borrar (es la última categoría restante).
     @discardableResult
     static func deleteCategory(_ category: ExpenseCategory, context: ModelContext) -> Bool {
-        let all = context.fetchOrEmpty(
-            FetchDescriptor<ExpenseCategory>(),
-            failureMessage: "Fallo al leer categorías existentes al borrar una categoría"
-        )
+        let all = context.categories(failureMessage: "Fallo al leer categorías existentes al borrar una categoría")
         guard all.count > 1 else { return false }
 
         // Si se borra la propia categoría de reserva, sus gastos pasan a otra de las que quedan.

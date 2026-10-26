@@ -14,6 +14,17 @@ extension ModelContext {
         }
     }
 
+    // Todas las categorías, por sortOrder: el orden en que se muestran.
+    func categories(failureMessage: String) -> [ExpenseCategory] {
+        fetchOrEmpty(FetchDescriptor<ExpenseCategory>(sortBy: [SortDescriptor(\.sortOrder)]), failureMessage: failureMessage)
+    }
+
+    func category(withID id: UUID, failureMessage: String) -> ExpenseCategory? {
+        var descriptor = FetchDescriptor<ExpenseCategory>(predicate: #Predicate { $0.id == id })
+        descriptor.fetchLimit = 1
+        return fetchOrEmpty(descriptor, failureMessage: failureMessage).first
+    }
+
     // Guarda registrando el error en vez de propagarlo, para los puntos de escritura que no pueden fallar.
     func saveOrLog(failureMessage: String) {
         do {

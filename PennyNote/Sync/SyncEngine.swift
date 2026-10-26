@@ -54,7 +54,7 @@ final class SyncEngine {
     }
 
     static func pendingChangeCount(context: ModelContext, state: SyncStateStore) -> Int {
-        let categories = context.fetchOrEmpty(FetchDescriptor<ExpenseCategory>(), failureMessage: "Fallo al contar categorías pendientes")
+        let categories = context.categories(failureMessage: "Fallo al contar categorías pendientes")
         let expenses = context.fetchOrEmpty(FetchDescriptor<Expense>(), failureMessage: "Fallo al contar gastos pendientes")
         return categories.filter { $0.syncStatus == .pending }.count
             + state.categoryTombstones.count
@@ -196,7 +196,7 @@ final class SyncEngine {
     // MARK: - Lecturas
 
     private func allCategories() -> [ExpenseCategory] {
-        context.fetchOrEmpty(FetchDescriptor<ExpenseCategory>(), failureMessage: "Fallo al leer las categorías para sincronizar")
+        context.categories(failureMessage: "Fallo al leer las categorías para sincronizar")
     }
 
     private func allExpenses() -> [Expense] {

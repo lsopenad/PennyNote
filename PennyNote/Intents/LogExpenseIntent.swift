@@ -23,12 +23,10 @@ struct LogExpenseIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult {
         let context = ModelContext(SharedModelContainer.container)
-        let categoryID = category.id
-        var descriptor = FetchDescriptor<ExpenseCategory>(predicate: #Predicate { $0.id == categoryID })
-        descriptor.fetchLimit = 1
-        let matchedCategory = context
-            .fetchOrEmpty(descriptor, failureMessage: "Fallo al buscar la categoría al registrar gasto desde Atajos")
-            .first
+        let matchedCategory = context.category(
+            withID: category.id,
+            failureMessage: "Fallo al buscar la categoría al registrar gasto desde Atajos"
+        )
 
         // Nunca Decimal(double) directo: se convierte vía texto para evitar artefactos binarios.
         let amountDecimal = Decimal(string: String(amount)) ?? Decimal(amount)
