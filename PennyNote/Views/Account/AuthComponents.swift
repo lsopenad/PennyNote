@@ -2,6 +2,28 @@ import SwiftUI
 
 // Piezas comunes de las pantallas de cuenta.
 
+// Operación de cuenta en curso (entrar, crear cuenta, cambiar contraseña…): su progreso y el mensaje
+// de error que se enseña si falla.
+@MainActor
+@Observable
+final class AccountOperation {
+    private(set) var isWorking = false
+    var errorMessage: String?
+
+    func run(_ operation: @escaping () async throws -> Void) {
+        isWorking = true
+        errorMessage = nil
+        Task {
+            defer { isWorking = false }
+            do {
+                try await operation()
+            } catch {
+                errorMessage = AccountErrorMessage.message(for: error)
+            }
+        }
+    }
+}
+
 struct AuthHeader: View {
     let subtitle: String
 

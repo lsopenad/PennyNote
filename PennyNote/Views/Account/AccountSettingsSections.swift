@@ -8,8 +8,7 @@ struct AccountSettingsSections: View {
     @State private var isSignOutConfirmationPresented = false
     @State private var unsyncedChangeCount: Int?
     @State private var isDeleteConfirmationPresented = false
-    @State private var isWorking = false
-    @State private var errorMessage: String?
+    @State private var operation = AccountOperation()
 
     var body: some View {
         Section("Cuenta") {
@@ -21,14 +20,14 @@ struct AccountSettingsSections: View {
             Button("Sincronizar ahora") {
                 Task { await sync.syncNow() }
             }
-            .disabled(sync.isSyncing || isWorking)
+            .disabled(sync.isSyncing || operation.isWorking)
         }
 
         Section {
             Button("Cerrar sesión") {
                 isSignOutConfirmationPresented = true
             }
-            .disabled(isWorking)
+            .disabled(operation.isWorking)
         } footer: {
             Text("Tus gastos siguen en tu cuenta y se borran de este iPhone.")
         }
@@ -49,7 +48,7 @@ struct AccountSettingsSections: View {
             Button("Borrar mi cuenta y mis datos", role: .destructive) {
                 isDeleteConfirmationPresented = true
             }
-            .disabled(isWorking)
+            .disabled(operation.isWorking)
         } footer: {
             Text("Borra la cuenta y todos sus gastos y categorías, del servidor y de este iPhone. No se puede deshacer.")
         }
@@ -64,17 +63,17 @@ struct AccountSettingsSections: View {
         }
         .alert(
             "No se ha podido completar",
-            isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
+            isPresented: Binding(get: { operation.errorMessage != nil }, set: { if !$0 { operation.errorMessage = nil } })
         ) {
             Button("Aceptar", role: .cancel) {}
         } message: {
-            Text(errorMessage ?? "")
+            Text(operation.errorMessage ?? "")
         }
     }
 
     @ViewBuilder
     private var syncStatusRow: some View {
-        if sync.isSyncing || isWorking {
+        if sync.isSyncing || operation.isWorking {
             LabeledContent("Sincronización") { ProgressView() }
         } else {
             LabeledContent("Sincronización") {
@@ -100,29 +99,21 @@ struct AccountSettingsSections: View {
     }
 
     private func signOut(discardingPendingChanges: Bool) {
-        isWorking = true
-        Task {
-            defer { isWorking = false }
+        operation.run { [session, operation] in
             switch await session.signOut(discardingPendingChanges: discardingPendingChanges) {
             case .signedOut:
                 break
             case .pendingChanges(let count):
                 unsyncedChangeCount = count
             case .failed(let message):
-                errorMessage = message
+                operation.errorMessage = message
             }
         }
     }
 
     private func deleteAccount() {
-        isWorking = true
-        Task {
-            defer { isWorking = false }
-            do {
-                try await session.deleteAccount()
-            } catch {
-                errorMessage = AccountErrorMessage.message(for: error)
-            }
+        operation.run { [session] in
+            try await session.deleteAccount()
         }
     }
 }

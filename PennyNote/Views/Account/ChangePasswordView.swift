@@ -8,12 +8,11 @@ struct ChangePasswordView: View {
 
     @State private var password = ""
     @State private var passwordConfirmation = ""
-    @State private var isWorking = false
-    @State private var errorMessage: String?
+    @State private var operation = AccountOperation()
     @State private var isDonePresented = false
 
     private var canSubmit: Bool {
-        PasswordRules.isValid(password) && password == passwordConfirmation && !isWorking
+        PasswordRules.isValid(password) && password == passwordConfirmation && !operation.isWorking
     }
 
     var body: some View {
@@ -38,10 +37,10 @@ struct ChangePasswordView: View {
                 }
             }
 
-            AuthErrorSection(message: errorMessage)
+            AuthErrorSection(message: operation.errorMessage)
 
             Section {
-                AuthSubmitButton(title: "Cambiar contraseña", isWorking: isWorking, action: changePassword)
+                AuthSubmitButton(title: "Cambiar contraseña", isWorking: operation.isWorking, action: changePassword)
                     .disabled(!canSubmit)
             }
         }
@@ -54,16 +53,9 @@ struct ChangePasswordView: View {
 
     private func changePassword() {
         guard canSubmit else { return }
-        isWorking = true
-        errorMessage = nil
-        Task {
-            defer { isWorking = false }
-            do {
-                try await session.updatePassword(password)
-                isDonePresented = true
-            } catch {
-                errorMessage = AccountErrorMessage.message(for: error)
-            }
+        operation.run { [session, password] in
+            try await session.updatePassword(password)
+            isDonePresented = true
         }
     }
 }

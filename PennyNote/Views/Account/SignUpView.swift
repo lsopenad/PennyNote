@@ -6,8 +6,7 @@ struct SignUpView: View {
     @State private var email: String
     @State private var password = ""
     @State private var passwordConfirmation = ""
-    @State private var isWorking = false
-    @State private var errorMessage: String?
+    @State private var operation = AccountOperation()
 
     init(initialEmail: String = "") {
         _email = State(initialValue: initialEmail)
@@ -27,7 +26,7 @@ struct SignUpView: View {
         !email.trimmingCharacters(in: .whitespaces).isEmpty
             && PasswordRules.isValid(password)
             && password == passwordConfirmation
-            && !isWorking
+            && !operation.isWorking
     }
 
     var body: some View {
@@ -45,10 +44,10 @@ struct SignUpView: View {
                     .foregroundStyle(validationMessage == nil ? Color.secondary : Color.red)
             }
 
-            AuthErrorSection(message: errorMessage)
+            AuthErrorSection(message: operation.errorMessage)
 
             Section {
-                AuthSubmitButton(title: "Crear cuenta", isWorking: isWorking, action: signUp)
+                AuthSubmitButton(title: "Crear cuenta", isWorking: operation.isWorking, action: signUp)
                     .disabled(!canSubmit)
             }
         }
@@ -58,15 +57,8 @@ struct SignUpView: View {
 
     private func signUp() {
         guard canSubmit else { return }
-        isWorking = true
-        errorMessage = nil
-        Task {
-            defer { isWorking = false }
-            do {
-                try await session.signUp(email: email, password: password)
-            } catch {
-                errorMessage = AccountErrorMessage.message(for: error)
-            }
+        operation.run { [session, email, password] in
+            try await session.signUp(email: email, password: password)
         }
     }
 }

@@ -8,11 +8,10 @@ struct SignInView: View {
 
     @State private var email = ""
     @State private var password = ""
-    @State private var isWorking = false
-    @State private var errorMessage: String?
+    @State private var operation = AccountOperation()
 
     private var canSubmit: Bool {
-        !email.trimmingCharacters(in: .whitespaces).isEmpty && !password.isEmpty && !isWorking
+        !email.trimmingCharacters(in: .whitespaces).isEmpty && !password.isEmpty && !operation.isWorking
     }
 
     var body: some View {
@@ -34,10 +33,10 @@ struct SignInView: View {
                 }
             }
 
-            AuthErrorSection(message: errorMessage)
+            AuthErrorSection(message: operation.errorMessage)
 
             Section {
-                AuthSubmitButton(title: "Iniciar sesión", isWorking: isWorking, action: signIn)
+                AuthSubmitButton(title: "Iniciar sesión", isWorking: operation.isWorking, action: signIn)
                     .disabled(!canSubmit)
             }
 
@@ -63,15 +62,8 @@ struct SignInView: View {
 
     private func signIn() {
         guard canSubmit else { return }
-        isWorking = true
-        errorMessage = nil
-        Task {
-            defer { isWorking = false }
-            do {
-                try await session.signIn(email: email, password: password)
-            } catch {
-                errorMessage = AccountErrorMessage.message(for: error)
-            }
+        operation.run { [session, email, password] in
+            try await session.signIn(email: email, password: password)
         }
     }
 }
