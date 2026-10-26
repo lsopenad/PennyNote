@@ -2,6 +2,12 @@
 
 A fast expense tracker for iPhone that syncs to your own Notion database. No accounts, no login: expenses are stored on the device and pushed to Notion in the background.
 
+<p align="center">
+  <img src="docs/screenshots/main.png" width="250" alt="Main screen with the month's total, the comparison with the previous month and a daily spending chart">
+  <img src="docs/screenshots/statistics.png" width="250" alt="Statistics screen with daily spending and spending per category">
+  <img src="docs/screenshots/widget.jpg" width="250" alt="Medium Home Screen widget with the month's chart and top categories">
+</p>
+
 ## Features
 
 - Log an expense in seconds with title, amount, category and payment method.
