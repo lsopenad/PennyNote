@@ -4,52 +4,45 @@ import os
 
 enum KeychainStore {
     static func set(_ value: String, service: String, account: String) {
-        let data = Data(value.utf8)
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
-        ]
+        let query = baseQuery(service: service, account: account)
         let deleteStatus = SecItemDelete(query as CFDictionary)
-        if deleteStatus != errSecSuccess && deleteStatus != errSecItemNotFound {
-            Log.security.error("Fallo al borrar el valor previo del Keychain (\(service)/\(account)): OSStatus \(deleteStatus)")
-        }
+        logFailure(deleteStatus, action: "borrar el valor previo del", service: service, account: account)
 
         var newItem = query
-        newItem[kSecValueData as String] = data
+        newItem[kSecValueData as String] = Data(value.utf8)
         newItem[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
         let addStatus = SecItemAdd(newItem as CFDictionary, nil)
-        if addStatus != errSecSuccess {
-            Log.security.error("Fallo al guardar en el Keychain (\(service)/\(account)): OSStatus \(addStatus)")
-        }
+        logFailure(addStatus, action: "guardar en el", service: service, account: account)
     }
 
     static func get(service: String, account: String) -> String? {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: account,
-            kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne,
-        ]
+        var query = baseQuery(service: service, account: account)
+        query[kSecReturnData as String] = true
+        query[kSecMatchLimit as String] = kSecMatchLimitOne
+
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
-        if status != errSecSuccess && status != errSecItemNotFound {
-            Log.security.error("Fallo al leer del Keychain (\(service)/\(account)): OSStatus \(status)")
-        }
+        logFailure(status, action: "leer del", service: service, account: account)
         guard status == errSecSuccess, let data = result as? Data else { return nil }
         return String(data: data, encoding: .utf8)
     }
 
     static func delete(service: String, account: String) {
-        let query: [String: Any] = [
+        let status = SecItemDelete(baseQuery(service: service, account: account) as CFDictionary)
+        logFailure(status, action: "borrar del", service: service, account: account)
+    }
+
+    private static func baseQuery(service: String, account: String) -> [String: Any] {
+        [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
             kSecAttrAccount as String: account,
         ]
-        let status = SecItemDelete(query as CFDictionary)
-        if status != errSecSuccess && status != errSecItemNotFound {
-            Log.security.error("Fallo al borrar del Keychain (\(service)/\(account)): OSStatus \(status)")
-        }
+    }
+
+    // errSecItemNotFound no es un fallo: es el caso normal cuando todavía no hay valor guardado.
+    private static func logFailure(_ status: OSStatus, action: String, service: String, account: String) {
+        guard status != errSecSuccess, status != errSecItemNotFound else { return }
+        Log.security.error("Fallo al \(action, privacy: .public) Keychain (\(service, privacy: .public)/\(account, privacy: .public)): OSStatus \(status)")
     }
 }
