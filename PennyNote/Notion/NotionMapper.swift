@@ -16,7 +16,7 @@ enum NotionMapper {
                 "title": [["text": ["content": title.isEmpty ? "Gasto" : title]]]
             ],
             NotionPropertyName.amount: [
-                "number": NSDecimalNumber(decimal: amount).doubleValue
+                "number": jsonNumber(amount)
             ],
             NotionPropertyName.date: [
                 "date": ["start": isoDateOnly(date)]
@@ -118,6 +118,12 @@ enum NotionMapper {
             categoryName: categoryName,
             categorySelectID: categorySelectID
         )
+    }
+
+    // NSDecimalNumber.doubleValue no da el Double más cercano (19.99 → 19.990000000000002) y ese
+    // ruido llegaba a Notion; pasar por el texto decimal sí lo da.
+    private static func jsonNumber(_ amount: Decimal) -> Double {
+        Double(NSDecimalNumber(decimal: amount).stringValue) ?? NSDecimalNumber(decimal: amount).doubleValue
     }
 
     static func parseISODate(_ string: String) -> Date? {

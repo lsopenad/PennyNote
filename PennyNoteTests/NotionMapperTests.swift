@@ -16,8 +16,7 @@ struct NotionMapperTests {
         )
 
         #expect(titleContent(in: properties) == "Café")
-        let amount = try #require(nested(properties, NotionPropertyName.amount, "number") as? Double)
-        #expect(abs(amount - 19.99) < 0.000_001)
+        #expect(nested(properties, NotionPropertyName.amount, "number") as? Double == 19.99)
         #expect(nested(properties, NotionPropertyName.date, "date", "start") as? String == "2026-03-15")
         #expect(nested(properties, NotionPropertyName.paymentMethod, "select", "name") as? String == "Efectivo")
         #expect(nested(properties, NotionPropertyName.category, "select", "name") as? String == "Comida")
