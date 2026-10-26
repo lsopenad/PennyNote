@@ -1,0 +1,163 @@
+import Foundation
+import Observation
+import Supabase
+
+// Estado de la sesión de Supabase y las operaciones de cuenta. La app solo se usa con sesión
+// iniciada; los datos siguen en el móvil y se sincronizan con la cuenta.
+@MainActor
+@Observable
+final class AccountSession {
+    static let shared = AccountSession()
+
+    enum State: Equatable {
+        // Falta Config/Supabase.xcconfig al compilar.
+        case unconfigured
+        case loading
+        case signedOut
+        case signedIn(userID: UUID, email: String)
+    }
+
+    enum SignOutOutcome: Equatable {
+        case signedOut
+        // Cambios que no se han podido subir y se perderían al borrar los datos del móvil.
+        case pendingChanges(Int)
+        case failed(message: String)
+    }
+
+    private(set) var state: State
+    // Mientras dura la recuperación de contraseña: verificar el código ya inicia sesión, pero hay que
+    // seguir en la pantalla hasta poner la contraseña nueva.
+    var isRecoveringPassword = false
+
+    @ObservationIgnored private let client: SupabaseClient?
+    @ObservationIgnored private let sync: SyncCoordinator
+
+    // sync opcional porque un valor por defecto no puede leer SyncCoordinator.shared (es del MainActor).
+    init(client: SupabaseClient? = SupabaseBackend.client, sync: SyncCoordinator? = nil) {
+        self.client = client
+        self.sync = sync ?? .shared
+        state = client == nil ? .unconfigured : .loading
+        if let client {
+            listenForAuthChanges(client)
+        }
+    }
+
+    var userEmail: String? {
+        if case .signedIn(_, let email) = state { email } else { nil }
+    }
+
+    func signIn(email: String, password: String) async throws {
+        try await requireClient().auth.signIn(email: Self.normalized(email), password: password)
+    }
+
+    func signUp(email: String, password: String) async throws {
+        let response = try await requireClient().auth.signUp(email: Self.normalized(email), password: password)
+        // Sin sesión es que el proyecto de Supabase pide confirmar el email (no debería: se desactiva).
+        if response.session == nil {
+            throw AccountError.emailConfirmationRequired
+        }
+    }
+
+    func sendPasswordRecoveryCode(email: String) async throws {
+        try await requireClient().auth.resetPasswordForEmail(Self.normalized(email))
+    }
+
+    func verifyPasswordRecoveryCode(email: String, code: String) async throws {
+        try await requireClient().auth.verifyOTP(
+            email: Self.normalized(email),
+            token: code.trimmingCharacters(in: .whitespaces),
+            type: .recovery
+        )
+    }
+
+    func updatePassword(_ password: String) async throws {
+        try await requireClient().auth.update(user: UserAttributes(password: password))
+    }
+
+    // Sube lo pendiente y, si no queda nada (o se acepta perderlo), borra los datos del móvil y sale.
+    func signOut(discardingPendingChanges: Bool) async -> SignOutOutcome {
+        if !discardingPendingChanges {
+            await sync.syncNow()
+            let unsynced = sync.unsyncedChangeCount()
+            if unsynced > 0 {
+                return .pendingChanges(unsynced)
+            }
+        }
+        do {
+            try await sync.deactivateAndWipeLocalData()
+        } catch {
+            Log.sync.error("Fallo al borrar los datos locales al cerrar sesión: \(error.localizedDescription)")
+            return .failed(message: "No se han podido borrar los datos de este iPhone. Inténtalo de nuevo.")
+        }
+        await signOutLocally()
+        return .signedOut
+    }
+
+    // Borra el usuario en el servidor (y en cascada sus datos) y después lo de este móvil.
+    func deleteAccount() async throws {
+        try await requireClient().rpc("delete_my_account").execute()
+        do {
+            try await sync.deactivateAndWipeLocalData()
+        } catch {
+            // La cuenta ya no existe: se sale igualmente. Si luego entra otra cuenta, SyncEngine ve que
+            // los datos no son suyos y los borra antes de sincronizar.
+            Log.sync.error("Fallo al borrar los datos locales tras borrar la cuenta: \(error.localizedDescription)")
+        }
+        await signOutLocally()
+    }
+
+    // MARK: - Privado
+
+    private func listenForAuthChanges(_ client: SupabaseClient) {
+        Task { [weak self] in
+            for await (_, session) in client.auth.authStateChanges {
+                self?.apply(session)
+            }
+        }
+    }
+
+    private func apply(_ session: Session?) {
+        let previousUserID = signedInUserID
+        if let session {
+            state = .signedIn(userID: session.user.id, email: session.user.email ?? "")
+        } else {
+            state = .signedOut
+        }
+
+        let userID = signedInUserID
+        guard userID != previousUserID, let client else { return }
+        if let userID {
+            Task { await sync.activate(userID: userID, remote: SupabaseSyncRemote(client: client)) }
+        } else {
+            sync.deactivate()
+        }
+    }
+
+    private var signedInUserID: UUID? {
+        if case .signedIn(let userID, _) = state { userID } else { nil }
+    }
+
+    // Solo esta sesión: cerrar sesión en el iPhone no debe echar a la cuenta de otros dispositivos.
+    private func signOutLocally() async {
+        do {
+            try await client?.auth.signOut(scope: .local)
+        } catch {
+            // El SDK borra la sesión guardada antes de avisar al servidor: aunque falle la red, se sale.
+            Log.auth.error("Fallo al avisar al servidor del cierre de sesión: \(error.localizedDescription)")
+        }
+    }
+
+    private func requireClient() throws -> SupabaseClient {
+        guard let client else { throw AccountError.notConfigured }
+        return client
+    }
+
+    private static func normalized(_ email: String) -> String {
+        email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    }
+}
+
+enum AccountError: Error {
+    case notConfigured
+    case emailConfirmationRequired
+}

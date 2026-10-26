@@ -4,6 +4,7 @@ import SwiftData
 struct ExpenseListView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppRouter.self) private var router
+    @Environment(SyncCoordinator.self) private var sync
 
     @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date, order: .reverse)
     private var activeExpenses: [Expense]
@@ -46,6 +47,7 @@ struct ExpenseListView: View {
                         )
                     }
                     .listStyle(.plain)
+                    .refreshable { await sync.syncNow() }
 
                     addButton
                 }

@@ -20,6 +20,16 @@ final class ExpenseCategory {
         set { storedColorName = newValue?.rawValue }
     }
 
+    // Contabilidad de la sincronización, como en Expense. Con valor por defecto o opcional para la
+    // migración ligera; una categoría anterior a estos campos cuenta como pendiente de subir.
+    var localLastModified: Date = Date.distantPast
+    private var storedSyncStatus: SyncStatus?
+
+    var syncStatus: SyncStatus {
+        get { storedSyncStatus ?? .pending }
+        set { storedSyncStatus = newValue }
+    }
+
     @Relationship(deleteRule: .nullify, inverse: \Expense.category)
     var expenses: [Expense] = []
 
@@ -37,6 +47,8 @@ final class ExpenseCategory {
         self.sortOrder = sortOrder
         self.isDefault = isDefault
         self.storedColorName = color?.rawValue
+        self.localLastModified = .now
+        self.storedSyncStatus = .pending
     }
 }
 

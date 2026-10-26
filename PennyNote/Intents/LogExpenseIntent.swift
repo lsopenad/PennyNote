@@ -32,6 +32,9 @@ struct LogExpenseIntent: AppIntent {
 
         // Nunca Decimal(double) directo: se convierte vía texto para evitar artefactos binarios.
         let amountDecimal = Decimal(string: String(amount)) ?? Decimal(amount)
+        guard ExpenseLimits.isValidAmount(amountDecimal) else {
+            throw LogExpenseError.invalidAmount
+        }
 
         ExpenseRepository.addExpense(
             amount: amountDecimal,
@@ -42,5 +45,15 @@ struct LogExpenseIntent: AppIntent {
         )
 
         return .result()
+    }
+}
+
+enum LogExpenseError: Error, CustomLocalizedStringResourceConvertible {
+    case invalidAmount
+
+    var localizedStringResource: LocalizedStringResource {
+        switch self {
+        case .invalidAmount: "La cantidad tiene que ser mayor que 0."
+        }
     }
 }

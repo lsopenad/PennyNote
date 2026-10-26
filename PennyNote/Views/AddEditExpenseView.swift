@@ -29,7 +29,7 @@ struct AddEditExpenseView: View {
 
     private var canSave: Bool {
         guard let amount = parsedAmount else { return false }
-        return amount > 0
+        return ExpenseLimits.isValidAmount(amount)
     }
 
     var body: some View {

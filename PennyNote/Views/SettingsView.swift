@@ -8,6 +8,8 @@ struct SettingsView: View {
                     CategoryManagementView()
                 }
             }
+
+            AccountSettingsSections()
         }
         .navigationTitle("Ajustes")
     }
@@ -17,4 +19,6 @@ struct SettingsView: View {
     NavigationStack {
         SettingsView()
     }
+    .environment(AccountSession(client: nil))
+    .environment(SyncCoordinator.shared)
 }

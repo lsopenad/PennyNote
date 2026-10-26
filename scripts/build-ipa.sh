@@ -15,6 +15,12 @@ EXPORT_PATH="$BUILD_DIR/export"
 APP_ENTITLEMENTS="Generated/PennyNote.entitlements"
 WIDGET_ENTITLEMENTS="Generated/PennyNoteWidgetExtension.entitlements"
 
+# Sin la configuración de Supabase la app compila, pero solo muestra un aviso: no se publica así.
+if [ ! -f Config/Supabase.xcconfig ]; then
+  echo "Falta Config/Supabase.xcconfig (copia Config/Supabase.example.xcconfig y rellénalo). Ver docs/DEVELOPMENT.md." >&2
+  exit 1
+fi
+
 echo "==> Regenerando el proyecto Xcode con xcodegen"
 xcodegen generate
 

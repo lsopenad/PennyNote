@@ -63,9 +63,9 @@ extension MonthSpending: Codable {
     }
 }
 
-// Los importes cruzan el App Group como texto: JSONDecoder lee los Decimal pasando por Double y
-// puede perder precisión (0.1 volvería como 0.1000000000000000512).
-private struct DecimalText: Codable {
+// Los importes cruzan el App Group (y la red, en la sincronización) como texto: JSONDecoder lee los
+// Decimal pasando por Double y puede perder precisión (0.1 volvería como 0.1000000000000000512).
+struct DecimalText: Codable {
     let value: Decimal
 
     init(_ value: Decimal) {
@@ -142,6 +142,12 @@ enum WidgetSnapshotStore {
         }
         // Siempre recarga: comparar para "ahorrar" recargas no compensa el riesgo de que una
         // comparación falle y el widget se quede pillado con un valor viejo.
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
+    // Al cerrar sesión: el widget vuelve a mostrar el mes vacío.
+    static func clear() {
+        AppGroupConstants.sharedDefaults.removeObject(forKey: AppGroupConstants.Keys.widgetSnapshot)
         WidgetCenter.shared.reloadAllTimelines()
     }
 

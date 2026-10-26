@@ -21,15 +21,13 @@ final class Expense {
     }
     var category: ExpenseCategory?
 
-    // Se rellena al crear el gasto pero aún no se lee en ningún sitio.
     var createdAt: Date
-    // Contabilidad de sincronización. Sin servidor no se usa, pero se conserva para la sync con
-    // Supabase: localLastModified será la base del last-write-wins y syncStatus marca lo pendiente
-    // de subir. Quitarlos ahora obligaría a otra migración al volver a añadirlos.
+    // Contabilidad de la sincronización con Supabase: localLastModified decide qué versión gana
+    // (last-write-wins) y syncStatus marca lo pendiente de subir.
     var localLastModified: Date
     var syncStatus: SyncStatus
 
-    // Borrado lógico: el gasto se oculta pero se conserva para poder propagar el borrado al servidor.
+    // Borrado lógico: el gasto se oculta pero se conserva hasta que el borrado llega al servidor.
     // No puede llamarse isDeleted: ese nombre es de PersistentModel, y SwiftData lo restablece al
     // guardar (un gasto borrado volvía a false). originalName mantiene la columna que ya hay en disco.
     @Attribute(originalName: "isDeleted") var isSoftDeleted: Bool

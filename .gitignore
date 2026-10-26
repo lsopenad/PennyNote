@@ -16,3 +16,6 @@ DerivedData/
 
 # Artefactos de release (.xcarchive / .ipa generados por scripts/build-ipa.sh)
 /build/
+
+# Configuración local de Supabase (URL y anon key del proyecto). Plantilla: Config/Supabase.example.xcconfig
+/Config/Supabase.xcconfig

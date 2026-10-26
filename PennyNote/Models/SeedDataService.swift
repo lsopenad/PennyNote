@@ -18,6 +18,7 @@ enum SeedDataService {
         (fallbackCategoryName, "ellipsis.circle.fill"),
     ]
 
+    // Lo llama SyncEngine tras bajar los datos de la cuenta: sin categorías es una cuenta nueva.
     static func seedIfNeeded(context: ModelContext) {
         let descriptor = FetchDescriptor<ExpenseCategory>()
         let existingCount: Int
@@ -54,6 +55,7 @@ enum SeedDataService {
         for category in uncolored {
             let color = CategoryColor.nextAvailable(excluding: usedColors)
             category.color = color
+            category.markPendingSync()
             usedColors.append(color)
         }
         context.saveOrLog(failureMessage: "Fallo al guardar los colores asignados a las categorías")

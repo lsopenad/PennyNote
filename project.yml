@@ -5,6 +5,11 @@ options:
     iOS: "18.0"
   createIntermediateGroups: true
 
+packages:
+  Supabase:
+    url: https://github.com/supabase/supabase-swift
+    from: "2.55.0"
+
 targets:
   PennyNote:
     type: application
@@ -24,11 +29,17 @@ targets:
           - CFBundleURLSchemes:
               - pennynote
             CFBundleURLName: com.pennynote.app
+        # Vienen de Config/Supabase.xcconfig (ver Config/App.xcconfig); vacíos si no existe.
+        SupabaseURL: $(SUPABASE_URL)
+        SupabaseAnonKey: $(SUPABASE_ANON_KEY)
     entitlements:
       path: Generated/PennyNote.entitlements
       properties:
         com.apple.security.application-groups:
           - group.com.pennynote.app
+    configFiles:
+      Debug: Config/App.xcconfig
+      Release: Config/App.xcconfig
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pennynote.app
@@ -43,6 +54,7 @@ targets:
     dependencies:
       - target: PennyNoteWidgetExtension
         embed: true
+      - package: Supabase
 
   PennyNoteWidgetExtension:
     type: app-extension

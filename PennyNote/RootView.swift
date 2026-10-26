@@ -3,19 +3,45 @@ import SwiftData
 
 struct RootView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AccountSession.self) private var session
     @State private var router = AppRouter()
 
     var body: some View {
+        content
+            .task {
+                LegacyNotionCleanup.runIfNeeded()
+                SeedDataService.assignMissingColors(context: modelContext)
+                MonthlyTotalCalculator.refreshWidgetSnapshot(in: modelContext)
+            }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch session.state {
+        case .unconfigured:
+            ContentUnavailableView(
+                "Falta configurar el servidor",
+                systemImage: "exclamationmark.icloud",
+                description: Text("Esta compilación no incluye la configuración de Supabase (Config/Supabase.xcconfig).")
+            )
+        case .loading:
+            ProgressView()
+        case .signedOut, .signedIn:
+            // Una sola rama para el login: al verificar el código de recuperación ya hay sesión y la
+            // pantalla debe seguir siendo la misma hasta poner la contraseña nueva.
+            if session.state == .signedOut || session.isRecoveringPassword {
+                AuthView()
+            } else {
+                mainContent
+            }
+        }
+    }
+
+    private var mainContent: some View {
         ExpenseListView()
             .environment(router)
             .sheet(isPresented: routerAddBinding) {
                 AddEditExpenseView(expense: router.expenseToEdit)
-            }
-            .task {
-                LegacyNotionCleanup.runIfNeeded()
-                SeedDataService.seedIfNeeded(context: modelContext)
-                SeedDataService.assignMissingColors(context: modelContext)
-                MonthlyTotalCalculator.refreshWidgetSnapshot(in: modelContext)
             }
             .onOpenURL { url in
                 DeepLinkHandler.handle(url, router: router)

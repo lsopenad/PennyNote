@@ -1,0 +1,4 @@
+// Ajustes de build comunes de la app. Incluye la configuración de Supabase, que no se versiona:
+// copia Supabase.example.xcconfig como Supabase.xcconfig y rellénalo con los datos de tu proyecto.
+// El "?" hace la inclusión opcional para que el proyecto compile sin él (la app avisará al abrirse).
+#include? "Supabase.xcconfig"

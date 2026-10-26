@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 // Único punto de escritura de la app (Views y LogExpenseIntent): evita duplicar en cada sitio
-// la lógica de "guardar + marcar pending + recalcular el widget".
+// la lógica de "guardar + marcar pendiente de subir + recalcular el widget + sincronizar".
 @MainActor
 enum ExpenseRepository {
     static func addExpense(
@@ -13,7 +13,13 @@ enum ExpenseRepository {
         category: ExpenseCategory?,
         context: ModelContext
     ) {
-        let expense = Expense(amount: amount, date: date, title: title, paymentMethod: paymentMethod, category: category)
+        let expense = Expense(
+            amount: amount,
+            date: date,
+            title: ExpenseLimits.clampedTitle(title),
+            paymentMethod: paymentMethod,
+            category: category
+        )
         context.insert(expense)
         afterMutation(context: context)
     }
@@ -29,16 +35,16 @@ enum ExpenseRepository {
     ) {
         expense.amount = amount
         expense.date = date
-        expense.title = title
+        expense.title = ExpenseLimits.clampedTitle(title)
         expense.paymentMethod = paymentMethod
         expense.category = category
-        markPending(expense)
+        expense.markPendingSync()
         afterMutation(context: context)
     }
 
     static func deleteExpense(_ expense: Expense, context: ModelContext) {
         expense.isSoftDeleted = true
-        markPending(expense)
+        expense.markPendingSync()
         afterMutation(context: context)
     }
 
@@ -50,9 +56,15 @@ enum ExpenseRepository {
         )
         let nextOrder = (existing.map(\.sortOrder).max() ?? -1) + 1
         let color = CategoryColor.nextAvailable(excluding: existing.compactMap(\.color))
-        let category = ExpenseCategory(name: name, symbolName: symbolName, sortOrder: nextOrder, color: color)
+        let category = ExpenseCategory(
+            name: ExpenseLimits.clampedCategoryName(name),
+            symbolName: symbolName,
+            sortOrder: nextOrder,
+            color: color
+        )
         context.insert(category)
         context.saveOrLog(failureMessage: "Fallo al guardar la nueva categoría")
+        SyncCoordinator.shared.requestSync()
         return category
     }
 
@@ -70,28 +82,28 @@ enum ExpenseRepository {
         let fallback = preferredFallback ?? all.first { $0 !== category }
         for expense in category.expenses {
             expense.category = fallback
-            markPending(expense)
+            expense.markPendingSync()
         }
+        // La categoría desaparece de SwiftData ya; su borrado queda apuntado para subirlo.
+        category.localLastModified = .now
+        SyncStateStore.standard.addCategoryTombstone(RemoteCategory(category, isDeleted: true))
         context.delete(category)
-        context.saveOrLog(failureMessage: "Fallo al guardar tras borrar una categoría")
         // Los gastos han cambiado de categoría: el widget muestra las categorías principales.
-        MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
+        afterMutation(context: context)
         return true
     }
 
-    // El color no marca nada como pendiente: es un dato de la categoría, no de sus gastos.
+    // El color marca como pendiente la categoría, no sus gastos.
     static func setColor(_ color: CategoryColor, for category: ExpenseCategory, context: ModelContext) {
         category.color = color
-        context.saveOrLog(failureMessage: "Fallo al guardar el color de la categoría")
-        MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
+        category.markPendingSync()
+        afterMutation(context: context)
     }
 
-    private static func markPending(_ expense: Expense) {
-        expense.localLastModified = .now
-        expense.syncStatus = .pending
-    }
-
+    // Guarda en el acto: un contexto creado a mano (LogExpenseIntent) no tiene autoguardado.
     private static func afterMutation(context: ModelContext) {
+        context.saveOrLog(failureMessage: "Fallo al guardar un cambio")
         MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
+        SyncCoordinator.shared.requestSync()
     }
 }

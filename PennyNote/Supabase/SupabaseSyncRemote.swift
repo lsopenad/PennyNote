@@ -1,0 +1,72 @@
+import Foundation
+import Supabase
+
+// SyncRemote contra las tablas public.categories y public.expenses. RLS limita cada consulta a las
+// filas del usuario de la sesión, así que no hace falta filtrar por user_id.
+struct SupabaseSyncRemote: SyncRemote {
+    // El máximo de filas que devuelve PostgREST por petición en Supabase (max_rows).
+    static let pageSize = 1000
+
+    private static let categoryColumns = "id,name,symbol_name,sort_order,color_name,is_deleted,updated_at,server_updated_at"
+    // amount::text: el importe llega como texto y no pierde precisión al decodificarlo.
+    private static let expenseColumns = "id,amount::text,date,title,payment_method,category_id,is_deleted,created_at,updated_at,server_updated_at"
+
+    let client: SupabaseClient
+
+    func upsertCategories(_ categories: [RemoteCategory]) async throws {
+        try await client.from("categories")
+            .upsert(categories, onConflict: "id", returning: .minimal)
+            .execute()
+    }
+
+    func upsertExpenses(_ expenses: [RemoteExpense]) async throws {
+        try await client.from("expenses")
+            .upsert(expenses, onConflict: "id", returning: .minimal)
+            .execute()
+    }
+
+    func fetchCategories(changedSince since: Date?) async throws -> [RemoteCategory] {
+        try await fetchAll(table: "categories", columns: Self.categoryColumns, changedSince: since)
+    }
+
+    func fetchExpenses(changedSince since: Date?) async throws -> [RemoteExpense] {
+        try await fetchAll(table: "expenses", columns: Self.expenseColumns, changedSince: since)
+    }
+
+    // Pide página a página, cada una desde el server_updated_at de la última fila recibida (no por
+    // offset: si otro dispositivo cambia una fila ya leída, las demás se desplazarían y una se perdería).
+    // Se empieza 1 ms antes porque las fechas viajan con milisegundos y el servidor guarda
+    // microsegundos; las filas repetidas se descartan.
+    private func fetchAll<Row: Decodable & SyncRow>(table: String, columns: String, changedSince since: Date?) async throws -> [Row] {
+        var rowsByID: [UUID: Row] = [:]
+        var start = since
+        while true {
+            var query = client.from(table).select(columns)
+            if let start {
+                query = query.gte("server_updated_at", value: start)
+            }
+            let page: [Row] = try await query
+                .order("server_updated_at")
+                .order("id")
+                .limit(Self.pageSize)
+                .execute()
+                .value
+            page.forEach { rowsByID[$0.id] = $0 }
+
+            guard page.count == Self.pageSize, let last = page.last?.serverUpdatedAt else {
+                return rowsByID.values.sorted { ($0.serverUpdatedAt ?? .distantPast) < ($1.serverUpdatedAt ?? .distantPast) }
+            }
+            let next = last.addingTimeInterval(-0.001)
+            // Una página entera con la misma fecha no deja avanzar. No debería pasar: se sube en lotes
+            // de SyncEngine.pushBatchSize, menos que una página.
+            guard next > (start ?? .distantPast) else {
+                throw SyncPagingError.pageWithoutProgress(table: table)
+            }
+            start = next
+        }
+    }
+}
+
+enum SyncPagingError: Error {
+    case pageWithoutProgress(table: String)
+}
