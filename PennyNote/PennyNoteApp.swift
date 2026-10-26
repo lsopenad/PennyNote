@@ -18,7 +18,7 @@ struct PennyNoteApp: App {
         .modelContainer(modelContainer)
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
-                // Para que el widget no se quede con datos de otra versión de la app o de un día anterior.
+                // Al abrir la app y al volver a ella, para que el widget no se quede con datos de un día anterior.
                 WidgetSnapshotRefresher.refresh(in: modelContainer.mainContext)
                 // Trae lo cambiado desde otros dispositivos y sube lo que haya quedado pendiente.
                 sync.requestSync()

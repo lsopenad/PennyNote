@@ -2,19 +2,10 @@ import SwiftUI
 import SwiftData
 
 struct RootView: View {
-    @Environment(\.modelContext) private var modelContext
     @Environment(AccountSession.self) private var session
     @State private var router = AppRouter()
 
     var body: some View {
-        content
-            .task {
-                WidgetSnapshotRefresher.refresh(in: modelContext)
-            }
-    }
-
-    @ViewBuilder
-    private var content: some View {
         switch session.state {
         case .unconfigured:
             ContentUnavailableView(
