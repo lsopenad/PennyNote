@@ -23,16 +23,13 @@ final class Expense {
 
     // Se rellena al crear el gasto pero aún no se lee en ningún sitio.
     var createdAt: Date
-    // Se actualiza en cada mutación local; es la base de la comparación last-write-wins.
+    // Contabilidad de sincronización. Sin servidor no se usa, pero se conserva para la sync con
+    // Supabase: localLastModified será la base del last-write-wins y syncStatus marca lo pendiente
+    // de subir. Quitarlos ahora obligaría a otra migración al volver a añadirlos.
     var localLastModified: Date
-
-    // nil hasta que el primer push crea la página en Notion.
-    var notionPageID: String?
-    // Se guarda en cada push/pull pero la resolución de conflictos usa el lastEditedTime remoto recibido.
-    var notionLastEditedTime: Date?
     var syncStatus: SyncStatus
 
-    // Borrado lógico: se marca así hasta que el push archive la página en Notion.
+    // Borrado lógico: el gasto se oculta pero se conserva para poder propagar el borrado al servidor.
     var isDeleted: Bool
 
     init(
@@ -51,8 +48,6 @@ final class Expense {
         self.category = category
         self.createdAt = .now
         self.localLastModified = .now
-        self.notionPageID = nil
-        self.notionLastEditedTime = nil
         self.syncStatus = .pending
         self.isDeleted = false
     }

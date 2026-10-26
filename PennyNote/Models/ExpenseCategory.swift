@@ -9,13 +9,10 @@ final class ExpenseCategory {
     var sortOrder: Int
     // Marca las categorías creadas por el seed; ahora mismo no se lee.
     var isDefault: Bool
-    // Reservado para mapear la opción "select" de Notion por ID; hoy nunca se rellena y el pull
-    // empareja las categorías por nombre. Se conserva para no alterar el esquema.
-    var notionSelectOptionID: String?
 
     // Opcional en disco: las categorías anteriores a este campo quedan a NULL al migrar hasta que
     // SeedDataService.assignMissingColors les da uno. Se guarda el rawValue y no el enum para que un
-    // valor desconocido no impida leer la categoría. Solo local: no se sincroniza con Notion.
+    // valor desconocido no impida leer la categoría.
     private var storedColorName: String?
 
     var color: CategoryColor? {
@@ -32,7 +29,6 @@ final class ExpenseCategory {
         symbolName: String,
         sortOrder: Int,
         isDefault: Bool = false,
-        notionSelectOptionID: String? = nil,
         color: CategoryColor? = nil
     ) {
         self.id = id
@@ -40,7 +36,6 @@ final class ExpenseCategory {
         self.symbolName = symbolName
         self.sortOrder = sortOrder
         self.isDefault = isDefault
-        self.notionSelectOptionID = notionSelectOptionID
         self.storedColorName = color?.rawValue
     }
 }

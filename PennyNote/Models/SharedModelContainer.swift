@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 import os
 
-// Contenedor único compartido por la app, el SyncEngine y LogExpenseIntent (Atajos), para que
+// Contenedor único compartido por la app y LogExpenseIntent (Atajos), para que
 // todos lean/escriban exactamente el mismo almacén SwiftData. Vive en el App Group para que
 // cualquier otro proceso que se añada (p. ej. una extensión) apunte al mismo store.
 enum SharedModelContainer {
