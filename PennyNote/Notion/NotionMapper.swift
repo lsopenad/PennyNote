@@ -140,11 +140,14 @@ enum NotionMapper {
         dateOnlyFormatter.string(from: date)
     }
 
+    // Zona horaria local, no UTC: la fecha de un gasto es un día del calendario del usuario. En UTC,
+    // un gasto apuntado poco después de medianoche en España llegaba a Notion con el día anterior.
     private static let dateOnlyFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.timeZone = TimeZone(identifier: "UTC")
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = .current
         return formatter
     }()
 }

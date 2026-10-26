@@ -23,6 +23,18 @@ struct NotionMapperTests {
         #expect(nested(properties, NotionPropertyName.category, "select", "name") as? String == "Comida")
     }
 
+    @Test func propertiesKeepLocalDayJustAfterMidnight() throws {
+        let date = try #require(DateComponents(calendar: .current, year: 2026, month: 3, day: 15, hour: 0, minute: 30).date)
+        let properties = NotionMapper.properties(amount: 1, date: date, title: "x", paymentMethod: .card, categoryName: nil)
+        #expect(nested(properties, NotionPropertyName.date, "date", "start") as? String == "2026-03-15")
+    }
+
+    @Test func parsedDateFallsOnTheSameLocalDay() throws {
+        let page = try #require(NotionMapper.parsePage(pageJSON()))
+        let components = Calendar.current.dateComponents([.year, .month, .day, .hour], from: page.date)
+        #expect(components == DateComponents(year: 2026, month: 3, day: 14, hour: 0))
+    }
+
     @Test func propertiesUseFallbackTitleWhenEmpty() {
         let properties = NotionMapper.properties(amount: 1, date: .now, title: "", paymentMethod: .card, categoryName: nil)
         #expect(titleContent(in: properties) == "Gasto")
