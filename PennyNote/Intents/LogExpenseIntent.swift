@@ -22,6 +22,11 @@ struct LogExpenseIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
+        // Sin sesión no hay datos locales: un gasto apuntado así no tendría cuenta a la que subirse.
+        guard SyncStateStore.standard.ownerUserID != nil else {
+            throw LogExpenseError.signedOut
+        }
+
         let context = ModelContext(SharedModelContainer.container)
         let matchedCategory = context.category(
             withID: category.id,
@@ -48,10 +53,12 @@ struct LogExpenseIntent: AppIntent {
 
 enum LogExpenseError: Error, CustomLocalizedStringResourceConvertible {
     case invalidAmount
+    case signedOut
 
     var localizedStringResource: LocalizedStringResource {
         switch self {
         case .invalidAmount: "La cantidad tiene que ser mayor que 0."
+        case .signedOut: "Inicia sesión en PennyNote para registrar gastos."
         }
     }
 }

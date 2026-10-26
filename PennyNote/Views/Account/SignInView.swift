@@ -1,10 +1,7 @@
 import SwiftUI
-import SwiftData
 
 struct SignInView: View {
     @Environment(AccountSession.self) private var session
-    // Gastos de antes del login (versiones sin cuenta): se avisa de que se subirán.
-    @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }) private var localExpenses: [Expense]
 
     @State private var email = ""
     @State private var password = ""
@@ -27,10 +24,6 @@ struct SignInView: View {
                     .textContentType(.password)
                     .submitLabel(.go)
                     .onSubmit(signIn)
-            } footer: {
-                if !localExpenses.isEmpty {
-                    Text("Los gastos que ya tienes en este iPhone se guardarán en tu cuenta al entrar.")
-                }
             }
 
             AuthErrorSection(message: operation.errorMessage)
