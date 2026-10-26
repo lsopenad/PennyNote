@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct SettingsView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @Query(sort: \ExpenseCategory.sortOrder) private var categories: [ExpenseCategory]
 
     @State private var tokenText: String = NotionCredentialsStore.token ?? ""
@@ -16,9 +17,7 @@ struct SettingsView: View {
                 SecureField("Token de integración", text: $tokenText)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .onChange(of: tokenText) { _, newValue in
-                        NotionCredentialsStore.token = newValue.isEmpty ? nil : newValue
-                    }
+                    .onSubmit(saveToken)
 
                 TextField("URL o ID de la página padre", text: $parentPageText)
                     .textInputAutocapitalization(.never)
@@ -58,9 +57,21 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Ajustes")
+        .onDisappear(perform: saveToken)
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase != .active { saveToken() }
+        }
+    }
+
+    // Se guarda al confirmar el campo, al salir de la pantalla o de la app o antes de usarlo, no en cada
+    // pulsación: así no se reescribe el Keychain con cada carácter de un token a medio teclear.
+    private func saveToken() {
+        guard tokenText != (NotionCredentialsStore.token ?? "") else { return }
+        NotionCredentialsStore.token = tokenText
     }
 
     private func testConnection() async {
+        saveToken()
         guard let token = NotionCredentialsStore.token else { return }
         isBusy = true
         defer { isBusy = false }
@@ -73,6 +84,7 @@ struct SettingsView: View {
     }
 
     private func connect() async {
+        saveToken()
         guard let token = NotionCredentialsStore.token,
               let parentPageID = NotionPageIDParser.parse(parentPageText)
         else {
@@ -94,6 +106,7 @@ struct SettingsView: View {
     }
 
     private func sync() async {
+        saveToken()
         isBusy = true
         defer { isBusy = false }
         await SyncEngine.shared.syncNow()
