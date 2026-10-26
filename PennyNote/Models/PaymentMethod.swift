@@ -7,4 +7,13 @@ enum PaymentMethod: String, Codable, CaseIterable, Identifiable {
     case other = "Otro"
 
     var id: String { rawValue }
+
+    var symbolName: String {
+        switch self {
+        case .cash: "banknote"
+        case .card: "creditcard"
+        case .transfer: "arrow.left.arrow.right"
+        case .other: "ellipsis.circle"
+        }
+    }
 }

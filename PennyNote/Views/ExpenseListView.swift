@@ -20,19 +20,20 @@ struct ExpenseListView: View {
         activeExpenses.filter(filter.matches)
     }
 
-    private var monthlyTotal: Decimal {
-        MonthlyTotalCalculator.total(in: modelContext)
-    }
-
     var body: some View {
+        @Bindable var router = router
         ZStack {
-            NavigationStack {
+            NavigationStack(path: $router.navigationPath) {
                 ZStack(alignment: .bottomTrailing) {
                     List {
                         Section {
-                            MonthHeaderView(total: monthlyTotal)
-                                .listRowInsets(EdgeInsets())
-                                .listRowSeparator(.hidden)
+                            Button(action: router.presentStatistics) {
+                                monthHeader
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityHint("Abre las estadísticas")
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(.hidden)
                         }
 
                         DayGroupedExpenseSections(
@@ -49,6 +50,12 @@ struct ExpenseListView: View {
                     addButton
                 }
                 .navigationTitle("PennyNote")
+                .navigationDestination(for: AppRoute.self) { route in
+                    switch route {
+                    case .statistics:
+                        StatisticsView()
+                    }
+                }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
@@ -93,6 +100,17 @@ struct ExpenseListView: View {
                 .zIndex(1)
             }
         }
+    }
+
+    // La cabecera ignora el filtro de la lista: siempre muestra el gasto total del mes.
+    private var monthHeader: some View {
+        let now = Date.now
+        let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: now) ?? now
+        return MonthHeaderView(
+            current: SpendingStatistics.monthSpending(activeExpenses, monthOf: now),
+            previous: SpendingStatistics.monthSpending(activeExpenses, monthOf: previousMonth),
+            today: Calendar.current.component(.day, from: now)
+        )
     }
 
     private var addButton: some View {

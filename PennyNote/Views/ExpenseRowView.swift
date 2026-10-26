@@ -14,7 +14,7 @@ struct ExpenseRowView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: expense.category?.symbolName ?? "questionmark.circle")
+            Image(systemName: expense.category?.symbolName ?? ExpenseCategory.uncategorizedSymbolName)
                 .font(.title3)
                 .foregroundStyle(.tint)
                 .frame(width: 32, height: 32)
