@@ -101,7 +101,7 @@ struct WidgetDisplay: Equatable {
     }
 
     init(snapshot: WidgetSnapshot?, at date: Date, calendar: Calendar = .current) {
-        let monthStart = calendar.dateInterval(of: .month, for: date)?.start ?? date
+        let monthStart = calendar.startOfMonth(for: date)
         day = calendar.component(.day, from: date)
 
         guard let snapshot else {

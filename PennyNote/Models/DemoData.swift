@@ -52,7 +52,7 @@ enum DemoData {
         let now = Date.now
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: now)
-        guard let firstMonth = calendar.date(byAdding: .month, value: -(monthCount - 1), to: SpendingStatistics.monthStart(of: now)) else { return }
+        guard let firstMonth = calendar.date(byAdding: .month, value: -(monthCount - 1), to: calendar.startOfMonth(for: now)) else { return }
 
         func addExpense(_ category: Int, _ title: String, _ cents: ClosedRange<Int>, on date: Date, payment: PaymentMethod) {
             guard date <= now else { return }

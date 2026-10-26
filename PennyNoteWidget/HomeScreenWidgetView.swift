@@ -94,7 +94,7 @@ struct HomeScreenWidgetView: View {
     }
 
     private func categoryRow(_ category: WidgetSnapshot.CategoryTotal) -> some View {
-        let color = category.colorName.flatMap(CategoryColor.init(rawValue:))?.color ?? CategoryColor.neutral
+        let color = CategoryColor.color(named: category.colorName)
         return HStack(spacing: 6) {
             Image(systemName: category.symbolName)
                 .font(.caption2)

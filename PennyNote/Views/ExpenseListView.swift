@@ -115,7 +115,7 @@ struct ExpenseListView: View {
     // La cabecera ignora el filtro de la lista: siempre muestra el gasto total del mes.
     private var monthHeader: some View {
         let now = Date.now
-        let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: now) ?? now
+        let previousMonth = Calendar.current.startOfPreviousMonth(for: now) ?? now
         return MonthHeaderView(
             current: SpendingStatistics.monthSpending(activeExpenses, monthOf: now),
             previous: SpendingStatistics.monthSpending(activeExpenses, monthOf: previousMonth),

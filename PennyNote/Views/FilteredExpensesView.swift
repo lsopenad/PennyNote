@@ -33,7 +33,7 @@ struct FilteredExpensesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .status) {
-                Text("\(DisplayFormat.monthAndYear(month)) · \(DisplayFormat.currency(expenses.reduce(.zero) { $0 + $1.amount }))")
+                Text("\(DisplayFormat.monthAndYear(month)) · \(DisplayFormat.currency(expenses.sum(of: \.amount)))")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }

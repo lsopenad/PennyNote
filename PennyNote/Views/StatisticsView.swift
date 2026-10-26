@@ -5,12 +5,12 @@ struct StatisticsView: View {
     @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date)
     private var activeExpenses: [Expense]
 
-    @State private var selectedMonth = SpendingStatistics.monthStart(of: .now)
+    @State private var selectedMonth = Calendar.current.startOfMonth(for: .now)
 
     private static let evolutionMonthCount = 6
 
     private var isCurrentMonth: Bool {
-        selectedMonth >= SpendingStatistics.monthStart(of: .now)
+        selectedMonth >= Calendar.current.startOfMonth(for: .now)
     }
 
     var body: some View {
@@ -105,16 +105,16 @@ struct StatisticsView: View {
 
     private func categoryRows(for monthExpenses: [Expense]) -> some View {
         let totals = SpendingStatistics.categoryTotals(monthExpenses)
-        let monthTotal = totals.reduce(Decimal.zero) { $0 + $1.total }
+        let monthTotal = totals.sum(of: \.total)
         return ForEach(totals) { item in
-            let name = item.category?.name ?? ExpenseCategory.uncategorizedLabel
+            let name = item.category.displayName
             NavigationLink {
                 FilteredExpensesView(title: name, month: selectedMonth, filter: filter(for: item.category))
             } label: {
                 SpendingShareRow(
                     title: name,
-                    symbolName: item.category?.symbolName ?? ExpenseCategory.uncategorizedSymbolName,
-                    color: item.category?.displayColor ?? CategoryColor.neutral,
+                    symbolName: item.category.displaySymbolName,
+                    color: item.category.displayColor,
                     total: item.total,
                     fraction: fraction(of: item.total, in: monthTotal)
                 )
@@ -124,7 +124,7 @@ struct StatisticsView: View {
 
     private func paymentMethodRows(for monthExpenses: [Expense]) -> some View {
         let totals = SpendingStatistics.paymentMethodTotals(monthExpenses)
-        let monthTotal = totals.reduce(Decimal.zero) { $0 + $1.total }
+        let monthTotal = totals.sum(of: \.total)
         return ForEach(totals) { item in
             NavigationLink {
                 FilteredExpensesView(
@@ -156,7 +156,7 @@ struct StatisticsView: View {
     private func moveMonth(by months: Int) {
         guard let month = Calendar.current.date(byAdding: .month, value: months, to: selectedMonth) else { return }
         withAnimation(.snappy) {
-            selectedMonth = min(month, SpendingStatistics.monthStart(of: .now))
+            selectedMonth = min(month, Calendar.current.startOfMonth(for: .now))
         }
     }
 }

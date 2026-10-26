@@ -103,7 +103,7 @@ enum ExpenseRepository {
     // Guarda en el acto: un contexto creado a mano (LogExpenseIntent) no tiene autoguardado.
     private static func afterMutation(context: ModelContext) {
         context.saveOrLog(failureMessage: "Fallo al guardar un cambio")
-        MonthlyTotalCalculator.refreshWidgetSnapshot(in: context)
+        WidgetSnapshotRefresher.refresh(in: context)
         SyncCoordinator.shared.requestSync()
     }
 }

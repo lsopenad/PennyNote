@@ -9,8 +9,8 @@ struct MonthlyTotalProvider: TimelineProvider {
 
     func placeholder(in context: Context) -> MonthlyTotalEntry {
         let calendar = Calendar.current
-        let monthStart = calendar.dateInterval(of: .month, for: .now)?.start ?? .now
-        let previousStart = calendar.date(byAdding: .month, value: -1, to: monthStart) ?? monthStart
+        let monthStart = calendar.startOfMonth(for: .now)
+        let previousStart = calendar.startOfPreviousMonth(for: monthStart) ?? monthStart
         let sample: [Decimal] = [12, 0, 30, 4, 18, 0, 55, 8, 20, 0, 3, 14, 6, 0, 9, 22, 5, 0, 11, 7, 0, 16, 4, 0, 25, 3, 8, 0, 12, 6, 2]
         let snapshot = WidgetSnapshot(
             current: MonthSpending(monthStart: monthStart, dailyTotals: Array(sample.prefix(MonthSpending.empty(monthStart: monthStart).dailyTotals.count))),

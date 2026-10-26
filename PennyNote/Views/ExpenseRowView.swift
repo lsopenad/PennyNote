@@ -4,7 +4,7 @@ struct ExpenseRowView: View {
     let expense: Expense
 
     private var categoryName: String {
-        expense.category?.name ?? ExpenseCategory.uncategorizedLabel
+        expense.category.displayName
     }
 
     // Sin título, la categoría ocupa su lugar y no se repite como subtítulo.
@@ -14,7 +14,7 @@ struct ExpenseRowView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: expense.category?.symbolName ?? ExpenseCategory.uncategorizedSymbolName)
+            Image(systemName: expense.category.displaySymbolName)
                 .font(.title3)
                 .foregroundStyle(.tint)
                 .frame(width: 32, height: 32)

@@ -19,7 +19,7 @@ struct PennyNoteApp: App {
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 // Para que el widget no se quede con datos de otra versión de la app o de un día anterior.
-                MonthlyTotalCalculator.refreshWidgetSnapshot(in: modelContainer.mainContext)
+                WidgetSnapshotRefresher.refresh(in: modelContainer.mainContext)
                 // Trae lo cambiado desde otros dispositivos y sube lo que haya quedado pendiente.
                 sync.requestSync()
             }

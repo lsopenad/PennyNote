@@ -53,3 +53,18 @@ extension ExpenseCategory {
         color?.color ?? CategoryColor.neutral
     }
 }
+
+// Cómo se muestra la categoría de un gasto, con «Sin categoría» cuando no tiene.
+extension Optional where Wrapped == ExpenseCategory {
+    var displayName: String {
+        self?.name ?? ExpenseCategory.uncategorizedLabel
+    }
+
+    var displaySymbolName: String {
+        self?.symbolName ?? ExpenseCategory.uncategorizedSymbolName
+    }
+
+    var displayColor: Color {
+        self?.displayColor ?? CategoryColor.neutral
+    }
+}

@@ -116,7 +116,7 @@ final class SyncCoordinator {
         defer {
             isSyncing = false
             // Lo bajado del servidor puede cambiar el gasto del mes.
-            MonthlyTotalCalculator.refreshWidgetSnapshot(in: container.mainContext)
+            WidgetSnapshotRefresher.refresh(in: container.mainContext)
         }
         do {
             pendingChangeCount = try await engine.sync()

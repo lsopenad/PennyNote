@@ -1,14 +1,14 @@
 import Foundation
 import SwiftData
 
-enum MonthlyTotalCalculator {
-    // Recalcula el gasto del mes en curso y del anterior y lo publica en el App Group para los widgets.
-    static func refreshWidgetSnapshot(in context: ModelContext) {
+// Publica en el App Group lo que muestran los widgets, a partir de los gastos guardados.
+enum WidgetSnapshotRefresher {
+    // Recalcula el gasto del mes en curso y del anterior y lo publica para los widgets.
+    static func refresh(in context: ModelContext) {
         let now = Date.now
         let calendar = Calendar.current
-        let currentMonthStart = SpendingStatistics.monthStart(of: now, calendar: calendar)
         guard
-            let previousMonthStart = calendar.date(byAdding: .month, value: -1, to: currentMonthStart),
+            let previousMonthStart = calendar.startOfPreviousMonth(for: now),
             let end = calendar.dateInterval(of: .month, for: now)?.end
         else { return }
 
@@ -24,8 +24,8 @@ enum MonthlyTotalCalculator {
             .prefix(widgetTopCategoryCount)
             .map { item in
                 WidgetSnapshot.CategoryTotal(
-                    name: item.category?.name ?? ExpenseCategory.uncategorizedLabel,
-                    symbolName: item.category?.symbolName ?? ExpenseCategory.uncategorizedSymbolName,
+                    name: item.category.displayName,
+                    symbolName: item.category.displaySymbolName,
                     colorName: item.category?.color?.rawValue,
                     total: item.total
                 )

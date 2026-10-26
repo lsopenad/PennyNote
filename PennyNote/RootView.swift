@@ -9,7 +9,7 @@ struct RootView: View {
     var body: some View {
         content
             .task {
-                MonthlyTotalCalculator.refreshWidgetSnapshot(in: modelContext)
+                WidgetSnapshotRefresher.refresh(in: modelContext)
             }
     }
 

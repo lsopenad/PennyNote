@@ -17,7 +17,7 @@ struct MonthSpending: Equatable {
     }
 
     static func empty(monthStart: Date, calendar: Calendar = .current) -> MonthSpending {
-        let dayCount = calendar.range(of: .day, in: .month, for: monthStart)?.count ?? 31
+        let dayCount = calendar.numberOfDays(inMonthOf: monthStart) ?? 31
         return MonthSpending(monthStart: monthStart, dailyTotals: Array(repeating: .zero, count: dayCount))
     }
 }
@@ -29,6 +29,13 @@ enum SpendingComparison {
         let base = previous.total(throughDay: day)
         guard base > 0 else { return nil }
         return ((current.total(throughDay: day) - base) / base).doubleValue
+    }
+}
+
+extension Sequence {
+    // Suma de importes en Decimal, sin pasar por Double.
+    func sum(of amount: (Element) -> Decimal) -> Decimal {
+        reduce(.zero) { $0 + amount($1) }
     }
 }
 

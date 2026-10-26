@@ -8,7 +8,7 @@ struct MonthlyEvolutionChart: View {
 
     private var average: Double? {
         guard !totals.isEmpty else { return nil }
-        return totals.reduce(Decimal.zero) { $0 + $1.total }.doubleValue / Double(totals.count)
+        return totals.sum(of: \.total).doubleValue / Double(totals.count)
     }
 
     var body: some View {
@@ -62,7 +62,7 @@ struct MonthlyEvolutionChart: View {
         guard let plotFrame = proxy.plotFrame else { return }
         let x = location.x - geometry[plotFrame].origin.x
         guard let date: Date = proxy.value(atX: x) else { return }
-        let month = SpendingStatistics.monthStart(of: date)
+        let month = Calendar.current.startOfMonth(for: date)
         guard totals.contains(where: { $0.monthStart == month }) else { return }
         withAnimation(.snappy) {
             selectedMonth = month

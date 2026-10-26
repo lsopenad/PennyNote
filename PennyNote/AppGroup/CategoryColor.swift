@@ -42,6 +42,11 @@ enum CategoryColor: String, CaseIterable, Identifiable {
     // Color de lo que no tiene categoría (o de una categoría cuyo color no se reconoce).
     static let neutral = Color.gray
 
+    // Color a partir del rawValue guardado; gris si falta o no se reconoce.
+    static func color(named rawValue: String?) -> Color {
+        rawValue.flatMap(CategoryColor.init(rawValue:))?.color ?? neutral
+    }
+
     // Primer color de la paleta que no esté en uso; si están todos, se reparte cíclicamente.
     static func nextAvailable(excluding used: [CategoryColor]) -> CategoryColor {
         allCases.first { !used.contains($0) } ?? allCases[used.count % allCases.count]
