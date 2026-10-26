@@ -175,7 +175,9 @@ actor SyncEngine {
     private func apply(_ remotePage: ParsedNotionPage, category: ExpenseCategory?, to expense: Expense) {
         expense.amount = remotePage.amount
         expense.date = remotePage.date
-        expense.title = remotePage.title
+        // Un título vacío se envía a Notion como fallbackTitle; al volver no debe sustituir al vacío local.
+        let isEchoedFallbackTitle = remotePage.title == NotionMapper.fallbackTitle && expense.title.isEmpty
+        expense.title = isEchoedFallbackTitle ? "" : remotePage.title
         expense.paymentMethod = remotePage.paymentMethod
         expense.category = category
         expense.notionLastEditedTime = remotePage.lastEditedTime
