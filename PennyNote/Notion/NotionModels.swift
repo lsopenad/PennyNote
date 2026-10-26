@@ -10,7 +10,15 @@ struct ParsedNotionPage {
     let title: String
     let paymentMethod: PaymentMethod
     let categoryName: String?
-    let categorySelectID: String?
+}
+
+// Campos de un gasto que se envían a Notion al crear o actualizar su página.
+struct NotionExpenseFields {
+    let amount: Decimal
+    let date: Date
+    let title: String
+    let paymentMethod: PaymentMethod
+    let categoryName: String?
 }
 
 enum NotionPropertyName {
@@ -21,4 +29,16 @@ enum NotionPropertyName {
     static let date = "Fecha"
     static let category = "Categoría"
     static let paymentMethod = "Método de pago"
+}
+
+extension NotionExpenseFields {
+    init(_ expense: Expense) {
+        self.init(
+            amount: expense.amount,
+            date: expense.date,
+            title: expense.title,
+            paymentMethod: expense.paymentMethod,
+            categoryName: expense.category?.name
+        )
+    }
 }

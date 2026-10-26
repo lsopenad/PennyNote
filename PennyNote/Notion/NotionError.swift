@@ -1,7 +1,6 @@
 import Foundation
 
 enum NotionError: Error, LocalizedError {
-    case notConfigured
     case unauthorized
     case notFound
     case rateLimited(retryAfter: TimeInterval)
@@ -12,8 +11,6 @@ enum NotionError: Error, LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .notConfigured:
-            return "Notion no está configurado todavía."
         case .unauthorized:
             return "Token de Notion inválido."
         case .notFound:

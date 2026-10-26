@@ -79,11 +79,7 @@ actor SyncEngine {
                         _ = try await withRateLimitRetry {
                             try await client.updatePage(
                                 pageID: pageID,
-                                amount: expense.amount,
-                                date: expense.date,
-                                title: expense.title,
-                                paymentMethod: expense.paymentMethod,
-                                categoryName: expense.category?.name,
+                                fields: NotionExpenseFields(expense),
                                 archived: true
                             )
                         }
@@ -96,11 +92,7 @@ actor SyncEngine {
                     let page = try await withRateLimitRetry {
                         try await client.updatePage(
                             pageID: pageID,
-                            amount: expense.amount,
-                            date: expense.date,
-                            title: expense.title,
-                            paymentMethod: expense.paymentMethod,
-                            categoryName: expense.category?.name,
+                            fields: NotionExpenseFields(expense),
                             archived: false
                         )
                     }
@@ -110,11 +102,7 @@ actor SyncEngine {
                     let page = try await withRateLimitRetry {
                         try await client.createPage(
                             databaseID: databaseID,
-                            amount: expense.amount,
-                            date: expense.date,
-                            title: expense.title,
-                            paymentMethod: expense.paymentMethod,
-                            categoryName: expense.category?.name
+                            fields: NotionExpenseFields(expense)
                         )
                     }
                     expense.notionPageID = page.id

@@ -1,6 +1,9 @@
 import Foundation
 
 actor NotionClient {
+    // Máximo que admite la API de Notion por página de resultados.
+    private static let queryPageSize = 100
+
     private let token: String
 
     init(token: String) {
@@ -30,39 +33,22 @@ actor NotionClient {
         _ = try await send(request)
     }
 
-    func createPage(
-        databaseID: String,
-        amount: Decimal,
-        date: Date,
-        title: String,
-        paymentMethod: PaymentMethod,
-        categoryName: String?
-    ) async throws -> ParsedNotionPage {
+    func createPage(databaseID: String, fields: NotionExpenseFields) async throws -> ParsedNotionPage {
         let body: [String: Any] = [
             "parent": ["database_id": databaseID],
-            "properties": NotionMapper.properties(amount: amount, date: date, title: title, paymentMethod: paymentMethod, categoryName: categoryName),
+            "properties": NotionMapper.properties(for: fields),
         ]
         let request = try NotionRequestBuilder.request(path: "pages", method: "POST", token: token, body: body)
-        let json = try await send(request)
-        guard let page = NotionMapper.parsePage(json) else { throw NotionError.decoding }
-        return page
+        return try await sendForPage(request)
     }
 
-    func updatePage(
-        pageID: String,
-        amount: Decimal,
-        date: Date,
-        title: String,
-        paymentMethod: PaymentMethod,
-        categoryName: String?,
-        archived: Bool
-    ) async throws -> ParsedNotionPage {
-        var body: [String: Any] = ["archived": archived]
-        body["properties"] = NotionMapper.properties(amount: amount, date: date, title: title, paymentMethod: paymentMethod, categoryName: categoryName)
+    func updatePage(pageID: String, fields: NotionExpenseFields, archived: Bool) async throws -> ParsedNotionPage {
+        let body: [String: Any] = [
+            "archived": archived,
+            "properties": NotionMapper.properties(for: fields),
+        ]
         let request = try NotionRequestBuilder.request(path: "pages/\(pageID)", method: "PATCH", token: token, body: body)
-        let json = try await send(request)
-        guard let page = NotionMapper.parsePage(json) else { throw NotionError.decoding }
-        return page
+        return try await sendForPage(request)
     }
 
     func queryDatabase(
@@ -70,7 +56,7 @@ actor NotionClient {
         editedAfter: Date?,
         cursor: String?
     ) async throws -> (pages: [ParsedNotionPage], nextCursor: String?, hasMore: Bool) {
-        var body: [String: Any] = ["page_size": 100]
+        var body: [String: Any] = ["page_size": Self.queryPageSize]
         if let editedAfter {
             body["filter"] = [
                 "timestamp": "last_edited_time",
@@ -89,6 +75,12 @@ actor NotionClient {
         let hasMore = json["has_more"] as? Bool ?? false
         let nextCursor = json["next_cursor"] as? String
         return (pages, nextCursor, hasMore)
+    }
+
+    private func sendForPage(_ request: URLRequest) async throws -> ParsedNotionPage {
+        let json = try await send(request)
+        guard let page = NotionMapper.parsePage(json) else { throw NotionError.decoding }
+        return page
     }
 
     private func send(_ request: URLRequest) async throws -> [String: Any] {

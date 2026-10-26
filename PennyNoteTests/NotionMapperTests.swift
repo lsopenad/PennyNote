@@ -7,13 +7,7 @@ struct NotionMapperTests {
 
     @Test func propertiesEncodeAllDomainFields() throws {
         let date = try #require(DateComponents(calendar: .current, year: 2026, month: 3, day: 15, hour: 12).date)
-        let properties = NotionMapper.properties(
-            amount: Decimal(string: "19.99")!,
-            date: date,
-            title: "Café",
-            paymentMethod: .cash,
-            categoryName: "Comida"
-        )
+        let properties = NotionMapper.properties(for: NotionExpenseFields(amount: Decimal(string: "19.99")!, date: date, title: "Café", paymentMethod: .cash, categoryName: "Comida"))
 
         #expect(titleContent(in: properties) == "Café")
         #expect(nested(properties, NotionPropertyName.amount, "number") as? Double == 19.99)
@@ -24,7 +18,7 @@ struct NotionMapperTests {
 
     @Test func propertiesKeepLocalDayJustAfterMidnight() throws {
         let date = try #require(DateComponents(calendar: .current, year: 2026, month: 3, day: 15, hour: 0, minute: 30).date)
-        let properties = NotionMapper.properties(amount: 1, date: date, title: "x", paymentMethod: .card, categoryName: nil)
+        let properties = NotionMapper.properties(for: NotionExpenseFields(amount: 1, date: date, title: "x", paymentMethod: .card, categoryName: nil))
         #expect(nested(properties, NotionPropertyName.date, "date", "start") as? String == "2026-03-15")
     }
 
@@ -35,12 +29,12 @@ struct NotionMapperTests {
     }
 
     @Test func propertiesUseFallbackTitleWhenEmpty() {
-        let properties = NotionMapper.properties(amount: 1, date: .now, title: "", paymentMethod: .card, categoryName: nil)
+        let properties = NotionMapper.properties(for: NotionExpenseFields(amount: 1, date: .now, title: "", paymentMethod: .card, categoryName: nil))
         #expect(titleContent(in: properties) == "Gasto")
     }
 
     @Test func propertiesOmitCategoryWhenNil() {
-        let properties = NotionMapper.properties(amount: 1, date: .now, title: "x", paymentMethod: .card, categoryName: nil)
+        let properties = NotionMapper.properties(for: NotionExpenseFields(amount: 1, date: .now, title: "x", paymentMethod: .card, categoryName: nil))
         #expect(properties[NotionPropertyName.category] == nil)
     }
 
