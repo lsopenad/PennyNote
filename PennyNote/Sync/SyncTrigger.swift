@@ -4,6 +4,9 @@ import Foundation
 final class SyncTrigger {
     static let shared = SyncTrigger()
 
+    // Agrupa ráfagas de cambios (varios gastos seguidos) en un único sync.
+    private static let debounceInterval: Duration = .seconds(2.5)
+
     private var debounceTask: Task<Void, Never>?
 
     private init() {}
@@ -11,7 +14,7 @@ final class SyncTrigger {
     func scheduleDebouncedSync() {
         debounceTask?.cancel()
         debounceTask = Task {
-            try? await Task.sleep(for: .seconds(2.5))
+            try? await Task.sleep(for: Self.debounceInterval)
             guard !Task.isCancelled else { return }
             await SyncEngine.shared.syncNow()
         }
