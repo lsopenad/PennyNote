@@ -65,7 +65,9 @@ enum ExpenseRepository {
         )
         guard all.count > 1 else { return false }
 
-        let fallback = SeedDataService.fallbackCategory(context: context) ?? all.first { $0 !== category }
+        // Si se borra la propia categoría de reserva, sus gastos pasan a otra de las que quedan.
+        let preferredFallback = SeedDataService.fallbackCategory(context: context).flatMap { $0 === category ? nil : $0 }
+        let fallback = preferredFallback ?? all.first { $0 !== category }
         for expense in category.expenses {
             expense.category = fallback
             markPending(expense)
