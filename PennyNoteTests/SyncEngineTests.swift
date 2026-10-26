@@ -23,32 +23,11 @@ struct SyncEngineTests {
 
     // MARK: - Primer login
 
-    @Test func firstLoginUploadsLocalDataButNotLocalDeletions() async throws {
-        let food = ExpenseCategory(name: "Comida", symbolName: "fork.knife", sortOrder: 0, color: .green)
-        let kept = Expense(amount: Decimal(string: "12.34")!, title: "Menú", category: food)
-        let deleted = Expense(amount: 5)
-        deleted.isSoftDeleted = true
-        [kept, deleted].forEach(context.insert)
-        context.insert(food)
-
-        try engine.prepareLocalData(for: userID)
-        try await engine.sync()
-
-        #expect(state.ownerUserID == userID)
-        #expect(remote.categories.keys.sorted() == [food.id])
-        #expect(remote.expenses.keys.sorted() == [kept.id])
-        let uploaded = try #require(remote.expenses[kept.id])
-        #expect(uploaded.amount == Decimal(string: "12.34"))
-        #expect(uploaded.categoryID == food.id)
-        #expect(uploaded.paymentMethod == "card")
-        #expect(try fetchExpenses().map(\.id) == [kept.id])
-        #expect(engine.pendingChangeCount() == 0)
-    }
-
     @Test func newAccountGetsDefaultCategoriesUploaded() async throws {
         try engine.prepareLocalData(for: userID)
         try await engine.sync()
 
+        #expect(state.ownerUserID == userID)
         #expect(try fetchCategories().count == SeedDataService.defaultCategories.count)
         #expect(remote.categories.count == SeedDataService.defaultCategories.count)
     }
@@ -59,22 +38,6 @@ struct SyncEngineTests {
         try await engine.sync()
 
         #expect(try fetchCategories().map(\.id) == [remoteCategory.id])
-    }
-
-    @Test func firstLoginMergesCategoriesWithTheSameNameAsTheAccount() async throws {
-        let remoteFood = remote.add(category: "Comida")
-        let localFood = ExpenseCategory(name: "comida ", symbolName: "fork.knife", sortOrder: 0)
-        let localOther = ExpenseCategory(name: "Otros", symbolName: "ellipsis", sortOrder: 1)
-        let expense = Expense(amount: 3, category: localFood)
-        [localFood, localOther].forEach(context.insert)
-        context.insert(expense)
-
-        try engine.prepareLocalData(for: userID)
-        try await engine.sync()
-
-        #expect(Set(try fetchCategories().map(\.id)) == [remoteFood.id, localOther.id])
-        #expect(remote.categories[localFood.id] == nil)
-        #expect(remote.expenses[expense.id]?.categoryID == remoteFood.id)
     }
 
     @Test func loginWithAnotherAccountWipesLeftoverData() async throws {

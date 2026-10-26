@@ -7,12 +7,9 @@ final class ExpenseCategory {
     var name: String
     var symbolName: String
     var sortOrder: Int
-    // Marca las categorías creadas por el seed; ahora mismo no se lee.
-    var isDefault: Bool
 
-    // Opcional en disco: las categorías anteriores a este campo quedan a NULL al migrar hasta que
-    // SeedDataService.assignMissingColors les da uno. Se guarda el rawValue y no el enum para que un
-    // valor desconocido no impida leer la categoría.
+    // Se guarda el rawValue y no el enum para que un valor desconocido no impida leer la categoría.
+    // nil es una categoría sin color (la columna color_name del servidor admite NULL).
     private var storedColorName: String?
 
     var color: CategoryColor? {
@@ -20,15 +17,9 @@ final class ExpenseCategory {
         set { storedColorName = newValue?.rawValue }
     }
 
-    // Contabilidad de la sincronización, como en Expense. Con valor por defecto o opcional para la
-    // migración ligera; una categoría anterior a estos campos cuenta como pendiente de subir.
-    var localLastModified: Date = Date.distantPast
-    private var storedSyncStatus: SyncStatus?
-
-    var syncStatus: SyncStatus {
-        get { storedSyncStatus ?? .pending }
-        set { storedSyncStatus = newValue }
-    }
+    // Contabilidad de la sincronización, como en Expense.
+    var localLastModified: Date
+    var syncStatus: SyncStatus
 
     @Relationship(deleteRule: .nullify, inverse: \Expense.category)
     var expenses: [Expense] = []
@@ -38,17 +29,15 @@ final class ExpenseCategory {
         name: String,
         symbolName: String,
         sortOrder: Int,
-        isDefault: Bool = false,
         color: CategoryColor? = nil
     ) {
         self.id = id
         self.name = name
         self.symbolName = symbolName
         self.sortOrder = sortOrder
-        self.isDefault = isDefault
         self.storedColorName = color?.rawValue
         self.localLastModified = .now
-        self.storedSyncStatus = .pending
+        self.syncStatus = .pending
     }
 }
 
@@ -59,7 +48,7 @@ extension ExpenseCategory {
     // Icono de las categorías que crea el usuario desde Ajustes.
     static let defaultSymbolName = "tag.fill"
 
-    // Color con el que se pinta la categoría; las que aún no tienen uno salen en gris.
+    // Color con el que se pinta la categoría; las que no tienen uno salen en gris.
     var displayColor: Color {
         color?.color ?? CategoryColor.neutral
     }

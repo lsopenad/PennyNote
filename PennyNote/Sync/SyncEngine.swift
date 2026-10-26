@@ -30,7 +30,8 @@ final class SyncEngine {
         case userID:
             return
         case nil:
-            try claimLocalData(for: userID)
+            // Primer login tras instalar o tras cerrar sesión: no hay datos locales que conservar.
+            state.ownerUserID = userID
         default:
             // Datos de otra cuenta que no se borraron al salir (sesión caducada): no se mezclan.
             Log.sync.notice("Los datos locales son de otra cuenta; se borran antes de sincronizar")
@@ -44,10 +45,6 @@ final class SyncEngine {
     @discardableResult
     func sync() async throws -> Int {
         try await pull()
-        if state.needsCategoryMerge {
-            mergeClaimedCategories()
-            state.needsCategoryMerge = false
-        }
         // Tras bajar todo, una cuenta sin categorías es una cuenta nueva: se le crean las de serie.
         SeedDataService.seedIfNeeded(context: context)
         try context.save()
@@ -75,51 +72,6 @@ final class SyncEngine {
         try context.save()
         state.reset()
         WidgetSnapshotStore.clear()
-    }
-
-    // MARK: - Primer login
-
-    // Los datos creados antes del login pasan a ser de este usuario y se suben enteros.
-    private func claimLocalData(for userID: UUID) throws {
-        let categories = allCategories()
-        for expense in allExpenses() {
-            // Los borrados de antes del login nunca llegaron al servidor: no hay borrado que propagar.
-            if expense.isSoftDeleted {
-                context.delete(expense)
-            } else {
-                expense.syncStatus = .pending
-            }
-        }
-        // markPendingSync y no solo el estado: las categorías migradas tienen fecha Date.distantPast y
-        // perderían siempre frente a cualquier versión del servidor.
-        categories.forEach { $0.markPendingSync() }
-        try context.save()
-
-        state.categoryTombstones = []
-        state.needsCategoryMerge = !categories.isEmpty
-        state.ownerUserID = userID
-    }
-
-    // Si la cuenta ya tenía categorías (de otro móvil), las locales que se llamen igual se funden con
-    // ellas en vez de duplicarse. Las locales aún no se han subido, así que no hay borrado que propagar.
-    private func mergeClaimedCategories() {
-        let categories = allCategories()
-        let synced = categories.filter { $0.syncStatus == .synced }
-        for local in categories where local.syncStatus == .pending {
-            guard let match = synced.first(where: { Self.sameName($0.name, local.name) }) else { continue }
-            for expense in local.expenses {
-                expense.category = match
-                expense.markPendingSync()
-            }
-            context.delete(local)
-        }
-    }
-
-    private static func sameName(_ lhs: String, _ rhs: String) -> Bool {
-        lhs.trimmingCharacters(in: .whitespaces).compare(
-            rhs.trimmingCharacters(in: .whitespaces),
-            options: [.caseInsensitive, .diacriticInsensitive]
-        ) == .orderedSame
     }
 
     // MARK: - Bajar

@@ -13,15 +13,14 @@ final class SyncStateStore {
         static let expensesCursor = "sync.expensesCursor"
         static let categoryTombstones = "sync.categoryTombstones"
         static let lastSyncDate = "sync.lastSyncDate"
-        static let needsCategoryMerge = "sync.needsCategoryMerge"
-        static let all = [ownerUserID, categoriesCursor, expensesCursor, categoryTombstones, lastSyncDate, needsCategoryMerge]
+        static let all = [ownerUserID, categoriesCursor, expensesCursor, categoryTombstones, lastSyncDate]
     }
 
     init(defaults: UserDefaults) {
         self.defaults = defaults
     }
 
-    // Usuario al que pertenecen los datos locales; nil si son anteriores al login.
+    // Usuario al que pertenecen los datos locales; nil si nadie ha iniciado sesión desde el último borrado.
     var ownerUserID: UUID? {
         get { defaults.string(forKey: Keys.ownerUserID).flatMap(UUID.init(uuidString:)) }
         set { defaults.set(newValue?.uuidString, forKey: Keys.ownerUserID) }
@@ -41,13 +40,6 @@ final class SyncStateStore {
     var lastSyncDate: Date? {
         get { defaults.object(forKey: Keys.lastSyncDate) as? Date }
         set { defaults.set(newValue, forKey: Keys.lastSyncDate) }
-    }
-
-    // Tras subir por primera vez los datos de antes del login hay que juntar las categorías que se
-    // llamen igual que otras que ya tuviera la cuenta (si se usó antes en otro móvil).
-    var needsCategoryMerge: Bool {
-        get { defaults.bool(forKey: Keys.needsCategoryMerge) }
-        set { defaults.set(newValue, forKey: Keys.needsCategoryMerge) }
     }
 
     // Las categorías se borran de SwiftData en el acto; su borrado pendiente de subir se guarda aquí.

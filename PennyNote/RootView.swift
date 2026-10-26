@@ -9,8 +9,6 @@ struct RootView: View {
     var body: some View {
         content
             .task {
-                LegacyNotionCleanup.runIfNeeded()
-                SeedDataService.assignMissingColors(context: modelContext)
                 MonthlyTotalCalculator.refreshWidgetSnapshot(in: modelContext)
             }
     }
