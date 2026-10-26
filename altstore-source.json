@@ -13,7 +13,7 @@
       "bundleIdentifier": "com.pennynote.app",
       "developerName": "lsopenad",
       "subtitle": "Registro rápido de gastos",
-      "localizedDescription": "Apunta gastos en segundos, sin login, con gráficas y estadísticas, widgets de pantalla de inicio y de bloqueo y atajos.",
+      "localizedDescription": "Apunta gastos en segundos, guardados en tu cuenta y disponibles sin conexión, con gráficas y estadísticas, widgets de pantalla de inicio y de bloqueo y atajos.",
       "iconURL": "https://raw.githubusercontent.com/lsopenad/PennyNote/main/PennyNote/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png",
       "tintColor": "2EA260",
       "category": "productivity",

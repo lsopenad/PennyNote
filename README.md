@@ -1,6 +1,6 @@
 # PennyNote
 
-A fast expense tracker for iPhone. No accounts, no login: expenses are stored on the device.
+A fast expense tracker for iPhone. Sign in with email and password and your expenses are kept in your account, synced across devices and available offline.
 
 <p align="center">
   <img src="docs/screenshots/main.png" width="250" alt="Main screen with the month's total, the comparison with the previous month and a daily spending chart">
@@ -16,6 +16,7 @@ A fast expense tracker for iPhone. No accounts, no login: expenses are stored on
 - Statistics: spending per day, per category and per payment method, and the last six months.
 - Home Screen widgets (small and medium) with the month's chart and top categories, and Lock Screen widgets with the total.
 - Control Center button and Siri/Shortcuts action to add an expense.
+- Works offline: changes are saved on the device and synced to your account ([Supabase](https://supabase.com)) when there is a connection.
 
 ## Requirements
 
@@ -35,6 +36,10 @@ PennyNote is not on the App Store. It is installed with [AltStore Classic](https
 4. Optionally add the widgets from the Home Screen and Lock Screen editors.
 
 Apps signed with a free Apple ID expire after 7 days. AltStore refreshes them automatically while AltServer is running on a computer on the same Wi-Fi network.
+
+## Your data
+
+Each account only sees its own expenses (enforced in the database with row-level security). Signing out removes the data from the iPhone; it stays in your account. **Settings → Delete my account and my data** removes the account and everything in it from the server.
 
 ## Development
 

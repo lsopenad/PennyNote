@@ -9,6 +9,47 @@
 
 El proyecto `.xcodeproj` **no se versiona**: se genera a partir de `project.yml`. Cualquier cambio de targets, capacidades o ajustes de build se hace editando `project.yml`, nunca a mano en Xcode.
 
+## Supabase
+
+La app guarda los datos en un proyecto de [Supabase](https://supabase.com) (el plan gratuito sobra). El esquema está en `supabase/migrations` y la configuración del cliente en `Config/Supabase.xcconfig`, que **no se versiona**.
+
+### Crear el proyecto
+
+1. Crea un proyecto en [supabase.com/dashboard](https://supabase.com/dashboard).
+2. **Authentication → Sign In / Providers → Email**: deja activado *Enable Email provider*, desactiva *Confirm email* y pon *Email OTP Length* a 6.
+3. **Authentication → Emails → Reset Password**: cambia la plantilla para que envíe el código en vez del enlace, por ejemplo:
+   ```html
+   <h2>Tu código de PennyNote</h2>
+   <p>Usa este código para poner una contraseña nueva: <strong>{{ .Token }}</strong></p>
+   ```
+4. Opcional, en ese mismo apartado de Email: *Minimum password length* a 8, lo mismo que pide la app.
+5. Aplica el esquema. Con la [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started):
+   ```bash
+   supabase link --project-ref <ref-del-proyecto>
+   supabase db push
+   ```
+   Si la CLI pide `supabase/config.toml`, ejecuta antes `supabase init` (no toca las migraciones). O pega el contenido de `supabase/migrations/*.sql`, en orden, en el **SQL Editor** del panel.
+
+### Configurar la app
+
+```bash
+cp Config/Supabase.example.xcconfig Config/Supabase.xcconfig
+```
+
+Rellena `SUPABASE_URL` y `SUPABASE_ANON_KEY` con los valores de **Project Settings → API** (la anon key o la publishable key, nunca la `service_role`/secret). En un `.xcconfig` la URL se escribe `https:/$()/<ref>.supabase.co`, porque `//` empieza un comentario. Después, `xcodegen generate`.
+
+Sin ese fichero la app compila pero solo muestra un aviso, y `scripts/build-ipa.sh` se niega a generar el `.ipa`.
+
+La anon key acaba dentro del `.ipa` publicado: es pública por diseño. Lo que protege los datos es RLS (cada usuario solo lee y escribe sus filas). Cualquiera que la extraiga podría crear cuentas en el proyecto.
+
+### Cómo se sincroniza
+
+- SwiftData sigue siendo la fuente local: la app funciona sin conexión y sincroniza al abrirse, tras cada cambio (con 2 s de margen), al tirar hacia abajo en la lista y desde Ajustes.
+- Gana la última modificación (`updated_at`, la pone el móvil); un trigger del servidor descarta una versión más antigua que la guardada. Para pedir solo lo cambiado se usa `server_updated_at`, que pone el servidor.
+- Los borrados son lógicos (`is_deleted`) para que lleguen a los demás dispositivos.
+- En el primer inicio de sesión los datos que ya hubiera en el iPhone se suben a la cuenta. Al cerrar sesión se sube lo pendiente y se borran los datos del iPhone.
+- Un proyecto gratuito se pausa tras una semana sin uso; se reactiva desde el panel y no pierde datos.
+
 ## Abrir el proyecto
 
 ```bash
@@ -22,7 +63,7 @@ Vuelve a ejecutar `xcodegen generate` cada vez que `project.yml` cambie (por eje
 
 ## Tests
 
-Los tests (Swift Testing, target `PennyNoteTests`) cubren la lógica pura: cálculo del total mensual, estadísticas de gasto y datos del widget. Se ejecutan con Cmd+U en Xcode o desde terminal:
+Los tests (Swift Testing, target `PennyNoteTests`) cubren la lógica pura: cálculo del total mensual, estadísticas de gasto, datos del widget y la sincronización (contra un servidor falso en memoria). Se ejecutan con Cmd+U en Xcode o desde terminal:
 
 ```bash
 xcodebuild test -project PennyNote.xcodeproj -scheme PennyNote -destination 'platform=iOS Simulator,name=iPhone 17'
