@@ -3,9 +3,16 @@
 A fast expense tracker for iPhone. Sign in with email and password and your expenses are kept in your account, synced across devices and available offline.
 
 <p align="center">
-  <img src="docs/screenshots/main.png" width="250" alt="Main screen with the month's total, the comparison with the previous month and a daily spending chart">
-  <img src="docs/screenshots/statistics.png" width="250" alt="Statistics screen with daily spending and spending per category">
-  <img src="docs/screenshots/widget.jpg" width="250" alt="Medium Home Screen widget with the month's chart and top categories">
+  <img src="docs/screenshots/main.png" width="200" alt="Main screen with the month's total, the comparison with the previous month and a daily spending chart">
+  <img src="docs/screenshots/add.png" width="200" alt="Add expense sheet with title, amount, category, payment method and date">
+  <img src="docs/screenshots/statistics.png" width="200" alt="Statistics screen with the month's total, daily spending chart and spending per category">
+  <img src="docs/screenshots/statistics-more.png" width="200" alt="Statistics screen with spending per payment method and the last six months">
+</p>
+<p align="center">
+  <img src="docs/screenshots/filters.png" width="200" alt="Filter menu with categories and payment methods">
+  <img src="docs/screenshots/search.png" width="200" alt="Search results for expenses matching a title">
+  <img src="docs/screenshots/widget.jpg" width="200" alt="Medium Home Screen widget with the month's chart and top categories">
+  <img src="docs/screenshots/signin.png" width="200" alt="Sign-in screen with email and password and a Demo button">
 </p>
 
 ## Features
@@ -17,6 +24,7 @@ A fast expense tracker for iPhone. Sign in with email and password and your expe
 - Home Screen widgets (small and medium) with the month's chart and top categories, and Lock Screen widgets with the total.
 - Control Center button and Siri/Shortcuts action to add an expense.
 - Works offline: changes are saved on the device and synced to your account ([Supabase](https://supabase.com)) when there is a connection.
+- Demo mode: tap **Demo** on the sign-in screen to browse the app with sample data, without an account. It is read-only and nothing is saved.
 
 ## Requirements
 
