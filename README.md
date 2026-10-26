@@ -48,6 +48,18 @@ El `.ipa` queda en `build/export/PennyNote.ipa`. Repite este comando cada vez qu
 
 No firma con tu Apple ID ni necesita perfiles de aprovisionamiento: la firma la pone AltServer al instalar (ver abajo). Así no se gastan App IDs desde Xcode, que con un Apple ID gratuito están limitados a 10 cada 7 días. El script solo hace una firma ad hoc para incrustar los entitlements (el App Group `group.com.pennynote.app`), que AltServer necesita para dar de alta el grupo al refirmar.
 
+## Publicar una versión (source de AltStore)
+
+`altstore-source.json` es una source de AltStore: la lista de versiones de PennyNote que AltStore consulta para instalarla y avisar de actualizaciones. Para publicar una versión nueva:
+
+```bash
+./scripts/release.sh 1.2.0 "Qué cambia en esta versión"
+```
+
+El script sube `MARKETING_VERSION`/`CURRENT_PROJECT_VERSION` en `project.yml`, genera el `.ipa`, añade la versión a `altstore-source.json`, hace commit, tag `v1.2.0` y push, y crea la Release de GitHub con el `.ipa`. Hay que lanzarlo desde `main` sin cambios pendientes y con `gh` autenticado. Con `--dry-run` hace todo menos el commit, el push y la Release, para revisar el resultado antes.
+
+La versión debe seguir el formato `X.Y.Z` y ser mayor que la anterior: AltStore solo ofrece la actualización si la versión sube.
+
 ## Instalar con AltStore Classic
 
 [AltStore Classic](https://altstore.io) usa tu Apple ID gratuito para firmar; la firma caduca a los 7 días y hay que refrescarla (AltServer lo hace solo si el Mac y el iPhone comparten Wi-Fi de vez en cuando).
@@ -58,7 +70,10 @@ No firma con tu Apple ID ni necesita perfiles de aprovisionamiento: la firma la 
 3. Desde el icono de AltServer en la barra de menús → **Install AltStore** → elige tu iPhone → introduce tu Apple ID (si tienes verificación en dos pasos, puede pedirte una [contraseña de aplicación](https://appleid.apple.com) en vez de la normal).
 4. En el iPhone: Ajustes → General → VPN y gestión de dispositivos → confía en el certificado de tu Apple ID. Ya tienes la app **AltStore** en la pantalla de inicio.
 
-**Cada vez que quieras instalar/actualizar PennyNote:**
+**Instalar desde la source (recomendado):** en la app AltStore del iPhone → Sources → `+` → pega
+`https://raw.githubusercontent.com/lsopenad/PennyNote/main/altstore-source.json`. PennyNote aparece en Browse para instalarla, y en My Apps cuando haya una versión nueva. AltStore Classic sigue necesitando AltServer abierto en el Mac y en la misma Wi-Fi para instalar y refrescar la firma.
+
+**Cada vez que quieras instalar/actualizar PennyNote a mano, sin la source:**
 1. Genera el `.ipa`: `./scripts/build-ipa.sh` (queda en `build/export/PennyNote.ipa`).
 2. Con el iPhone conectado (USB o misma Wi-Fi que el Mac), arrastra `PennyNote.ipa` sobre el icono de **AltServer** en la barra de menús → **Install App** → elige tu iPhone. AltServer lo firma con tu Apple ID y lo instala sin pasar por AirDrop ni Ficheros.
 3. Tras instalar, añade el widget desde "Editar pantalla de inicio" y desde la personalización de la pantalla de bloqueo (paso manual en el propio iPhone, no viene con el `.ipa`).

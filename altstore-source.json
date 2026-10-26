@@ -1,0 +1,31 @@
+{
+  "name": "PennyNote",
+  "identifier": "com.pennynote.source",
+  "subtitle": "Registro rápido de gastos con Notion",
+  "description": "Source de AltStore para instalar y actualizar PennyNote.",
+  "iconURL": "https://raw.githubusercontent.com/lsopenad/PennyNote/main/PennyNote/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png",
+  "website": "https://github.com/lsopenad/PennyNote",
+  "sourceURL": "https://raw.githubusercontent.com/lsopenad/PennyNote/main/altstore-source.json",
+  "tintColor": "2EA260",
+  "apps": [
+    {
+      "name": "PennyNote",
+      "bundleIdentifier": "com.pennynote.app",
+      "developerName": "lsopenad",
+      "subtitle": "Registro rápido de gastos",
+      "localizedDescription": "Apunta gastos en segundos, sin login, con widgets de pantalla de inicio y de bloqueo, atajos y sincronización con una base de datos de Notion.",
+      "iconURL": "https://raw.githubusercontent.com/lsopenad/PennyNote/main/PennyNote/Resources/Assets.xcassets/AppIcon.appiconset/icon-1024.png",
+      "tintColor": "2EA260",
+      "category": "productivity",
+      "screenshotURLs": [],
+      "appPermissions": {
+        "entitlements": [
+          "com.apple.security.application-groups"
+        ],
+        "privacy": {}
+      },
+      "versions": []
+    }
+  ],
+  "news": []
+}
