@@ -2,7 +2,7 @@ import AppIntents
 import Foundation
 
 // Respaldada por ExpenseCategory real (no un AppEnum fijo) porque las categorías son editables.
-struct CategoryEntity: AppEntity, Identifiable {
+struct CategoryEntity: AppEntity {
     let id: UUID
     let name: String
     let symbolName: String

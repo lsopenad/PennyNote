@@ -1,7 +1,6 @@
 import AppIntents
 import SwiftData
 import Foundation
-import os
 
 struct LogExpenseIntent: AppIntent {
     static var title: LocalizedStringResource = "Registrar gasto"
@@ -24,14 +23,12 @@ struct LogExpenseIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult {
         let context = ModelContext(SharedModelContainer.container)
-        let categories: [ExpenseCategory]
-        do {
-            categories = try context.fetch(FetchDescriptor<ExpenseCategory>())
-        } catch {
-            Log.data.error("Fallo al buscar categorías al registrar gasto desde Atajos: \(error.localizedDescription)")
-            categories = []
-        }
-        let matchedCategory = categories.first { $0.id == category.id }
+        let categoryID = category.id
+        var descriptor = FetchDescriptor<ExpenseCategory>(predicate: #Predicate { $0.id == categoryID })
+        descriptor.fetchLimit = 1
+        let matchedCategory = context
+            .fetchOrEmpty(descriptor, failureMessage: "Fallo al buscar la categoría al registrar gasto desde Atajos")
+            .first
 
         // Nunca Decimal(double) directo: se convierte vía texto para evitar artefactos binarios.
         let amountDecimal = Decimal(string: String(amount)) ?? Decimal(amount)
