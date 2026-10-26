@@ -4,6 +4,7 @@ import os
 
 extension ModelContext {
     // Para lecturas cuyo fallo no debe cortar el flujo: se registra el error y se sigue sin resultados.
+    // failureMessage se registra como público: no debe incluir datos del usuario.
     func fetchOrEmpty<T: PersistentModel>(_ descriptor: FetchDescriptor<T>, failureMessage: String) -> [T] {
         do {
             return try fetch(descriptor)

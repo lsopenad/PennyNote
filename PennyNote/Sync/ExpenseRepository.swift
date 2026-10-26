@@ -46,12 +46,12 @@ enum ExpenseRepository {
     static func addCategory(name: String, symbolName: String, context: ModelContext) -> ExpenseCategory {
         let existing = context.fetchOrEmpty(
             FetchDescriptor<ExpenseCategory>(),
-            failureMessage: "Fallo al leer categorías existentes al añadir '\(name)'"
+            failureMessage: "Fallo al leer categorías existentes al añadir una categoría"
         )
         let nextOrder = (existing.map(\.sortOrder).max() ?? -1) + 1
         let category = ExpenseCategory(name: name, symbolName: symbolName, sortOrder: nextOrder)
         context.insert(category)
-        context.saveOrLog(failureMessage: "Fallo al guardar la nueva categoría '\(name)'")
+        context.saveOrLog(failureMessage: "Fallo al guardar la nueva categoría")
         Task { await SyncEngine.shared.pushCategorySchema() }
         return category
     }
@@ -61,7 +61,7 @@ enum ExpenseRepository {
     static func deleteCategory(_ category: ExpenseCategory, context: ModelContext) -> Bool {
         let all = context.fetchOrEmpty(
             FetchDescriptor<ExpenseCategory>(),
-            failureMessage: "Fallo al leer categorías existentes al borrar '\(category.name)'"
+            failureMessage: "Fallo al leer categorías existentes al borrar una categoría"
         )
         guard all.count > 1 else { return false }
 
@@ -71,7 +71,7 @@ enum ExpenseRepository {
             markPending(expense)
         }
         context.delete(category)
-        context.saveOrLog(failureMessage: "Fallo al guardar tras borrar la categoría '\(category.name)'")
+        context.saveOrLog(failureMessage: "Fallo al guardar tras borrar una categoría")
         Task { await SyncEngine.shared.pushCategorySchema() }
         return true
     }
