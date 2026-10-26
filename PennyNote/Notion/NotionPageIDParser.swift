@@ -6,7 +6,10 @@ enum NotionPageIDParser {
         let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return nil }
 
-        let hexChars = trimmed.filter { $0.isHexDigit }
+        // Se descartan query y fragmento: los enlaces compartidos de Notion suelen llevar "?pvs=4" o
+        // "?v=…", y sus dígitos hexadecimales desplazarían el ID al tomar los 32 últimos.
+        let withoutQuery = trimmed.prefix { $0 != "?" && $0 != "#" }
+        let hexChars = withoutQuery.filter { $0.isHexDigit }
         guard hexChars.count >= 32 else { return nil }
         let last32 = Array(hexChars.suffix(32))
 
