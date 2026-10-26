@@ -3,6 +3,7 @@ import SwiftData
 
 struct CategoryManagementView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.isReadOnly) private var isReadOnly
     @Query(sort: \ExpenseCategory.sortOrder) private var categories: [ExpenseCategory]
 
     @State private var newCategoryName = ""
@@ -14,28 +15,29 @@ struct CategoryManagementView: View {
         List {
             Section {
                 ForEach(categories) { category in
-                    NavigationLink {
-                        CategoryColorPickerView(category: category)
-                    } label: {
-                        Label {
-                            Text(category.name)
-                        } icon: {
-                            Image(systemName: category.symbolName)
-                                .foregroundStyle(category.displayColor)
+                    if isReadOnly {
+                        categoryLabel(category)
+                    } else {
+                        NavigationLink {
+                            CategoryColorPickerView(category: category)
+                        } label: {
+                            categoryLabel(category)
                         }
                     }
                 }
-                .onDelete { offsets in
+                .onDelete(perform: isReadOnly ? nil : { offsets in
                     pendingDeleteOffsets = offsets
                     isDeleteConfirmationPresented = true
-                }
+                })
             }
 
-            Section {
-                HStack {
-                    TextField("Nueva categoría", text: $newCategoryName)
-                    Button("Añadir", action: addCategory)
-                        .disabled(newCategoryName.trimmingCharacters(in: .whitespaces).isEmpty)
+            if !isReadOnly {
+                Section {
+                    HStack {
+                        TextField("Nueva categoría", text: $newCategoryName)
+                        Button("Añadir", action: addCategory)
+                            .disabled(newCategoryName.trimmingCharacters(in: .whitespaces).isEmpty)
+                    }
                 }
             }
 
@@ -57,6 +59,15 @@ struct CategoryManagementView: View {
             Button("Cancelar", role: .cancel) { pendingDeleteOffsets = nil }
         } message: {
             Text("Los gastos de esta categoría pasarán a la categoría por defecto.")
+        }
+    }
+
+    private func categoryLabel(_ category: ExpenseCategory) -> some View {
+        Label {
+            Text(category.name)
+        } icon: {
+            Image(systemName: category.symbolName)
+                .foregroundStyle(category.displayColor)
         }
     }
 

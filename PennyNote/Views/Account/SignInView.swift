@@ -48,6 +48,13 @@ struct SignInView: View {
             } footer: {
                 Text("¿Has olvidado la contraseña? Pide una temporal a quien administra PennyNote y cámbiala después en Ajustes.")
             }
+
+            Section {
+                Button("Demo", action: session.enterDemo)
+                    .font(.footnote)
+                    .frame(maxWidth: .infinity)
+            }
+            .listRowBackground(Color.clear)
         }
         // La cabecera ya lleva el nombre de la app; el título solo se usa en el botón de volver.
         .navigationTitle("Iniciar sesión")

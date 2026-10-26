@@ -30,6 +30,8 @@ struct RootView: View {
             AuthView()
         case .signedIn:
             mainContent
+        case .demo:
+            DemoRootView()
         }
     }
 
@@ -52,5 +54,26 @@ struct RootView: View {
             get: { router.isAddExpensePresented },
             set: { router.isAddExpensePresented = $0 }
         )
+    }
+}
+
+// Modo demo: la misma pantalla principal sobre un almacén en memoria y en solo lectura. Sin hoja de
+// añadir ni enlaces profundos, y fuera del contenedor compartido, que es el que lee el widget.
+private struct DemoRootView: View {
+    // Se crea al aparecer y no como valor inicial del @State: ese se evaluaría (y generaría los datos)
+    // cada vez que RootView vuelve a crear esta vista.
+    @State private var container: ModelContainer?
+    @State private var router = AppRouter()
+
+    var body: some View {
+        if let container {
+            ExpenseListView()
+                .environment(router)
+                .environment(\.isReadOnly, true)
+                .modelContainer(container)
+        } else {
+            ProgressView()
+                .onAppear { container = DemoData.makeContainer() }
+        }
     }
 }

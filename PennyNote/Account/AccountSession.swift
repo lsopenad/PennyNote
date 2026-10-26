@@ -15,6 +15,8 @@ final class AccountSession {
         case loading
         case signedOut
         case signedIn(userID: UUID, email: String)
+        // Sin sesión, con datos de ejemplo en memoria y en solo lectura (DemoData).
+        case demo
     }
 
     enum SignOutOutcome: Equatable {
@@ -41,6 +43,17 @@ final class AccountSession {
 
     var userEmail: String? {
         if case .signedIn(_, let email) = state { email } else { nil }
+    }
+
+    // Solo desde la pantalla de inicio de sesión: la demo no toca la cuenta ni el almacén compartido.
+    func enterDemo() {
+        guard state == .signedOut else { return }
+        state = .demo
+    }
+
+    func exitDemo() {
+        guard state == .demo else { return }
+        state = .signedOut
     }
 
     func signIn(email: String, password: String) async throws {
@@ -114,7 +127,8 @@ final class AccountSession {
         let previousUserID = signedInUserID
         if let session {
             state = .signedIn(userID: session.user.id, email: session.user.email ?? "")
-        } else {
+        } else if state != .demo {
+            // Un aviso sin sesión (p. ej. al caducar el token guardado) no saca de la demo.
             state = .signedOut
         }
 
