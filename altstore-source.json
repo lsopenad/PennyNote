@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.0.1",
+          "buildVersion": "2",
+          "date": "2026-10-26",
+          "localizedDescription": "Corrección: el atajo «Registrar gasto» solo funciona con la sesión iniciada; con la sesión caducada pide volver a entrar en vez de guardar el gasto.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.0.1/PennyNote.ipa",
+          "size": 1602642,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.0.0",
           "buildVersion": "1",
           "date": "2026-10-26",
@@ -35,11 +44,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.0.0",
+      "version": "1.0.1",
       "versionDate": "2026-10-26",
-      "versionDescription": "Primera versión: apunta gastos en segundos, guardados en tu cuenta y disponibles sin conexión, con gráficas y estadísticas, widgets de inicio y de bloqueo, atajos y modo demo.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.0.0/PennyNote.ipa",
-      "size": 1602849
+      "versionDescription": "Corrección: el atajo «Registrar gasto» solo funciona con la sesión iniciada; con la sesión caducada pide volver a entrar en vez de guardar el gasto.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.0.1/PennyNote.ipa",
+      "size": 1602642
     }
   ],
   "news": []
