@@ -7,7 +7,7 @@ struct LockScreenWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: MonthlyTotalProvider()) { entry in
             LockScreenWidgetView(entry: entry)
-                .widgetURL(URL(string: "pennynote://add"))
+                .widgetURL(DeepLinkURL.addExpense)
         }
         .configurationDisplayName("Gasto del mes")
         .description("Total gastado este mes en la pantalla de bloqueo.")

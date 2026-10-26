@@ -6,15 +6,17 @@ struct LockScreenWidgetView: View {
     let entry: MonthlyTotalEntry
 
     private var totalLabel: String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "es_ES")
-        formatter.maximumFractionDigits = 0
-        return formatter.string(from: entry.total as NSDecimalNumber) ?? "\(entry.total) €"
+        DisplayFormat.currency(entry.total, showsCents: false)
     }
 
     var body: some View {
-        // La pantalla de bloqueo fuerza monocromía: no depender de color para transmitir información.
+        content
+            .containerBackground(for: .widget) { Color.clear }
+    }
+
+    // La pantalla de bloqueo fuerza monocromía: no depender de color para transmitir información.
+    @ViewBuilder
+    private var content: some View {
         switch family {
         case .accessoryCircular:
             VStack(spacing: 0) {
@@ -25,7 +27,6 @@ struct LockScreenWidgetView: View {
                     .minimumScaleFactor(0.5)
                     .lineLimit(1)
             }
-            .containerBackground(for: .widget) { Color.clear }
         default:
             HStack {
                 Image(systemName: "eurosign.circle")
@@ -36,7 +37,6 @@ struct LockScreenWidgetView: View {
                         .font(.headline)
                 }
             }
-            .containerBackground(for: .widget) { Color.clear }
         }
     }
 }
