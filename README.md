@@ -4,7 +4,7 @@ Clon personal de [SyncSpend](https://apps.apple.com/sg/app/syncspend/id675911203
 
 ## Requisitos
 
-- Xcode 26+ con el runtime de iOS Simulator 17.4+ instalado (`xcodebuild -downloadPlatform iOS` si no lo tienes).
+- Xcode 26+ con el runtime de iOS Simulator 18.0+ instalado (`xcodebuild -downloadPlatform iOS` si no lo tienes).
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) instalado: `brew install xcodegen`.
 - Tu Apple ID añadido en Xcode → Settings → Accounts (necesario para que la firma automática funcione, tanto para correr en Simulator/dispositivo como para exportar el `.ipa`).
 
@@ -20,6 +20,14 @@ open PennyNote.xcodeproj
 Selecciona el esquema `PennyNote` y un simulador de iPhone, y ejecuta con Cmd+R. La primera vez que compiles el widget te pedirá elegir un equipo de firma para el target `PennyNoteWidgetExtension`; usa tu Apple ID personal igual que en el target principal.
 
 Vuelve a correr `xcodegen generate` cada vez que hagas `git pull` y `project.yml` haya cambiado.
+
+## Tests
+
+Los tests (Swift Testing, target `PennyNoteTests`) cubren la lógica pura: mapeo con Notion, cálculo del total mensual y parseo del ID de página. Se ejecutan con Cmd+U en Xcode o desde terminal:
+
+```bash
+xcodebuild test -project PennyNote.xcodeproj -scheme PennyNote -destination 'platform=iOS Simulator,name=iPhone 17'
+```
 
 ## Configurar Notion (dentro de la app)
 
