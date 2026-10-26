@@ -25,9 +25,6 @@ final class AccountSession {
     }
 
     private(set) var state: State
-    // Mientras dura la recuperación de contraseña: verificar el código ya inicia sesión, pero hay que
-    // seguir en la pantalla hasta poner la contraseña nueva.
-    var isRecoveringPassword = false
 
     @ObservationIgnored private let client: SupabaseClient?
     @ObservationIgnored private let sync: SyncCoordinator
@@ -58,20 +55,17 @@ final class AccountSession {
         }
     }
 
-    func sendPasswordRecoveryCode(email: String) async throws {
-        try await requireClient().auth.resetPasswordForEmail(Self.normalized(email))
-    }
-
-    func verifyPasswordRecoveryCode(email: String, code: String) async throws {
-        try await requireClient().auth.verifyOTP(
-            email: Self.normalized(email),
-            token: code.trimmingCharacters(in: .whitespaces),
-            type: .recovery
-        )
-    }
-
+    // Solo con sesión iniciada. No hay recuperación por email (el proyecto no tiene SMTP): una
+    // contraseña olvidada la restablece quien administra Supabase y el usuario la cambia aquí.
     func updatePassword(_ password: String) async throws {
-        try await requireClient().auth.update(user: UserAttributes(password: password))
+        let client = try requireClient()
+        try await client.auth.update(user: UserAttributes(password: password))
+        // Si se cambia porque alguien más tenía acceso, sus sesiones dejan de valer; esta sigue abierta.
+        do {
+            try await client.auth.signOut(scope: .others)
+        } catch {
+            Log.auth.error("Fallo al cerrar las otras sesiones tras cambiar la contraseña: \(error.localizedDescription)")
+        }
     }
 
     // Sube lo pendiente y, si no queda nada (o se acepta perderlo), borra los datos del móvil y sale.

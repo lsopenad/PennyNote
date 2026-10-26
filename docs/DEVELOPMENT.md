@@ -16,19 +16,31 @@ La app guarda los datos en un proyecto de [Supabase](https://supabase.com) (el p
 ### Crear el proyecto
 
 1. Crea un proyecto en [supabase.com/dashboard](https://supabase.com/dashboard).
-2. **Authentication → Sign In / Providers → Email**: deja activado *Enable Email provider*, desactiva *Confirm email* y pon *Email OTP Length* a 6.
-3. **Authentication → Emails → Reset Password**: cambia la plantilla para que envíe el código en vez del enlace, por ejemplo:
-   ```html
-   <h2>Tu código de PennyNote</h2>
-   <p>Usa este código para poner una contraseña nueva: <strong>{{ .Token }}</strong></p>
-   ```
-4. Opcional, en ese mismo apartado de Email: *Minimum password length* a 8, lo mismo que pide la app.
-5. Aplica el esquema. Con la [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started):
+2. **Authentication → Sign In / Providers → Email**: deja activado *Enable Email provider* y desactiva *Confirm email* y *Secure password change* (los dos enviarían correos). Opcional: *Minimum password length* a 8, lo mismo que pide la app.
+3. Aplica el esquema. Con la [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started):
    ```bash
    supabase link --project-ref <ref-del-proyecto>
    supabase db push
    ```
    Si la CLI pide `supabase/config.toml`, ejecuta antes `supabase init` (no toca las migraciones). O pega el contenido de `supabase/migrations/*.sql`, en orden, en el **SQL Editor** del panel.
+
+### Sin correo: contraseñas olvidadas
+
+La app no envía ningún email (el correo de serie de Supabase solo llega a los miembros de la organización y uno propio requiere SMTP), así que no hay «He olvidado la contraseña». Si alguien la olvida, ponle una temporal desde el **SQL Editor** y pásasela por otro medio; después la cambia en **Ajustes → Cambiar contraseña**:
+
+```sql
+update auth.users
+set encrypted_password = extensions.crypt('contraseña-temporal', extensions.gen_salt('bf')),
+    updated_at = now()
+where email = 'persona@ejemplo.com';
+```
+
+Comprueba que dice `UPDATE 1`; `UPDATE 0` es que el email no coincide (la app los guarda en minúsculas). Si además sospechas que otra persona tenía acceso a la cuenta, cierra todas sus sesiones (los accesos ya emitidos caducan en una hora como máximo):
+
+```sql
+delete from auth.sessions
+where user_id = (select id from auth.users where email = 'persona@ejemplo.com');
+```
 
 ### Configurar la app
 

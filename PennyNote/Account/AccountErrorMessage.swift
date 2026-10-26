@@ -24,7 +24,7 @@ enum AccountErrorMessage {
         case .notConfigured:
             "Esta versión de la app no tiene configurado el servidor."
         case .emailConfirmationRequired:
-            "Cuenta creada, pero hay que confirmar el email antes de entrar. Revisa tu correo."
+            "Cuenta creada, pero el servidor pide confirmar el email y no envía correos. Avisa a quien administra PennyNote."
         }
     }
 
@@ -49,15 +49,16 @@ enum AccountErrorMessage {
             "La contraseña es demasiado débil. Usa al menos \(PasswordRules.minimumLength) caracteres."
         case .samePassword:
             "La nueva contraseña tiene que ser distinta de la anterior."
-        case .otpExpired:
-            "El código no es correcto o ha caducado. Pide uno nuevo."
-        case .overRequestRateLimit, .overEmailSendRateLimit:
+        case .reauthenticationNeeded:
+            // Solo si el proyecto tiene activado «Secure password change», que pide un código por email.
+            "No se puede cambiar la contraseña sin volver a verificar la cuenta."
+        case .overRequestRateLimit:
             "Demasiados intentos. Espera unos minutos y vuelve a probar."
         case .validationFailed:
             "Revisa el email: no parece válido."
         case .emailNotConfirmed:
             // Solo pasa si el proyecto de Supabase tiene activada la confirmación de email.
-            "Tienes que confirmar el email antes de entrar. Revisa tu correo."
+            "El servidor pide confirmar el email y no envía correos. Avisa a quien administra PennyNote."
         case .signupDisabled:
             "No se pueden crear cuentas nuevas ahora mismo."
         case .sessionNotFound, .sessionExpired, .refreshTokenNotFound, .refreshTokenAlreadyUsed:

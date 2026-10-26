@@ -14,6 +14,9 @@ struct AccountSettingsSections: View {
     var body: some View {
         Section("Cuenta") {
             LabeledContent("Email", value: session.userEmail ?? "")
+            NavigationLink("Cambiar contraseña") {
+                ChangePasswordView()
+            }
             syncStatusRow
             Button("Sincronizar ahora") {
                 Task { await sync.syncNow() }

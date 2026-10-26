@@ -26,14 +26,10 @@ struct RootView: View {
             )
         case .loading:
             ProgressView()
-        case .signedOut, .signedIn:
-            // Una sola rama para el login: al verificar el código de recuperación ya hay sesión y la
-            // pantalla debe seguir siendo la misma hasta poner la contraseña nueva.
-            if session.state == .signedOut || session.isRecoveringPassword {
-                AuthView()
-            } else {
-                mainContent
-            }
+        case .signedOut:
+            AuthView()
+        case .signedIn:
+            mainContent
         }
     }
 

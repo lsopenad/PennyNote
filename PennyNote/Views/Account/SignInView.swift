@@ -45,9 +45,8 @@ struct SignInView: View {
                 NavigationLink("Crear una cuenta") {
                     SignUpView(initialEmail: email)
                 }
-                NavigationLink("He olvidado la contraseña") {
-                    PasswordRecoveryView(initialEmail: email)
-                }
+            } footer: {
+                Text("¿Has olvidado la contraseña? Pide una temporal a quien administra PennyNote y cámbiala después en Ajustes.")
             }
         }
         // La cabecera ya lleva el nombre de la app; el título solo se usa en el botón de volver.
