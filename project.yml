@@ -71,6 +71,23 @@ targets:
         DEVELOPMENT_TEAM: "3875E33454"
         SKIP_INSTALL: "YES"
 
+  PennyNoteTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: PennyNoteTests
+    dependencies:
+      - target: PennyNote
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pennynote.app.tests
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: "YES"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: "3875E33454"
+
 schemes:
   PennyNote:
     build:
@@ -79,5 +96,9 @@ schemes:
         PennyNoteWidgetExtension: all
     run:
       config: Debug
+    test:
+      config: Debug
+      targets:
+        - PennyNoteTests
     archive:
       config: Release
