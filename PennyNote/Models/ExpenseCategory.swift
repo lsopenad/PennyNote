@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 import SwiftData
 
 @Model
@@ -13,6 +13,16 @@ final class ExpenseCategory {
     // empareja las categorías por nombre. Se conserva para no alterar el esquema.
     var notionSelectOptionID: String?
 
+    // Opcional en disco: las categorías anteriores a este campo quedan a NULL al migrar hasta que
+    // SeedDataService.assignMissingColors les da uno. Se guarda el rawValue y no el enum para que un
+    // valor desconocido no impida leer la categoría. Solo local: no se sincroniza con Notion.
+    private var storedColorName: String?
+
+    var color: CategoryColor? {
+        get { storedColorName.flatMap(CategoryColor.init(rawValue:)) }
+        set { storedColorName = newValue?.rawValue }
+    }
+
     @Relationship(deleteRule: .nullify, inverse: \Expense.category)
     var expenses: [Expense] = []
 
@@ -22,7 +32,8 @@ final class ExpenseCategory {
         symbolName: String,
         sortOrder: Int,
         isDefault: Bool = false,
-        notionSelectOptionID: String? = nil
+        notionSelectOptionID: String? = nil,
+        color: CategoryColor? = nil
     ) {
         self.id = id
         self.name = name
@@ -30,6 +41,7 @@ final class ExpenseCategory {
         self.sortOrder = sortOrder
         self.isDefault = isDefault
         self.notionSelectOptionID = notionSelectOptionID
+        self.storedColorName = color?.rawValue
     }
 }
 
@@ -38,4 +50,9 @@ extension ExpenseCategory {
     static let uncategorizedLabel = "Sin categoría"
     // Icono de las categorías que crea el usuario desde Ajustes.
     static let defaultSymbolName = "tag.fill"
+
+    // Color con el que se pinta la categoría; las que aún no tienen uno salen en gris.
+    var displayColor: Color {
+        color?.color ?? CategoryColor.neutral
+    }
 }

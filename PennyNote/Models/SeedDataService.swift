@@ -34,10 +34,29 @@ enum SeedDataService {
                 name: seed.name,
                 symbolName: seed.symbolName,
                 sortOrder: index,
-                isDefault: true
+                isDefault: true,
+                color: CategoryColor.allCases[index % CategoryColor.allCases.count]
             )
             context.insert(category)
         }
+    }
+
+    // Da color a las categorías creadas antes de que existiera el campo, sin repetir los ya usados.
+    static func assignMissingColors(context: ModelContext) {
+        let categories = context.fetchOrEmpty(
+            FetchDescriptor<ExpenseCategory>(sortBy: [SortDescriptor(\.sortOrder)]),
+            failureMessage: "Fallo al leer categorías para asignarles color"
+        )
+        var usedColors = categories.compactMap(\.color)
+        let uncolored = categories.filter { $0.color == nil }
+        guard !uncolored.isEmpty else { return }
+
+        for category in uncolored {
+            let color = CategoryColor.nextAvailable(excluding: usedColors)
+            category.color = color
+            usedColors.append(color)
+        }
+        context.saveOrLog(failureMessage: "Fallo al guardar los colores asignados a las categorías")
     }
 
     // nil si el usuario la ha borrado o renombrado; quien la usa elige entonces otra categoría.

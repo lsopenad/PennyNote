@@ -13,6 +13,7 @@ struct RootView: View {
             }
             .task {
                 SeedDataService.seedIfNeeded(context: modelContext)
+                SeedDataService.assignMissingColors(context: modelContext)
             }
             .onOpenURL { url in
                 DeepLinkHandler.handle(url, router: router)

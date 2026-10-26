@@ -14,7 +14,16 @@ struct CategoryManagementView: View {
         List {
             Section {
                 ForEach(categories) { category in
-                    Label(category.name, systemImage: category.symbolName)
+                    NavigationLink {
+                        CategoryColorPickerView(category: category)
+                    } label: {
+                        Label {
+                            Text(category.name)
+                        } icon: {
+                            Image(systemName: category.symbolName)
+                                .foregroundStyle(category.displayColor)
+                        }
+                    }
                 }
                 .onDelete { offsets in
                     pendingDeleteOffsets = offsets

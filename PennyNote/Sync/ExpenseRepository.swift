@@ -49,7 +49,8 @@ enum ExpenseRepository {
             failureMessage: "Fallo al leer categorías existentes al añadir una categoría"
         )
         let nextOrder = (existing.map(\.sortOrder).max() ?? -1) + 1
-        let category = ExpenseCategory(name: name, symbolName: symbolName, sortOrder: nextOrder)
+        let color = CategoryColor.nextAvailable(excluding: existing.compactMap(\.color))
+        let category = ExpenseCategory(name: name, symbolName: symbolName, sortOrder: nextOrder, color: color)
         context.insert(category)
         context.saveOrLog(failureMessage: "Fallo al guardar la nueva categoría")
         Task { await SyncEngine.shared.pushCategorySchema() }
@@ -76,6 +77,12 @@ enum ExpenseRepository {
         context.saveOrLog(failureMessage: "Fallo al guardar tras borrar una categoría")
         Task { await SyncEngine.shared.pushCategorySchema() }
         return true
+    }
+
+    // El color es solo local, así que no marca nada como pendiente ni dispara sync.
+    static func setColor(_ color: CategoryColor, for category: ExpenseCategory, context: ModelContext) {
+        category.color = color
+        context.saveOrLog(failureMessage: "Fallo al guardar el color de la categoría")
     }
 
     private static func markPending(_ expense: Expense) {
