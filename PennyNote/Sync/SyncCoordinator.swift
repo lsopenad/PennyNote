@@ -26,9 +26,9 @@ final class SyncCoordinator {
     @ObservationIgnored private var needsAnotherPass = false
     @ObservationIgnored private var debounceTask: Task<Void, Never>?
 
-    init(container: ModelContainer = SharedModelContainer.container, state: SyncStateStore = .standard) {
-        self.container = container
-        self.state = state
+    private init() {
+        container = SharedModelContainer.container
+        state = .standard
         lastSyncDate = state.lastSyncDate
     }
 

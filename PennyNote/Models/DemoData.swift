@@ -26,7 +26,7 @@ enum DemoData {
         (2, "Netflix", 1399...1399, 5, .card),
     ]
 
-    static func makeContainer(now: Date = .now) -> ModelContainer {
+    static func makeContainer() -> ModelContainer {
         let schema = Schema([Expense.self, ExpenseCategory.self])
         let configuration = ModelConfiguration("Demo", schema: schema, isStoredInMemoryOnly: true)
         let container: ModelContainer
@@ -35,11 +35,11 @@ enum DemoData {
         } catch {
             fatalError("No se pudo crear el ModelContainer en memoria de la demo: \(error)")
         }
-        populate(container.mainContext, now: now)
+        populate(container.mainContext)
         return container
     }
 
-    private static func populate(_ context: ModelContext, now: Date) {
+    private static func populate(_ context: ModelContext) {
         SeedDataService.seedIfNeeded(context: context)
         let categories = context.fetchOrEmpty(
             FetchDescriptor<ExpenseCategory>(sortBy: [SortDescriptor(\.sortOrder)]),
@@ -49,6 +49,7 @@ enum DemoData {
 
         // Semilla fija: la demo sale igual cada vez, salvo por la fecha de hoy.
         var generator = SeededGenerator(seed: 42)
+        let now = Date.now
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: now)
         guard let firstMonth = calendar.date(byAdding: .month, value: -(monthCount - 1), to: SpendingStatistics.monthStart(of: now)) else { return }

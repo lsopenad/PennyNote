@@ -53,10 +53,6 @@ final class SyncEngine {
         return remainingChanges
     }
 
-    func pendingChangeCount() -> Int {
-        Self.pendingChangeCount(context: context, state: state)
-    }
-
     static func pendingChangeCount(context: ModelContext, state: SyncStateStore) -> Int {
         let categories = context.fetchOrEmpty(FetchDescriptor<ExpenseCategory>(), failureMessage: "Fallo al contar categorías pendientes")
         let expenses = context.fetchOrEmpty(FetchDescriptor<Expense>(), failureMessage: "Fallo al contar gastos pendientes")

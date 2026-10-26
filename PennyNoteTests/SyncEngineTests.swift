@@ -109,7 +109,7 @@ struct SyncEngineTests {
 
         #expect(expense.syncStatus == .pending)
         #expect(remainingChanges == 1)
-        #expect(engine.pendingChangeCount() == 1)
+        #expect(SyncEngine.pendingChangeCount(context: context, state: state) == 1)
     }
 
     // MARK: - Borrados

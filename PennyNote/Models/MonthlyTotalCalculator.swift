@@ -2,24 +2,9 @@ import Foundation
 import SwiftData
 
 enum MonthlyTotalCalculator {
-    static func total(for referenceDate: Date = .now, in context: ModelContext) -> Decimal {
-        guard let interval = Calendar.current.dateInterval(of: .month, for: referenceDate) else {
-            return .zero
-        }
-        let start = interval.start
-        let end = interval.end
-
-        let descriptor = FetchDescriptor<Expense>(
-            predicate: #Predicate { expense in
-                expense.isSoftDeleted == false && expense.date >= start && expense.date < end
-            }
-        )
-        let expenses = context.fetchOrEmpty(descriptor, failureMessage: "Fallo al calcular el total mensual")
-        return expenses.reduce(Decimal.zero) { $0 + $1.amount }
-    }
-
     // Recalcula el gasto del mes en curso y del anterior y lo publica en el App Group para los widgets.
-    static func refreshWidgetSnapshot(in context: ModelContext, now: Date = .now) {
+    static func refreshWidgetSnapshot(in context: ModelContext) {
+        let now = Date.now
         let calendar = Calendar.current
         let currentMonthStart = SpendingStatistics.monthStart(of: now, calendar: calendar)
         guard

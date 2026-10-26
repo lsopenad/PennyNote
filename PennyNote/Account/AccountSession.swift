@@ -31,10 +31,9 @@ final class AccountSession {
     @ObservationIgnored private let client: SupabaseClient?
     @ObservationIgnored private let sync: SyncCoordinator
 
-    // sync opcional porque un valor por defecto no puede leer SyncCoordinator.shared (es del MainActor).
-    init(client: SupabaseClient? = SupabaseBackend.client, sync: SyncCoordinator? = nil) {
+    init(client: SupabaseClient? = SupabaseBackend.client) {
         self.client = client
-        self.sync = sync ?? .shared
+        sync = .shared
         state = client == nil ? .unconfigured : .loading
         if let client {
             listenForAuthChanges(client)

@@ -8,7 +8,6 @@ struct DailySpendingBars: View {
     let elapsedDays: Int
     // Día que se resalta (hoy); nil para no resaltar ninguno.
     var highlightedDay: Int?
-    var color: Color = .brand
 
     private let stubHeight: CGFloat = 2
 
@@ -38,7 +37,7 @@ struct DailySpendingBars: View {
         if !hasSpending {
             return AnyShapeStyle(day > elapsedDays ? .quaternary : .tertiary)
         }
-        return AnyShapeStyle(color.opacity(day == highlightedDay ? 1 : 0.55))
+        return AnyShapeStyle(Color.brand.opacity(day == highlightedDay ? 1 : 0.55))
     }
 
     // Con 31 barras en un widget pequeño no caben 2 pt de separación sin que desaparezcan las barras.
