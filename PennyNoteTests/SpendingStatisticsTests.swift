@@ -15,7 +15,7 @@ struct SpendingStatisticsTests {
 
     @Test func monthSpendingBucketsByDayAndIgnoresOtherMonthsAndDeleted() throws {
         let deleted = Expense(amount: 100, date: try date(2026, 3, 10))
-        deleted.isDeleted = true
+        deleted.isSoftDeleted = true
         let expenses = [
             Expense(amount: Decimal(string: "10.50")!, date: try date(2026, 3, 1)),
             Expense(amount: 2, date: try date(2026, 3, 1, hour: 20)),

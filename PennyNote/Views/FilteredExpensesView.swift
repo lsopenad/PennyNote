@@ -10,7 +10,7 @@ struct FilteredExpensesView: View {
     let filter: ExpenseFilter
 
     // @Query propio, no un array recibido: así la lista se actualiza al editar o borrar un gasto.
-    @Query(filter: #Predicate<Expense> { !$0.isDeleted }, sort: \Expense.date, order: .reverse)
+    @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date, order: .reverse)
     private var activeExpenses: [Expense]
 
     private var expenses: [Expense] {

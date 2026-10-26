@@ -11,7 +11,7 @@ enum MonthlyTotalCalculator {
 
         let descriptor = FetchDescriptor<Expense>(
             predicate: #Predicate { expense in
-                expense.isDeleted == false && expense.date >= start && expense.date < end
+                expense.isSoftDeleted == false && expense.date >= start && expense.date < end
             }
         )
         let expenses = context.fetchOrEmpty(descriptor, failureMessage: "Fallo al calcular el total mensual")
@@ -29,7 +29,7 @@ enum MonthlyTotalCalculator {
 
         let descriptor = FetchDescriptor<Expense>(
             predicate: #Predicate { expense in
-                expense.isDeleted == false && expense.date >= previousMonthStart && expense.date < end
+                expense.isSoftDeleted == false && expense.date >= previousMonthStart && expense.date < end
             }
         )
         let expenses = context.fetchOrEmpty(descriptor, failureMessage: "Fallo al leer los gastos para el widget")

@@ -37,7 +37,7 @@ enum ExpenseRepository {
     }
 
     static func deleteExpense(_ expense: Expense, context: ModelContext) {
-        expense.isDeleted = true
+        expense.isSoftDeleted = true
         markPending(expense)
         afterMutation(context: context)
     }

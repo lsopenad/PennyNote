@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct StatisticsView: View {
-    @Query(filter: #Predicate<Expense> { !$0.isDeleted }, sort: \Expense.date)
+    @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date)
     private var activeExpenses: [Expense]
 
     @State private var selectedMonth = SpendingStatistics.monthStart(of: .now)

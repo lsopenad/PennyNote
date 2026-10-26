@@ -41,7 +41,7 @@ enum SpendingStatistics {
 
     static func expenses(_ expenses: [Expense], inMonthOf date: Date, calendar: Calendar = .current) -> [Expense] {
         guard let interval = calendar.dateInterval(of: .month, for: date) else { return [] }
-        return expenses.filter { !$0.isDeleted && $0.date >= interval.start && $0.date < interval.end }
+        return expenses.filter { !$0.isSoftDeleted && $0.date >= interval.start && $0.date < interval.end }
     }
 
     static func monthSpending(_ expenses: [Expense], monthOf date: Date, calendar: Calendar = .current) -> MonthSpending {
@@ -58,7 +58,7 @@ enum SpendingStatistics {
 
     // De mayor a menor gasto; solo aparecen las categorías con gasto.
     static func categoryTotals(_ expenses: [Expense]) -> [CategoryTotal] {
-        let grouped = Dictionary(grouping: expenses.filter { !$0.isDeleted }) { $0.category?.id }
+        let grouped = Dictionary(grouping: expenses.filter { !$0.isSoftDeleted }) { $0.category?.id }
         return grouped.values
             .map { items in CategoryTotal(category: items[0].category, total: items.reduce(.zero) { $0 + $1.amount }) }
             .sorted(by: isLarger)
@@ -66,7 +66,7 @@ enum SpendingStatistics {
 
     // De mayor a menor gasto; solo aparecen los métodos con gasto.
     static func paymentMethodTotals(_ expenses: [Expense]) -> [PaymentMethodTotal] {
-        let grouped = Dictionary(grouping: expenses.filter { !$0.isDeleted }, by: \.paymentMethod)
+        let grouped = Dictionary(grouping: expenses.filter { !$0.isSoftDeleted }, by: \.paymentMethod)
         return grouped
             .map { method, items in PaymentMethodTotal(paymentMethod: method, total: items.reduce(.zero) { $0 + $1.amount }) }
             .sorted { $0.total != $1.total ? $0.total > $1.total : $0.paymentMethod.rawValue < $1.paymentMethod.rawValue }
@@ -78,7 +78,7 @@ enum SpendingStatistics {
         let lastMonth = monthStart(of: date, calendar: calendar)
         let months = (0..<count).reversed().compactMap { calendar.date(byAdding: .month, value: -$0, to: lastMonth) }
         var totals = Dictionary(uniqueKeysWithValues: months.map { ($0, Decimal.zero) })
-        for expense in expenses where !expense.isDeleted {
+        for expense in expenses where !expense.isSoftDeleted {
             let month = monthStart(of: expense.date, calendar: calendar)
             if totals[month] != nil {
                 totals[month]! += expense.amount

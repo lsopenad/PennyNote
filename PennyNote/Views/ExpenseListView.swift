@@ -5,7 +5,7 @@ struct ExpenseListView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppRouter.self) private var router
 
-    @Query(filter: #Predicate<Expense> { !$0.isDeleted }, sort: \Expense.date, order: .reverse)
+    @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date, order: .reverse)
     private var activeExpenses: [Expense]
 
     @Namespace private var searchAnimation

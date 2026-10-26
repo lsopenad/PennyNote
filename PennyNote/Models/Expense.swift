@@ -30,7 +30,9 @@ final class Expense {
     var syncStatus: SyncStatus
 
     // Borrado lógico: el gasto se oculta pero se conserva para poder propagar el borrado al servidor.
-    var isDeleted: Bool
+    // No puede llamarse isDeleted: ese nombre es de PersistentModel, y SwiftData lo restablece al
+    // guardar (un gasto borrado volvía a false). originalName mantiene la columna que ya hay en disco.
+    @Attribute(originalName: "isDeleted") var isSoftDeleted: Bool
 
     init(
         id: UUID = UUID(),
@@ -49,6 +51,6 @@ final class Expense {
         self.createdAt = .now
         self.localLastModified = .now
         self.syncStatus = .pending
-        self.isDeleted = false
+        self.isSoftDeleted = false
     }
 }
