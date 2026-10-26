@@ -7,6 +7,7 @@ enum NotionError: Error, LocalizedError {
     case rateLimited(retryAfter: TimeInterval)
     case validation(message: String)
     case network(Error)
+    case http(statusCode: Int)
     case decoding
 
     var errorDescription: String? {
@@ -23,6 +24,8 @@ enum NotionError: Error, LocalizedError {
             return message
         case .network:
             return "Error de red al conectar con Notion."
+        case .http(let statusCode):
+            return "Notion respondió con un error inesperado (código \(statusCode))."
         case .decoding:
             return "Respuesta inesperada de Notion."
         }

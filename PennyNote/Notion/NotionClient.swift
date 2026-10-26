@@ -122,7 +122,7 @@ actor NotionClient {
             let message = body?["message"] as? String
             throw NotionError.validation(message: message ?? "Petición inválida a Notion.")
         default:
-            throw NotionError.network(URLError(.badServerResponse))
+            throw NotionError.http(statusCode: httpResponse.statusCode)
         }
     }
 }
