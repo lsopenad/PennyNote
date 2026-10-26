@@ -22,8 +22,9 @@ struct LogExpenseIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        // Sin sesión no hay datos locales: un gasto apuntado así no tendría cuenta a la que subirse.
-        guard SyncStateStore.standard.ownerUserID != nil else {
+        // Sin sesión (o con la sesión caducada) el gasto no tendría cuenta segura a la que subirse: si
+        // luego entrara otra cuenta, se borraría con el resto de datos locales.
+        guard SyncStateStore.standard.hasActiveSession else {
             throw LogExpenseError.signedOut
         }
 

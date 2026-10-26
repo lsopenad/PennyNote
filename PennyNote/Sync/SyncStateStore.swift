@@ -13,7 +13,8 @@ final class SyncStateStore {
         static let expensesCursor = "sync.expensesCursor"
         static let categoryTombstones = "sync.categoryTombstones"
         static let lastSyncDate = "sync.lastSyncDate"
-        static let all = [ownerUserID, categoriesCursor, expensesCursor, categoryTombstones, lastSyncDate]
+        static let hasActiveSession = "sync.hasActiveSession"
+        static let all = [ownerUserID, categoriesCursor, expensesCursor, categoryTombstones, lastSyncDate, hasActiveSession]
     }
 
     init(defaults: UserDefaults) {
@@ -24,6 +25,14 @@ final class SyncStateStore {
     var ownerUserID: UUID? {
         get { defaults.string(forKey: Keys.ownerUserID).flatMap(UUID.init(uuidString:)) }
         set { defaults.set(newValue?.uuidString, forKey: Keys.ownerUserID) }
+    }
+
+    // Hay sesión iniciada y los datos locales ya son suyos. Se guarda porque LogExpenseIntent puede
+    // ejecutarse antes de que la app restaure la sesión. Se apaga al caducar la sesión, cuando
+    // ownerUserID se conserva para subir lo pendiente si vuelve a entrar la misma cuenta.
+    var hasActiveSession: Bool {
+        get { defaults.bool(forKey: Keys.hasActiveSession) }
+        set { defaults.set(newValue, forKey: Keys.hasActiveSession) }
     }
 
     // Último server_updated_at recibido de cada tabla.

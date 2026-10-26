@@ -52,6 +52,7 @@ final class SyncCoordinator {
             lastErrorMessage = "No se han podido preparar los datos de este iPhone para tu cuenta."
             return nil
         }
+        state.hasActiveSession = true
         self.engine = engine
         return engine
     }
@@ -64,6 +65,7 @@ final class SyncCoordinator {
         engine = nil
         activeUser = nil
         lastErrorMessage = nil
+        state.hasActiveSession = false
     }
 
     // Al cerrar sesión o borrar la cuenta: espera a la pasada en curso y borra los datos del móvil.

@@ -131,13 +131,14 @@ final class AccountSession {
             state = .signedOut
         }
 
-        let userID = signedInUserID
-        guard userID != previousUserID, let client else { return }
-        if let userID {
-            Task { await sync.activate(userID: userID, remote: SupabaseSyncRemote(client: client)) }
-        } else {
+        guard let userID = signedInUserID else {
+            // También sin sesión previa en esta ejecución (p. ej. revocada con la app cerrada): la marca
+            // de sesión activa que consulta LogExpenseIntent puede venir de la ejecución anterior.
             sync.deactivate()
+            return
         }
+        guard userID != previousUserID, let client else { return }
+        Task { await sync.activate(userID: userID, remote: SupabaseSyncRemote(client: client)) }
     }
 
     private var signedInUserID: UUID? {

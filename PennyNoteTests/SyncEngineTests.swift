@@ -148,6 +148,7 @@ struct SyncEngineTests {
         context.insert(ExpenseCategory(name: "Comida", symbolName: "fork.knife", sortOrder: 0))
         state.ownerUserID = userID
         state.expensesCursor = .now
+        state.hasActiveSession = true
 
         try SyncEngine.wipeLocalData(context: context, state: state)
 
@@ -155,6 +156,7 @@ struct SyncEngineTests {
         #expect(try fetchCategories().isEmpty)
         #expect(state.ownerUserID == nil)
         #expect(state.expensesCursor == nil)
+        #expect(state.hasActiveSession == false)
     }
 
     // MARK: - Formato
