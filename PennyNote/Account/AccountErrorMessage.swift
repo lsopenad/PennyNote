@@ -40,7 +40,10 @@ enum AccountErrorMessage {
     }
 
     private static func authMessage(for error: AuthError) -> String {
-        switch error.errorCode {
+        // Solo el código (sin el texto del servidor, que puede incluir el email): basta para saber la causa
+        // cuando la app enseña el mensaje genérico.
+        Log.auth.error("Error de Supabase Auth: \(error.errorCode.rawValue, privacy: .public)")
+        return switch error.errorCode {
         case .invalidCredentials:
             "Email o contraseña incorrectos."
         case .emailExists, .userAlreadyExists:
@@ -54,6 +57,10 @@ enum AccountErrorMessage {
             "No se puede cambiar la contraseña sin volver a verificar la cuenta."
         case .overRequestRateLimit:
             "Demasiados intentos. Espera unos minutos y vuelve a probar."
+        case .overEmailSendRateLimit:
+            // La app no envía correos: solo pasa si el proyecto de Supabase tiene activado algún envío
+            // (Confirm email o Secure password change).
+            "El servidor ha intentado enviar un email y ha llegado a su límite. Avisa a quien administra PennyNote."
         case .validationFailed:
             "Revisa el email: no parece válido."
         case .emailNotConfirmed:
