@@ -24,40 +24,7 @@
         ],
         "privacy": {}
       },
-      "versions": [
-        {
-          "version": "2.0.0",
-          "buildVersion": "4",
-          "date": "2026-10-26",
-          "localizedDescription": "Cuentas con email y contraseña: los gastos se guardan en tu cuenta, se sincronizan entre dispositivos y funcionan sin conexión. Cambiar contraseña desde Ajustes. Modo demo de solo lectura desde la pantalla de inicio de sesión. Fechas en español. Se elimina la integración con Notion.",
-          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v2.0.0/PennyNote.ipa",
-          "size": 1611455,
-          "minOSVersion": "18.0"
-        },
-        {
-          "version": "1.2.0",
-          "buildVersion": "3",
-          "date": "2026-10-26",
-          "localizedDescription": "Gráficas de gasto en la pantalla principal, pantalla de estadísticas, colores por categoría y widget mediano.",
-          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.2.0/PennyNote.ipa",
-          "size": 416324,
-          "minOSVersion": "18.0"
-        },
-        {
-          "version": "1.1.0",
-          "buildVersion": "2",
-          "date": "2026-10-26",
-          "localizedDescription": "Refactorización y corrección de errores:\n- Los almacenes de datos anteriores al título y método de pago vuelven a abrirse (la app aparecía vacía).\n- Errores de sincronización y Keychain registrados en log en vez de silenciados.\n- Fechas enviadas a Notion en la zona horaria local, cantidades exactas y títulos completos.\n- La URL de la página de Notion con parámetros (?pvs=4) ya no da un ID incorrecto.\n- Al borrar «Otros» sus gastos pasan a otra categoría.",
-          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.1.0/PennyNote.ipa",
-          "size": 283925,
-          "minOSVersion": "18.0"
-        }
-      ],
-      "version": "2.0.0",
-      "versionDate": "2026-10-26",
-      "versionDescription": "Cuentas con email y contraseña: los gastos se guardan en tu cuenta, se sincronizan entre dispositivos y funcionan sin conexión. Cambiar contraseña desde Ajustes. Modo demo de solo lectura desde la pantalla de inicio de sesión. Fechas en español. Se elimina la integración con Notion.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v2.0.0/PennyNote.ipa",
-      "size": 1611455
+      "versions": []
     }
   ],
   "news": []
