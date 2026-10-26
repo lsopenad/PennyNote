@@ -1,6 +1,5 @@
 import Foundation
 import SwiftData
-import os
 
 enum SeedDataService {
     // Categoría a la que se reasignan los gastos al borrar la suya; se identifica por nombre.

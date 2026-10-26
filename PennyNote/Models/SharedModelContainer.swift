@@ -1,6 +1,5 @@
 import Foundation
 import SwiftData
-import os
 
 // Contenedor único compartido por la app y LogExpenseIntent (Atajos), para que
 // todos lean/escriban exactamente el mismo almacén SwiftData. Vive en el App Group para que

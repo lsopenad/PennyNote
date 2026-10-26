@@ -1,5 +1,6 @@
 import Foundation
 import Supabase
+import os
 
 // Traduce los errores de Supabase y de red a un mensaje que se pueda enseñar al usuario.
 enum AccountErrorMessage {
