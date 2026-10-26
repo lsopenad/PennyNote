@@ -15,10 +15,17 @@ actor SyncEngine {
     }
 
     func syncNow() async {
-        guard !isSyncing else { return }
-        guard let modelContainer else { return }
+        guard !isSyncing else {
+            Log.sync.debug("Sync omitido: ya hay uno en curso")
+            return
+        }
+        guard let modelContainer else {
+            Log.sync.error("Sync omitido: el SyncEngine aún no tiene ModelContainer")
+            return
+        }
         guard let token = NotionCredentialsStore.token, let databaseID = SyncStateStore.notionDatabaseID else {
-            return // Notion no configurado todavía: no-op.
+            Log.sync.debug("Sync omitido: Notion no está configurado todavía")
+            return
         }
 
         isSyncing = true
@@ -40,6 +47,7 @@ actor SyncEngine {
             let monthStart = Calendar.current.dateInterval(of: .month, for: .now)?.start ?? .now
             MonthlyTotalStore.write(total: total, monthStart: monthStart)
         } catch {
+            Log.sync.error("Fallo en la sincronización con Notion: \(error.localizedDescription)")
             SyncStateStore.lastSyncError = error.localizedDescription
         }
     }
@@ -68,7 +76,7 @@ actor SyncEngine {
     private func push(context: ModelContext, client: NotionClient, databaseID: String) async throws {
         let pendingStatus = SyncStatus.pending
         let descriptor = FetchDescriptor<Expense>(predicate: #Predicate { $0.syncStatus == pendingStatus })
-        let pendingExpenses = (try? context.fetch(descriptor)) ?? []
+        let pendingExpenses = try context.fetch(descriptor)
 
         for expense in pendingExpenses {
             do {
@@ -142,12 +150,13 @@ actor SyncEngine {
             cursor = result.hasMore ? result.nextCursor : nil
         } while cursor != nil
 
-        let categories = (try? context.fetch(FetchDescriptor<ExpenseCategory>())) ?? []
+        let categories = try context.fetch(FetchDescriptor<ExpenseCategory>())
 
         for remotePage in allPages {
             let targetPageID = remotePage.id
             let expenseDescriptor = FetchDescriptor<Expense>(predicate: #Predicate { $0.notionPageID == targetPageID })
-            let localMatch = (try? context.fetch(expenseDescriptor))?.first
+            // Si esta búsqueda fallara en silencio se crearía un duplicado local de la página.
+            let localMatch = try context.fetch(expenseDescriptor).first
 
             if remotePage.archived {
                 if let localMatch { context.delete(localMatch) }
