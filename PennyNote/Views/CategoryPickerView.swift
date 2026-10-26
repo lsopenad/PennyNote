@@ -7,7 +7,7 @@ struct CategoryPickerView: View {
 
     var body: some View {
         Picker("Categoría", selection: $selection) {
-            Text("Sin categoría").tag(ExpenseCategory?.none)
+            Text(ExpenseCategory.uncategorizedLabel).tag(ExpenseCategory?.none)
             ForEach(categories) { category in
                 Label(category.name, systemImage: category.symbolName)
                     .tag(ExpenseCategory?.some(category))

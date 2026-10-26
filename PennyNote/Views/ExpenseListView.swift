@@ -5,37 +5,19 @@ struct ExpenseListView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppRouter.self) private var router
 
-    @Query(sort: \Expense.date, order: .reverse) private var allExpenses: [Expense]
-    @Query(sort: \ExpenseCategory.sortOrder) private var categories: [ExpenseCategory]
+    @Query(filter: #Predicate<Expense> { !$0.isDeleted }, sort: \Expense.date, order: .reverse)
+    private var activeExpenses: [Expense]
 
     @Namespace private var searchAnimation
     @State private var isSearchActive = false
 
-    @State private var selectedCategoryIDs: Set<UUID> = []
-    @State private var includeUncategorized = false
-    @State private var selectedPaymentMethods: Set<PaymentMethod> = []
+    @State private var filter = ExpenseFilter()
 
     @State private var pendingDeletion: (items: [Expense], offsets: IndexSet)?
     @State private var isDeleteConfirmationPresented = false
 
-    private var notDeletedExpenses: [Expense] {
-        allExpenses.filter { !$0.isDeleted }
-    }
-
-    private var hasActiveFilters: Bool {
-        !selectedCategoryIDs.isEmpty || includeUncategorized || !selectedPaymentMethods.isEmpty
-    }
-
-    private var expenses: [Expense] {
-        notDeletedExpenses.filter { matchesFilters($0) }
-    }
-
-    private var groupedExpenses: [(day: Date, items: [Expense])] {
-        let calendar = Calendar.current
-        let groups = Dictionary(grouping: expenses) { calendar.startOfDay(for: $0.date) }
-        return groups
-            .sorted { $0.key > $1.key }
-            .map { (day: $0.key, items: $0.value) }
+    private var filteredExpenses: [Expense] {
+        activeExpenses.filter(filter.matches)
     }
 
     private var monthlyTotal: Decimal {
@@ -53,31 +35,18 @@ struct ExpenseListView: View {
                                 .listRowSeparator(.hidden)
                         }
 
-                        ForEach(groupedExpenses, id: \.day) { group in
-                            Section(header: Text(group.day, style: .date)) {
-                                ForEach(group.items) { expense in
-                                    ExpenseRowView(expense: expense)
-                                        .contentShape(Rectangle())
-                                        .onTapGesture { router.presentEdit(expense) }
-                                }
-                                .onDelete { offsets in
-                                    pendingDeletion = (group.items, offsets)
-                                    isDeleteConfirmationPresented = true
-                                }
+                        DayGroupedExpenseSections(
+                            expenses: filteredExpenses,
+                            onSelect: router.presentEdit,
+                            onDelete: { items, offsets in
+                                pendingDeletion = (items, offsets)
+                                isDeleteConfirmationPresented = true
                             }
-                        }
+                        )
                     }
                     .listStyle(.plain)
 
-                    Button(action: { router.presentAdd() }) {
-                        Image(systemName: "plus")
-                            .font(.title2.bold())
-                            .foregroundStyle(.white)
-                            .frame(width: 56, height: 56)
-                            .background(.tint, in: Circle())
-                            .shadow(radius: 4, y: 2)
-                    }
-                    .padding(20)
+                    addButton
                 }
                 .navigationTitle("PennyNote")
                 .toolbar {
@@ -90,7 +59,7 @@ struct ExpenseListView: View {
                         .matchedGeometryEffect(id: "searchAnchor", in: searchAnimation)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        filterMenu
+                        ExpenseFilterMenu(filter: $filter)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         NavigationLink(destination: SettingsView()) {
@@ -111,7 +80,7 @@ struct ExpenseListView: View {
 
             if isSearchActive {
                 ExpenseSearchOverlay(
-                    expenses: notDeletedExpenses,
+                    expenses: activeExpenses,
                     namespace: searchAnimation,
                     onSelect: { expense in
                         withAnimation(.snappy) { isSearchActive = false }
@@ -126,78 +95,23 @@ struct ExpenseListView: View {
         }
     }
 
-    private var filterMenu: some View {
-        Menu {
-            Section("Categoría") {
-                ForEach(categories) { category in
-                    Toggle(isOn: categoryFilterBinding(for: category.id)) {
-                        Label(category.name, systemImage: category.symbolName)
-                    }
-                }
-                Toggle("Sin categoría", isOn: $includeUncategorized)
-            }
-            Section("Método de pago") {
-                ForEach(PaymentMethod.allCases) { method in
-                    Toggle(method.rawValue, isOn: paymentMethodFilterBinding(for: method))
-                }
-            }
-            if hasActiveFilters {
-                Divider()
-                Button("Limpiar filtros", role: .destructive) { clearFilters() }
-            }
-        } label: {
-            Image(systemName: hasActiveFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+    private var addButton: some View {
+        Button(action: router.presentAdd) {
+            Image(systemName: "plus")
+                .font(.title2.bold())
+                .foregroundStyle(.white)
+                .frame(width: 56, height: 56)
+                .background(.tint, in: Circle())
+                .shadow(radius: 4, y: 2)
         }
-    }
-
-    private func categoryFilterBinding(for id: UUID) -> Binding<Bool> {
-        Binding(
-            get: { selectedCategoryIDs.contains(id) },
-            set: { isOn in
-                if isOn { selectedCategoryIDs.insert(id) } else { selectedCategoryIDs.remove(id) }
-            }
-        )
-    }
-
-    private func paymentMethodFilterBinding(for method: PaymentMethod) -> Binding<Bool> {
-        Binding(
-            get: { selectedPaymentMethods.contains(method) },
-            set: { isOn in
-                if isOn { selectedPaymentMethods.insert(method) } else { selectedPaymentMethods.remove(method) }
-            }
-        )
-    }
-
-    private func clearFilters() {
-        selectedCategoryIDs.removeAll()
-        includeUncategorized = false
-        selectedPaymentMethods.removeAll()
-    }
-
-    private func matchesFilters(_ expense: Expense) -> Bool {
-        let categoryMatches: Bool
-        if selectedCategoryIDs.isEmpty && !includeUncategorized {
-            categoryMatches = true
-        } else if let category = expense.category {
-            categoryMatches = selectedCategoryIDs.contains(category.id)
-        } else {
-            categoryMatches = includeUncategorized
-        }
-
-        let paymentMatches = selectedPaymentMethods.isEmpty || selectedPaymentMethods.contains(expense.paymentMethod)
-
-        return categoryMatches && paymentMatches
+        .padding(20)
     }
 
     private func confirmPendingDeletion() {
         guard let pendingDeletion else { return }
-        delete(pendingDeletion.items, at: pendingDeletion.offsets)
-        self.pendingDeletion = nil
-    }
-
-    private func delete(_ items: [Expense], at offsets: IndexSet) {
-        for index in offsets {
-            ExpenseRepository.deleteExpense(items[index], context: modelContext)
+        for index in pendingDeletion.offsets {
+            ExpenseRepository.deleteExpense(pendingDeletion.items[index], context: modelContext)
         }
+        self.pendingDeletion = nil
     }
 }

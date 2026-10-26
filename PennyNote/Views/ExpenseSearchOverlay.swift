@@ -18,14 +18,6 @@ struct ExpenseSearchOverlay: View {
         }
     }
 
-    private var groupedResults: [(day: Date, items: [Expense])] {
-        let calendar = Calendar.current
-        let groups = Dictionary(grouping: filteredExpenses) { calendar.startOfDay(for: $0.date) }
-        return groups
-            .sorted { $0.key > $1.key }
-            .map { (day: $0.key, items: $0.value) }
-    }
-
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
@@ -49,15 +41,7 @@ struct ExpenseSearchOverlay: View {
 
             if !filteredExpenses.isEmpty {
                 List {
-                    ForEach(groupedResults, id: \.day) { group in
-                        Section(header: Text(group.day, style: .date)) {
-                            ForEach(group.items) { expense in
-                                ExpenseRowView(expense: expense)
-                                    .contentShape(Rectangle())
-                                    .onTapGesture { onSelect(expense) }
-                            }
-                        }
-                    }
+                    DayGroupedExpenseSections(expenses: filteredExpenses, onSelect: onSelect)
                 }
                 .listStyle(.plain)
             } else {

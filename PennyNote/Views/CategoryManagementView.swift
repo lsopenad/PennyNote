@@ -60,7 +60,7 @@ struct CategoryManagementView: View {
     private func addCategory() {
         let trimmed = newCategoryName.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
-        ExpenseRepository.addCategory(name: trimmed, symbolName: "tag.fill", context: modelContext)
+        ExpenseRepository.addCategory(name: trimmed, symbolName: ExpenseCategory.defaultSymbolName, context: modelContext)
         newCategoryName = ""
         errorMessage = nil
     }

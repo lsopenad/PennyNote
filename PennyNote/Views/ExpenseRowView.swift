@@ -3,19 +3,12 @@ import SwiftUI
 struct ExpenseRowView: View {
     let expense: Expense
 
-    private var amountLabel: String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "es_ES")
-        return formatter.string(from: expense.amount as NSDecimalNumber) ?? "\(expense.amount) €"
+    private var categoryName: String {
+        expense.category?.name ?? ExpenseCategory.uncategorizedLabel
     }
 
-    private var headline: String {
-        if !expense.title.isEmpty { return expense.title }
-        return expense.category?.name ?? "Sin categoría"
-    }
-
-    private var showsCategorySubtitle: Bool {
+    // Sin título, la categoría ocupa su lugar y no se repite como subtítulo.
+    private var hasTitle: Bool {
         !expense.title.isEmpty
     }
 
@@ -28,10 +21,10 @@ struct ExpenseRowView: View {
                 .background(.tint.opacity(0.12), in: Circle())
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(headline)
+                Text(hasTitle ? expense.title : categoryName)
                     .font(.body)
-                if showsCategorySubtitle {
-                    Text(expense.category?.name ?? "Sin categoría")
+                if hasTitle {
+                    Text(categoryName)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -39,7 +32,7 @@ struct ExpenseRowView: View {
 
             Spacer()
 
-            Text(amountLabel)
+            Text(DisplayFormat.currency(expense.amount))
                 .font(.body.monospacedDigit())
         }
         .padding(.vertical, 4)

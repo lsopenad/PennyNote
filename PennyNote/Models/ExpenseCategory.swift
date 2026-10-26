@@ -32,3 +32,10 @@ final class ExpenseCategory {
         self.notionSelectOptionID = notionSelectOptionID
     }
 }
+
+extension ExpenseCategory {
+    // Etiqueta que se muestra para los gastos sin categoría asignada.
+    static let uncategorizedLabel = "Sin categoría"
+    // Icono de las categorías que crea el usuario desde Ajustes.
+    static let defaultSymbolName = "tag.fill"
+}
