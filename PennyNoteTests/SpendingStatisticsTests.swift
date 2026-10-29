@@ -89,6 +89,16 @@ struct SpendingStatisticsTests {
         #expect(SpendingStatistics.elapsedDays(inMonthOf: try date(2026, 4, 2), now: now) == 0)
     }
 
+    @Test func latestMonthReachesFutureExpensesButNotDeletedOnes() throws {
+        let now = try date(2026, 10, 29)
+        let deleted = Expense(amount: 1, date: try date(2027, 3, 1))
+        deleted.isSoftDeleted = true
+
+        #expect(SpendingStatistics.latestMonth([], now: now) == (try date(2026, 10, 1)))
+        #expect(SpendingStatistics.latestMonth([Expense(amount: 1, date: try date(2026, 5, 3))], now: now) == (try date(2026, 10, 1)))
+        #expect(SpendingStatistics.latestMonth([Expense(amount: 1, date: try date(2026, 12, 24)), deleted], now: now) == (try date(2026, 12, 1)))
+    }
+
     private func date(_ year: Int, _ month: Int, _ day: Int, hour: Int = 0, minute: Int = 0) throws -> Date {
         try #require(DateComponents(calendar: .current, year: year, month: month, day: day, hour: hour, minute: minute).date)
     }

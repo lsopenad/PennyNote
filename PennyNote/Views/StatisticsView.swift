@@ -11,8 +11,8 @@ struct StatisticsView: View {
 
     private static let evolutionMonthCount = 6
 
-    private var isCurrentMonth: Bool {
-        selectedMonth >= Calendar.current.startOfMonth(for: .now)
+    private var latestMonth: Date {
+        SpendingStatistics.latestMonth(activeExpenses)
     }
 
     var body: some View {
@@ -85,7 +85,7 @@ struct StatisticsView: View {
             } label: {
                 Image(systemName: "chevron.right")
             }
-            .disabled(isCurrentMonth)
+            .disabled(selectedMonth >= latestMonth)
             .accessibilityLabel("Mes siguiente")
         }
         // Sin esto, en una fila de List un toque en cualquier botón dispara los dos.
@@ -158,7 +158,7 @@ struct StatisticsView: View {
     private func moveMonth(by months: Int) {
         guard let month = Calendar.current.date(byAdding: .month, value: months, to: selectedMonth) else { return }
         withAnimation(.snappy) {
-            selectedMonth = min(month, Calendar.current.startOfMonth(for: .now))
+            selectedMonth = min(month, latestMonth)
         }
     }
 }
