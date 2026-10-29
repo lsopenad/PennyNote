@@ -113,3 +113,5 @@ El script:
 Hay que lanzarlo desde `main` sin cambios pendientes. Con `--dry-run` hace los tres primeros pasos sin commit, push ni Release, para revisar el resultado antes. Si falla antes del commit, restaura `project.yml` y la source.
 
 La versión debe seguir el formato `X.Y.Z` y ser mayor que la anterior: AltStore solo ofrece la actualización si la versión sube.
+
+**Antes de publicar una versión que añade migraciones** en `supabase/migrations`, aplícalas en el proyecto de Supabase (`supabase db push` o el SQL Editor, ver arriba). La app consulta esas tablas en cada sincronización: si falta una, la sincronización falla entera hasta que se aplica.

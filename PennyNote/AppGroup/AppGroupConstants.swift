@@ -9,5 +9,6 @@ enum AppGroupConstants {
 
     enum Keys {
         static let widgetSnapshot = "widget.snapshot"
+        static let currency = "settings.currency"
     }
 }

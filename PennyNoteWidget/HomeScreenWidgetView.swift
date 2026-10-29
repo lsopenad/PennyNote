@@ -36,7 +36,7 @@ struct HomeScreenWidgetView: View {
             Text(entry.monthLabel)
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text(DisplayFormat.currency(entry.total))
+            Text(DisplayFormat.currency(entry.total, in: entry.currency))
                 .font(.system(size: 24, weight: .bold, design: .rounded))
                 .minimumScaleFactor(0.6)
                 .lineLimit(1)
@@ -105,7 +105,7 @@ struct HomeScreenWidgetView: View {
                 .font(.caption)
                 .lineLimit(1)
             Spacer(minLength: 4)
-            Text(DisplayFormat.currency(category.total, showsCents: false))
+            Text(DisplayFormat.currency(category.total, in: entry.currency, showsCents: false))
                 .font(.caption.monospacedDigit())
                 .lineLimit(1)
         }

@@ -6,7 +6,7 @@ struct LockScreenWidgetView: View {
     let entry: MonthlyTotalEntry
 
     private var totalLabel: String {
-        DisplayFormat.currency(entry.total, showsCents: false)
+        DisplayFormat.currency(entry.total, in: entry.currency, showsCents: false)
     }
 
     var body: some View {
@@ -20,7 +20,7 @@ struct LockScreenWidgetView: View {
         switch family {
         case .accessoryCircular:
             VStack(spacing: 0) {
-                Image(systemName: "eurosign.circle")
+                Image(systemName: entry.currency.symbolName)
                     .font(.caption2)
                 Text(totalLabel)
                     .font(.system(size: 14, weight: .semibold, design: .rounded))
@@ -29,7 +29,7 @@ struct LockScreenWidgetView: View {
             }
         default:
             HStack {
-                Image(systemName: "eurosign.circle")
+                Image(systemName: entry.currency.symbolName)
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Este mes")
                         .font(.caption2)

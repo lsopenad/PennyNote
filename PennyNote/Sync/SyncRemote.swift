@@ -8,6 +8,9 @@ protocol SyncRemote {
     // Filas cambiadas en el servidor después de `since` (todas si es nil), por server_updated_at.
     func fetchCategories(changedSince since: Date?) async throws -> [RemoteCategory]
     func fetchExpenses(changedSince since: Date?) async throws -> [RemoteExpense]
+    // La fila de ajustes de la cuenta, o nil si aún no tiene.
+    func fetchUserSettings() async throws -> RemoteUserSettings?
+    func upsertUserSettings(_ settings: RemoteUserSettings) async throws
 }
 
 // Lo común de las filas que se bajan, para paginar por server_updated_at.
@@ -144,6 +147,32 @@ struct RemoteExpense: Codable, Equatable, SyncRow {
         try container.encode(categoryID, forKey: .categoryID)
         try container.encode(isDeleted, forKey: .isDeleted)
         try container.encode(createdAt, forKey: .createdAt)
+        try container.encode(updatedAt, forKey: .updatedAt)
+    }
+}
+
+// Fila de public.user_settings. Hay una por usuario y se identifica por user_id, que pone el servidor.
+struct RemoteUserSettings: Codable, Equatable {
+    // AppCurrency.rawValue.
+    var currency: String
+    var updatedAt: Date
+    var serverUpdatedAt: Date?
+
+    private enum CodingKeys: String, CodingKey {
+        case currency
+        case updatedAt = "updated_at"
+        case serverUpdatedAt = "server_updated_at"
+    }
+
+    init(currency: String, updatedAt: Date, serverUpdatedAt: Date? = nil) {
+        self.currency = currency
+        self.updatedAt = updatedAt
+        self.serverUpdatedAt = serverUpdatedAt
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(currency, forKey: .currency)
         try container.encode(updatedAt, forKey: .updatedAt)
     }
 }

@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct MonthHeaderView: View {
+    @Environment(\.currency) private var currency
+
     let current: MonthSpending
     let previous: MonthSpending
     // Día de hoy dentro del mes en curso.
@@ -16,7 +18,7 @@ struct MonthHeaderView: View {
             Text(DisplayFormat.monthName(current.monthStart))
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-            Text(DisplayFormat.currency(current.total))
+            Text(DisplayFormat.currency(current.total, in: currency))
                 .font(.system(size: 40, weight: .bold, design: .rounded))
             if let comparisonText {
                 Text(comparisonText)

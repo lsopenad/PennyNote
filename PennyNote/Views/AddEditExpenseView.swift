@@ -4,6 +4,7 @@ import SwiftData
 struct AddEditExpenseView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.currency) private var currency
 
     private let expenseToEdit: Expense?
 
@@ -29,7 +30,16 @@ struct AddEditExpenseView: View {
 
     private var canSave: Bool {
         guard let amount = parsedAmount else { return false }
-        return ExpenseLimits.isValidAmount(amount)
+        return ExpenseLimits.isValidAmount(amount) && ExpenseLimits.hasValidFractionDigits(amount, for: currency)
+    }
+
+    // Más decimales de los que usa la moneda, p. ej. céntimos en yenes o un gasto antiguo tras cambiarla.
+    private var hasTooManyDecimals: Bool {
+        parsedAmount.map { !ExpenseLimits.hasValidFractionDigits($0, for: currency) } ?? false
+    }
+
+    private var amountPlaceholder: String {
+        Decimal.zero.formatted(.number.precision(.fractionLength(currency.fractionDigits)))
     }
 
     var body: some View {
@@ -43,10 +53,10 @@ struct AddEditExpenseView: View {
                     HStack {
                         Text("Cantidad")
                         Spacer()
-                        TextField("0,00", text: $amountText)
-                            .keyboardType(.decimalPad)
+                        TextField(amountPlaceholder, text: $amountText)
+                            .keyboardType(currency.fractionDigits == 0 ? .numberPad : .decimalPad)
                             .multilineTextAlignment(.trailing)
-                        Text("€")
+                        Text(currency.symbol)
                             .foregroundStyle(.secondary)
                     }
                     CategoryPickerView(selection: $category)
@@ -56,6 +66,12 @@ struct AddEditExpenseView: View {
                         }
                     }
                     DatePicker("Fecha", selection: $date, displayedComponents: .date)
+                } footer: {
+                    if hasTooManyDecimals {
+                        Text(currency.fractionDigits == 0
+                            ? "Tu moneda no usa decimales."
+                            : "Tu moneda usa como máximo \(currency.fractionDigits) decimales.")
+                    }
                 }
             }
             .navigationTitle(expenseToEdit == nil ? "Añadir gasto" : "Editar gasto")

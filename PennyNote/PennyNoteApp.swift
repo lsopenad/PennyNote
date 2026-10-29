@@ -8,12 +8,14 @@ struct PennyNoteApp: App {
     let modelContainer = SharedModelContainer.container
     @State private var session = AccountSession.shared
     @State private var sync = SyncCoordinator.shared
+    @State private var currencySettings = CurrencySettings.shared
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(session)
                 .environment(sync)
+                .environment(currencySettings)
         }
         .modelContainer(modelContainer)
         .onChange(of: scenePhase) { _, newPhase in

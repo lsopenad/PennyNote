@@ -3,6 +3,8 @@ import SwiftUI
 // Fila de reparto (categoría o método de pago): icono, nombre, importe, porcentaje y una barra
 // proporcional a su parte del total.
 struct SpendingShareRow: View {
+    @Environment(\.currency) private var currency
+
     let title: String
     let symbolName: String
     let color: Color
@@ -23,7 +25,7 @@ struct SpendingShareRow: View {
                     Text(title)
                         .lineLimit(1)
                     Spacer()
-                    Text(DisplayFormat.currency(total))
+                    Text(DisplayFormat.currency(total, in: currency))
                         .monospacedDigit()
                     Text(DisplayFormat.percent(fraction))
                         .font(.footnote.monospacedDigit())

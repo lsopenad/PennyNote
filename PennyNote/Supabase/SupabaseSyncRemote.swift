@@ -1,7 +1,7 @@
 import Foundation
 import Supabase
 
-// SyncRemote contra las tablas public.categories y public.expenses. RLS limita cada consulta a las
+// SyncRemote contra las tablas public.categories, public.expenses y public.user_settings. RLS limita cada consulta a las
 // filas del usuario de la sesión, así que no hace falta filtrar por user_id.
 struct SupabaseSyncRemote: SyncRemote {
     // El máximo de filas que devuelve PostgREST por petición en Supabase (max_rows).
@@ -10,6 +10,8 @@ struct SupabaseSyncRemote: SyncRemote {
     private static let categoryColumns = "id,name,symbol_name,sort_order,color_name,is_deleted,updated_at,server_updated_at"
     // amount::text: el importe llega como texto y no pierde precisión al decodificarlo.
     private static let expenseColumns = "id,amount::text,date,title,payment_method,category_id,is_deleted,created_at,updated_at,server_updated_at"
+
+    private static let userSettingsColumns = "currency,updated_at,server_updated_at"
 
     let client: SupabaseClient
 
@@ -31,6 +33,23 @@ struct SupabaseSyncRemote: SyncRemote {
 
     func fetchExpenses(changedSince since: Date?) async throws -> [RemoteExpense] {
         try await fetchAll(table: "expenses", columns: Self.expenseColumns, changedSince: since)
+    }
+
+    func fetchUserSettings() async throws -> RemoteUserSettings? {
+        let rows: [RemoteUserSettings] = try await client.from("user_settings")
+            .select(Self.userSettingsColumns)
+            .limit(1)
+            .execute()
+            .value
+        return rows.first
+    }
+
+    // user_id no viaja: al crear la fila lo pone el valor por defecto (auth.uid()), y el conflicto se
+    // detecta con él.
+    func upsertUserSettings(_ settings: RemoteUserSettings) async throws {
+        try await client.from("user_settings")
+            .upsert(settings, onConflict: "user_id", returning: .minimal)
+            .execute()
     }
 
     // Pide página a página, cada una desde el server_updated_at de la última fila recibida (no por

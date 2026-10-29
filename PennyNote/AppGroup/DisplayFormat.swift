@@ -3,16 +3,8 @@ import Foundation
 // Formateo de importes y meses compartido por la app y el widget (este fichero se compila en
 // ambos targets). Los formateadores se crean una vez en vez de en cada evaluación de body.
 enum DisplayFormat {
+    // Los importes siguen el formato del móvil; los textos, de momento, siempre en español.
     private static let locale = Locale(identifier: "es_ES")
-
-    private static let currencyFormatter = makeCurrencyFormatter()
-
-    // Sin céntimos, para los huecos pequeños de la pantalla de bloqueo.
-    private static let wholeCurrencyFormatter: NumberFormatter = {
-        let formatter = makeCurrencyFormatter()
-        formatter.maximumFractionDigits = 0
-        return formatter
-    }()
 
     private static let monthFormatter = makeDateFormatter("LLLL")
     private static let shortMonthFormatter = makeDateFormatter("LLL")
@@ -37,9 +29,11 @@ enum DisplayFormat {
         return formatter
     }()
 
-    static func currency(_ amount: Decimal, showsCents: Bool = true) -> String {
-        let formatter = showsCents ? currencyFormatter : wholeCurrencyFormatter
-        return formatter.string(from: amount as NSDecimalNumber) ?? "\(amount) €"
+    // Con los decimales de la moneda (ninguno en yenes), o sin ellos para los huecos pequeños de la
+    // pantalla de bloqueo. Decimal.FormatStyle reutiliza por dentro el formateador de cada moneda.
+    static func currency(_ amount: Decimal, in currency: AppCurrency, showsCents: Bool = true) -> String {
+        let style = Decimal.FormatStyle.Currency(code: currency.rawValue, locale: .current)
+        return showsCents ? amount.formatted(style) : amount.formatted(style.precision(.fractionLength(0)))
     }
 
     static func monthName(_ date: Date) -> String {
@@ -72,13 +66,6 @@ enum DisplayFormat {
         let formatter = DateFormatter()
         formatter.locale = locale
         formatter.dateFormat = format
-        return formatter
-    }
-
-    private static func makeCurrencyFormatter() -> NumberFormatter {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = locale
         return formatter
     }
 }

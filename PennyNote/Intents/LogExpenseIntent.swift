@@ -39,6 +39,9 @@ struct LogExpenseIntent: AppIntent {
         guard ExpenseLimits.isValidAmount(amountDecimal) else {
             throw LogExpenseError.invalidAmount
         }
+        guard ExpenseLimits.hasValidFractionDigits(amountDecimal, for: CurrencySettings.shared.currency) else {
+            throw LogExpenseError.tooManyDecimals
+        }
 
         ExpenseRepository.addExpense(
             amount: amountDecimal,
@@ -54,11 +57,13 @@ struct LogExpenseIntent: AppIntent {
 
 enum LogExpenseError: Error, CustomLocalizedStringResourceConvertible {
     case invalidAmount
+    case tooManyDecimals
     case signedOut
 
     var localizedStringResource: LocalizedStringResource {
         switch self {
         case .invalidAmount: "La cantidad tiene que ser mayor que 0."
+        case .tooManyDecimals: "La cantidad tiene más decimales de los que usa la moneda de tu cuenta."
         case .signedOut: "Inicia sesión en PennyNote para registrar gastos."
         }
     }

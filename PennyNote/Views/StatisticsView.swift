@@ -2,6 +2,8 @@ import SwiftUI
 import SwiftData
 
 struct StatisticsView: View {
+    @Environment(\.currency) private var currency
+
     @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date)
     private var activeExpenses: [Expense]
 
@@ -92,11 +94,11 @@ struct StatisticsView: View {
 
     private func summary(spending: MonthSpending, elapsedDays: Int) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(DisplayFormat.currency(spending.total))
+            Text(DisplayFormat.currency(spending.total, in: currency))
                 .font(.system(size: 34, weight: .bold, design: .rounded))
             if elapsedDays > 0 {
                 // Igual que la línea de media de la gráfica: sin contar gastos con fecha futura.
-                Text("Media diaria: \(DisplayFormat.currency(spending.total(throughDay: elapsedDays) / Decimal(elapsedDays)))")
+                Text("Media diaria: \(DisplayFormat.currency(spending.total(throughDay: elapsedDays) / Decimal(elapsedDays), in: currency))")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }

@@ -7,6 +7,7 @@ import Testing
 struct SyncEngineTests {
     private let context: ModelContext
     private let state: SyncStateStore
+    private let currency: CurrencySettings
     private let remote = FakeSyncRemote()
     private let userID = UUID()
 
@@ -15,10 +16,11 @@ struct SyncEngineTests {
         let container = try ModelContainer(for: Expense.self, ExpenseCategory.self, configurations: configuration)
         context = ModelContext(container)
         state = SyncStateStore(defaults: try #require(UserDefaults(suiteName: "SyncEngineTests.\(UUID())")))
+        currency = CurrencySettings(defaults: try #require(UserDefaults(suiteName: "SyncEngineTests.currency.\(UUID())")))
     }
 
     private var engine: SyncEngine {
-        SyncEngine(context: context, remote: remote, state: state)
+        SyncEngine(context: context, remote: remote, state: state, currency: currency)
     }
 
     // MARK: - Primer login
@@ -109,7 +111,7 @@ struct SyncEngineTests {
 
         #expect(expense.syncStatus == .pending)
         #expect(remainingChanges == 1)
-        #expect(SyncEngine.pendingChangeCount(context: context, state: state) == 1)
+        #expect(SyncEngine.pendingChangeCount(context: context, state: state, currency: currency) == 1)
     }
 
     // MARK: - Borrados
@@ -150,13 +152,86 @@ struct SyncEngineTests {
         state.expensesCursor = .now
         state.hasActiveSession = true
 
-        try SyncEngine.wipeLocalData(context: context, state: state)
+        currency.choose(.jpy)
+
+        try SyncEngine.wipeLocalData(context: context, state: state, currency: currency)
 
         #expect(try fetchExpenses().isEmpty)
         #expect(try fetchCategories().isEmpty)
         #expect(state.ownerUserID == nil)
         #expect(state.expensesCursor == nil)
         #expect(state.hasActiveSession == false)
+        #expect(currency.currency == .regionDefault())
+        #expect(currency.pendingRow == nil)
+    }
+
+    // MARK: - Moneda
+
+    @Test func newAccountIsAskedForCurrencyWithRegionDefault() async throws {
+        try engine.prepareLocalData(for: userID)
+        try await engine.sync()
+
+        #expect(currency.needsChoice)
+        #expect(currency.currency == .regionDefault())
+        #expect(remote.userSettings == nil)
+    }
+
+    @Test func accountWithExpensesButNoCurrencyIsSuggestedEuro() async throws {
+        remote.add(expense: 12)
+        try engine.prepareLocalData(for: userID)
+        try await engine.sync()
+
+        #expect(currency.needsChoice)
+        #expect(currency.currency == .eur)
+    }
+
+    @Test func chosenCurrencyIsUploadedAndNotAskedAgain() async throws {
+        try engine.prepareLocalData(for: userID)
+        try await engine.sync()
+
+        currency.choose(.jpy)
+        let remaining = try await engine.sync()
+
+        #expect(remote.userSettings?.currency == "JPY")
+        #expect(currency.needsChoice == false)
+        #expect(currency.pendingRow == nil)
+        #expect(remaining == 0)
+    }
+
+    @Test func remoteCurrencyIsAppliedWithoutAsking() async throws {
+        remote.setUserSettings(currency: "GBP", updatedAt: .now)
+        try engine.prepareLocalData(for: userID)
+        try await engine.sync()
+
+        #expect(currency.currency == .gbp)
+        #expect(currency.needsChoice == false)
+    }
+
+    @Test func newerLocalCurrencyWinsOverOlderRemote() async throws {
+        remote.setUserSettings(currency: "GBP", updatedAt: .now.addingTimeInterval(-60))
+        try engine.prepareLocalData(for: userID)
+        currency.choose(.usd)
+        try await engine.sync()
+
+        #expect(currency.currency == .usd)
+        #expect(remote.userSettings?.currency == "USD")
+    }
+
+    @Test func newerRemoteCurrencyWinsOverOlderLocal() async throws {
+        try engine.prepareLocalData(for: userID)
+        currency.choose(.usd)
+        remote.setUserSettings(currency: "GBP", updatedAt: .now.addingTimeInterval(60))
+        try await engine.sync()
+
+        #expect(currency.currency == .gbp)
+        #expect(currency.pendingRow == nil)
+        #expect(remote.userSettings?.currency == "GBP")
+    }
+
+    @Test func pendingCurrencyCountsAsUnsyncedChange() {
+        currency.choose(.chf)
+
+        #expect(SyncEngine.pendingChangeCount(context: context, state: state, currency: currency) == 1)
     }
 
     // MARK: - Formato
@@ -214,6 +289,7 @@ struct SyncEngineTests {
 private final class FakeSyncRemote: SyncRemote {
     private(set) var categories: [UUID: RemoteCategory] = [:]
     private(set) var expenses: [UUID: RemoteExpense] = [:]
+    private(set) var userSettings: RemoteUserSettings?
     var onUpsertExpenses: (() -> Void)?
     private var clock = Date(timeIntervalSinceReferenceDate: 800_000_000)
 
@@ -241,6 +317,38 @@ private final class FakeSyncRemote: SyncRemote {
 
     func fetchExpenses(changedSince since: Date?) async throws -> [RemoteExpense] {
         expenses.values.filter { since == nil || $0.serverUpdatedAt! > since! }
+    }
+
+    func fetchUserSettings() async throws -> RemoteUserSettings? {
+        userSettings
+    }
+
+    func upsertUserSettings(_ settings: RemoteUserSettings) async throws {
+        guard (userSettings?.updatedAt ?? .distantPast) <= settings.updatedAt else { return }
+        var stored = settings
+        stored.serverUpdatedAt = tick()
+        userSettings = stored
+    }
+
+    // Simula la moneda elegida desde otro dispositivo.
+    func setUserSettings(currency: String, updatedAt: Date) {
+        userSettings = RemoteUserSettings(currency: currency, updatedAt: updatedAt, serverUpdatedAt: tick())
+    }
+
+    func add(expense amount: Decimal) {
+        let expense = RemoteExpense(
+            id: UUID(),
+            amount: amount,
+            date: .now,
+            title: "",
+            paymentMethod: "card",
+            categoryID: nil,
+            isDeleted: false,
+            createdAt: .now,
+            updatedAt: .now,
+            serverUpdatedAt: tick()
+        )
+        expenses[expense.id] = expense
     }
 
     @discardableResult
