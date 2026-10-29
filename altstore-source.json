@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.1.1",
+          "buildVersion": "4",
+          "date": "2026-10-29",
+          "localizedDescription": "Correcciones: el icono de cada gasto en la lista sale con el color de su categoría, y Estadísticas deja avanzar hasta los meses futuros que tengan gastos.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.1.1/PennyNote.ipa",
+          "size": 1630717,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.1.0",
           "buildVersion": "3",
           "date": "2026-10-29",
@@ -53,11 +62,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.1.0",
+      "version": "1.1.1",
       "versionDate": "2026-10-29",
-      "versionDescription": "Novedad: elige la moneda de tu cuenta (euro, dólar, libra, yen, yuan, peso mexicano, argentino o colombiano, franco suizo o dólar canadiense). Se pregunta una vez al entrar y se cambia en Ajustes → Moneda; se sincroniza entre dispositivos. Los importes no se convierten: solo cambia cómo se muestran.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.1.0/PennyNote.ipa",
-      "size": 1629353
+      "versionDescription": "Correcciones: el icono de cada gasto en la lista sale con el color de su categoría, y Estadísticas deja avanzar hasta los meses futuros que tengan gastos.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.1.1/PennyNote.ipa",
+      "size": 1630717
     }
   ],
   "news": []
