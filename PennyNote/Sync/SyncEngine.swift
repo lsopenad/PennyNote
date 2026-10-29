@@ -17,11 +17,13 @@ final class SyncEngine {
     private let context: ModelContext
     private let remote: SyncRemote
     private let state: SyncStateStore
+    private let currency: CurrencySettings
 
-    init(context: ModelContext, remote: SyncRemote, state: SyncStateStore) {
+    init(context: ModelContext, remote: SyncRemote, state: SyncStateStore, currency: CurrencySettings) {
         self.context = context
         self.remote = remote
         self.state = state
+        self.currency = currency
     }
 
     // Deja los datos locales listos para el usuario que acaba de iniciar sesión.
@@ -35,7 +37,7 @@ final class SyncEngine {
         default:
             // Datos de otra cuenta que no se borraron al salir (sesión caducada): no se mezclan.
             Log.sync.notice("Los datos locales son de otra cuenta; se borran antes de sincronizar")
-            try Self.wipeLocalData(context: context, state: state)
+            try Self.wipeLocalData(context: context, state: state, currency: currency)
             state.ownerUserID = userID
         }
     }
@@ -53,20 +55,22 @@ final class SyncEngine {
         return remainingChanges
     }
 
-    static func pendingChangeCount(context: ModelContext, state: SyncStateStore) -> Int {
+    static func pendingChangeCount(context: ModelContext, state: SyncStateStore, currency: CurrencySettings) -> Int {
         let categories = context.categories(failureMessage: "Fallo al contar categorías pendientes")
         let expenses = context.fetchOrEmpty(FetchDescriptor<Expense>(), failureMessage: "Fallo al contar gastos pendientes")
         return categories.filter { $0.syncStatus == .pending }.count
             + state.categoryTombstones.count
             + expenses.filter { $0.syncStatus == .pending }.count
+            + (currency.isPending ? 1 : 0)
     }
 
     // Borra todos los datos del móvil y el estado de la sincronización (al cerrar sesión o borrar la cuenta).
-    static func wipeLocalData(context: ModelContext, state: SyncStateStore) throws {
+    static func wipeLocalData(context: ModelContext, state: SyncStateStore, currency: CurrencySettings) throws {
         try context.fetch(FetchDescriptor<Expense>()).forEach(context.delete)
         try context.fetch(FetchDescriptor<ExpenseCategory>()).forEach(context.delete)
         try context.save()
         state.reset()
+        currency.reset()
         WidgetSnapshotStore.clear()
     }
 
@@ -75,6 +79,7 @@ final class SyncEngine {
     private func pull() async throws {
         let remoteCategories = try await remote.fetchCategories(changedSince: Self.pullStart(after: state.categoriesCursor))
         let remoteExpenses = try await remote.fetchExpenses(changedSince: Self.pullStart(after: state.expensesCursor))
+        let remoteSettings = try await remote.fetchUserSettings()
 
         let categoriesByID = apply(remoteCategories)
         apply(remoteExpenses, categoriesByID: categoriesByID)
@@ -83,6 +88,14 @@ final class SyncEngine {
 
         state.categoriesCursor = Self.latest(state.categoriesCursor, remoteCategories.compactMap(\.serverUpdatedAt))
         state.expensesCursor = Self.latest(state.expensesCursor, remoteExpenses.compactMap(\.serverUpdatedAt))
+
+        // Una cuenta sin moneda que ya tiene gastos es de la 1.0.x, que los mostraba en euros.
+        currency.apply(remote: remoteSettings) { [context] in
+            var descriptor = FetchDescriptor<Expense>()
+            descriptor.fetchLimit = 1
+            let hasExpenses = !context.fetchOrEmpty(descriptor, failureMessage: "Fallo al comprobar si la cuenta tiene gastos").isEmpty
+            return hasExpenses ? .eur : .regionDefault()
+        }
     }
 
     // Devuelve las categorías locales por id, ya actualizadas, para enlazar los gastos.
@@ -154,6 +167,11 @@ final class SyncEngine {
     // MARK: - Subir
 
     private func push() async throws -> Int {
+        if let settingsRow = currency.pendingRow {
+            try await remote.upsertUserSettings(settingsRow)
+            currency.markSynced(settingsRow)
+        }
+
         // Primero las categorías: los gastos las referencian en el servidor.
         let tombstones = state.categoryTombstones
         let categoryRows = allCategories().filter { $0.syncStatus == .pending }.map { RemoteCategory($0) }
@@ -191,6 +209,7 @@ final class SyncEngine {
         }
         // Lo que se modifique a partir de aquí lo cuenta la siguiente pasada, que ya habrá pedido requestSync.
         return pendingCategoryCount + state.categoryTombstones.count + expenseRows.count - syncedExpenseCount
+            + (currency.isPending ? 1 : 0)
     }
 
     // MARK: - Lecturas

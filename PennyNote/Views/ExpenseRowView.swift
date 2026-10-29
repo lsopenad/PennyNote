@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ExpenseRowView: View {
+    @Environment(\.currency) private var currency
+
     let expense: Expense
 
     private var categoryName: String {
@@ -32,7 +34,7 @@ struct ExpenseRowView: View {
 
             Spacer()
 
-            Text(DisplayFormat.currency(expense.amount))
+            Text(DisplayFormat.currency(expense.amount, in: currency))
                 .font(.body.monospacedDigit())
         }
         .padding(.vertical, 4)

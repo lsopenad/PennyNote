@@ -19,6 +19,7 @@ final class SyncCoordinator {
 
     @ObservationIgnored private let container: ModelContainer
     @ObservationIgnored private let state: SyncStateStore
+    @ObservationIgnored private let currency: CurrencySettings
     @ObservationIgnored private var engine: SyncEngine?
     // Usuario con sesión: si preparar sus datos falla, se reintenta en la siguiente sincronización.
     @ObservationIgnored private var activeUser: (id: UUID, remote: SyncRemote)?
@@ -29,6 +30,7 @@ final class SyncCoordinator {
     private init() {
         container = SharedModelContainer.container
         state = .standard
+        currency = .shared
         lastSyncDate = state.lastSyncDate
     }
 
@@ -44,7 +46,7 @@ final class SyncCoordinator {
     private func readyEngine() -> SyncEngine? {
         if let engine { return engine }
         guard let activeUser else { return nil }
-        let engine = SyncEngine(context: container.mainContext, remote: activeUser.remote, state: state)
+        let engine = SyncEngine(context: container.mainContext, remote: activeUser.remote, state: state, currency: currency)
         do {
             try engine.prepareLocalData(for: activeUser.id)
         } catch {
@@ -72,7 +74,7 @@ final class SyncCoordinator {
     func deactivateAndWipeLocalData() async throws {
         deactivate()
         await currentPass?.value
-        try SyncEngine.wipeLocalData(context: container.mainContext, state: state)
+        try SyncEngine.wipeLocalData(context: container.mainContext, state: state, currency: currency)
         lastSyncDate = nil
         pendingChangeCount = 0
     }
@@ -109,7 +111,7 @@ final class SyncCoordinator {
 
     // Cambios sin subir según lo guardado, aunque la sincronización no haya llegado a arrancar.
     func unsyncedChangeCount() -> Int {
-        SyncEngine.pendingChangeCount(context: container.mainContext, state: state)
+        SyncEngine.pendingChangeCount(context: container.mainContext, state: state, currency: currency)
     }
 
     private func runPass() async {

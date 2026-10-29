@@ -11,6 +11,14 @@ enum ExpenseLimits {
         amount > 0 && amount < maxAmountExclusive
     }
 
+    // Sin más decimales de los que usa la moneda (ninguno en yenes): no se podrían mostrar.
+    static func hasValidFractionDigits(_ amount: Decimal, for currency: AppCurrency) -> Bool {
+        var value = amount
+        var rounded = Decimal()
+        NSDecimalRound(&rounded, &value, currency.fractionDigits, .plain)
+        return rounded == amount
+    }
+
     static func clampedTitle(_ title: String) -> String {
         String(title.prefix(titleMaxLength))
     }

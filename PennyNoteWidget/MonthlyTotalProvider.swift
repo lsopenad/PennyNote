@@ -21,22 +21,28 @@ struct MonthlyTotalProvider: TimelineProvider {
                 .init(name: "Ocio", symbolName: "gamecontroller.fill", colorName: CategoryColor.green.rawValue, total: 38.5),
             ]
         )
-        return MonthlyTotalEntry(date: .now, display: WidgetDisplay(snapshot: snapshot, at: .now))
+        return MonthlyTotalEntry(date: .now, display: WidgetDisplay(snapshot: snapshot, at: .now), currency: Self.currency)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (MonthlyTotalEntry) -> Void) {
         let snapshot = WidgetSnapshotStore.read()
-        completion(MonthlyTotalEntry(date: .now, display: WidgetDisplay(snapshot: snapshot, at: .now)))
+        completion(MonthlyTotalEntry(date: .now, display: WidgetDisplay(snapshot: snapshot, at: .now), currency: Self.currency))
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<MonthlyTotalEntry>) -> Void) {
         let snapshot = WidgetSnapshotStore.read()
+        let currency = Self.currency
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: .now)
         let midnights = (1...Self.upcomingMidnightCount).compactMap { calendar.date(byAdding: .day, value: $0, to: today) }
         let entries = ([Date.now] + midnights).map { date in
-            MonthlyTotalEntry(date: date, display: WidgetDisplay(snapshot: snapshot, at: date, calendar: calendar))
+            MonthlyTotalEntry(date: date, display: WidgetDisplay(snapshot: snapshot, at: date, calendar: calendar), currency: currency)
         }
         completion(Timeline(entries: entries, policy: .atEnd))
+    }
+
+    // La que ha guardado la app; sin sesión, la de la región, como en la app.
+    private static var currency: AppCurrency {
+        AppCurrency.stored() ?? .regionDefault()
     }
 }

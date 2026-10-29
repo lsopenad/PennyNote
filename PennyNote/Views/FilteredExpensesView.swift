@@ -5,6 +5,7 @@ import SwiftData
 struct FilteredExpensesView: View {
     @Environment(AppRouter.self) private var router
     @Environment(\.isReadOnly) private var isReadOnly
+    @Environment(\.currency) private var currency
 
     let title: String
     let month: Date
@@ -33,7 +34,7 @@ struct FilteredExpensesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .status) {
-                Text("\(DisplayFormat.monthAndYear(month)) · \(DisplayFormat.currency(expenses.sum(of: \.amount)))")
+                Text("\(DisplayFormat.monthAndYear(month)) · \(DisplayFormat.currency(expenses.sum(of: \.amount), in: currency))")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }

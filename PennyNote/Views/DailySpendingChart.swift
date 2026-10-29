@@ -3,6 +3,8 @@ import Charts
 
 // Gasto por día de un mes con la media diaria. Al tocar una barra se muestra su importe.
 struct DailySpendingChart: View {
+    @Environment(\.currency) private var currency
+
     let spending: MonthSpending
     // Días ya empezados del mes: la media se calcula sobre ellos, no sobre el mes entero.
     let elapsedDays: Int
@@ -59,7 +61,7 @@ struct DailySpendingChart: View {
                 AxisGridLine()
                 AxisValueLabel {
                     if let amount = value.as(Double.self) {
-                        Text(DisplayFormat.currency(Decimal(amount), showsCents: false))
+                        Text(DisplayFormat.currency(Decimal(amount), in: currency, showsCents: false))
                     }
                 }
             }
@@ -84,7 +86,7 @@ struct DailySpendingChart: View {
             Text(date, format: .dateTime.day().month())
                 .font(.caption2)
                 .foregroundStyle(.secondary)
-            Text(DisplayFormat.currency(Decimal(amount)))
+            Text(DisplayFormat.currency(Decimal(amount), in: currency))
                 .font(.caption.bold())
         }
         .padding(.horizontal, 6)

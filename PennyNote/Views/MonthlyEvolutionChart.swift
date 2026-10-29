@@ -3,6 +3,8 @@ import Charts
 
 // Total de los últimos meses con el seleccionado resaltado. Tocar una barra selecciona ese mes.
 struct MonthlyEvolutionChart: View {
+    @Environment(\.currency) private var currency
+
     let totals: [SpendingStatistics.MonthTotal]
     @Binding var selectedMonth: Date
 
@@ -38,7 +40,7 @@ struct MonthlyEvolutionChart: View {
                 AxisGridLine()
                 AxisValueLabel {
                     if let amount = value.as(Double.self) {
-                        Text(DisplayFormat.currency(Decimal(amount), showsCents: false))
+                        Text(DisplayFormat.currency(Decimal(amount), in: currency, showsCents: false))
                     }
                 }
             }
