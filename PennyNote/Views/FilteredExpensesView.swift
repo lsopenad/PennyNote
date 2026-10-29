@@ -1,14 +1,14 @@
 import SwiftUI
 import SwiftData
 
-// Gastos de un mes que cumplen un filtro; se abre al tocar una fila de Estadísticas.
+// Gastos de un periodo que cumplen un filtro; se abre al tocar una fila de Estadísticas.
 struct FilteredExpensesView: View {
     @Environment(AppRouter.self) private var router
     @Environment(\.isReadOnly) private var isReadOnly
     @Environment(\.currency) private var currency
 
     let title: String
-    let month: Date
+    let period: StatisticsPeriod
     let filter: ExpenseFilter
 
     // @Query propio, no un array recibido: así la lista se actualiza al editar o borrar un gasto.
@@ -16,7 +16,7 @@ struct FilteredExpensesView: View {
     private var activeExpenses: [Expense]
 
     private var expenses: [Expense] {
-        SpendingStatistics.expenses(activeExpenses, inMonthOf: month).filter(filter.matches)
+        SpendingStatistics.expenses(activeExpenses, in: period).filter(filter.matches)
     }
 
     var body: some View {
@@ -34,7 +34,7 @@ struct FilteredExpensesView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .status) {
-                Text("\(DisplayFormat.monthAndYear(month)) · \(DisplayFormat.currency(expenses.sum(of: \.amount), in: currency))")
+                Text("\(period.title()) · \(DisplayFormat.currency(expenses.sum(of: \.amount), in: currency))")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }

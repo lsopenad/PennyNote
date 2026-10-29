@@ -1,12 +1,19 @@
 import SwiftUI
 import Charts
 
-// Total de los últimos meses con el seleccionado resaltado. Tocar una barra selecciona ese mes.
-struct MonthlyEvolutionChart: View {
+// Total de los últimos meses o semanas con el seleccionado resaltado. Tocar una barra selecciona
+// ese periodo.
+struct PeriodEvolutionChart: View {
     @Environment(\.currency) private var currency
 
-    let totals: [SpendingStatistics.MonthTotal]
-    @Binding var selectedMonth: Date
+    let totals: [SpendingStatistics.PeriodTotal]
+    @Binding var selection: StatisticsPeriod
+
+    // Las semanas se dibujan como categorías con su primer día ("26 oct"): Charts no sabe agrupar
+    // por semanas que empiezan en lunes.
+    private func label(for period: StatisticsPeriod) -> String {
+        period.kind == .week ? DisplayFormat.shortDay(period.start) : DisplayFormat.shortMonth(period.start)
+    }
 
     private var average: Double? {
         guard !totals.isEmpty else { return nil }
@@ -17,10 +24,10 @@ struct MonthlyEvolutionChart: View {
         Chart {
             ForEach(totals) { item in
                 BarMark(
-                    x: .value("Mes", item.monthStart, unit: .month),
+                    x: .value("Periodo", label(for: item.period)),
                     y: .value("Importe", item.total.doubleValue)
                 )
-                .foregroundStyle(Color.accentColor.opacity(item.monthStart == selectedMonth ? 1 : 0.35))
+                .foregroundStyle(Color.accentColor.opacity(item.period == selection ? 1 : 0.35))
                 .cornerRadius(3)
             }
 
@@ -30,9 +37,10 @@ struct MonthlyEvolutionChart: View {
                     .foregroundStyle(Color.secondary)
             }
         }
+        // Solo la etiqueta: sin las líneas verticales que Charts pone por defecto a las categorías.
         .chartXAxis {
-            AxisMarks(values: .stride(by: .month)) {
-                AxisValueLabel(format: .dateTime.month(.abbreviated), centered: true)
+            AxisMarks {
+                AxisValueLabel(centered: true)
             }
         }
         .chartYAxis {
@@ -57,17 +65,18 @@ struct MonthlyEvolutionChart: View {
         }
         .frame(height: 160)
         .padding(.vertical, 8)
-        .accessibilityLabel("Evolución mensual del gasto")
+        .accessibilityLabel(totals.first?.period.kind == .week ? "Evolución semanal del gasto" : "Evolución mensual del gasto")
     }
 
     private func select(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
         guard let plotFrame = proxy.plotFrame else { return }
         let x = location.x - geometry[plotFrame].origin.x
-        guard let date: Date = proxy.value(atX: x) else { return }
-        let month = Calendar.current.startOfMonth(for: date)
-        guard totals.contains(where: { $0.monthStart == month }) else { return }
+        guard
+            let label: String = proxy.value(atX: x),
+            let item = totals.first(where: { self.label(for: $0.period) == label })
+        else { return }
         withAnimation(.snappy) {
-            selectedMonth = month
+            selection = item.period
         }
     }
 }
