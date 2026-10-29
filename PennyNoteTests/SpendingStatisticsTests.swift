@@ -75,28 +75,87 @@ struct SpendingStatisticsTests {
             Expense(amount: 4, date: try date(2026, 3, 2)),
             Expense(amount: 99, date: try date(2025, 12, 31)),
         ]
+        let march = StatisticsPeriod(kind: .month, containing: try date(2026, 3, 15))
 
-        let totals = SpendingStatistics.monthlyTotals(expenses, endingInMonthOf: try date(2026, 3, 15), count: 3)
+        let totals = SpendingStatistics.periodTotals(expenses, endingIn: march, count: 3)
 
-        #expect(totals.map(\.monthStart) == [try date(2026, 1, 1), try date(2026, 2, 1), try date(2026, 3, 1)])
+        #expect(totals.map(\.period.start) == [try date(2026, 1, 1), try date(2026, 2, 1), try date(2026, 3, 1)])
         #expect(totals.map(\.total) == [10, 0, 7])
     }
 
-    @Test func elapsedDaysDependsOnTheMonth() throws {
-        let now = try date(2026, 3, 15, hour: 10)
-        #expect(SpendingStatistics.elapsedDays(inMonthOf: try date(2026, 3, 2), now: now) == 15)
-        #expect(SpendingStatistics.elapsedDays(inMonthOf: try date(2026, 2, 2), now: now) == 28)
-        #expect(SpendingStatistics.elapsedDays(inMonthOf: try date(2026, 4, 2), now: now) == 0)
+    @Test func weeklyTotalsCountWeeksThatCrossMonths() throws {
+        let expenses = [
+            Expense(amount: 5, date: try date(2026, 10, 31)),
+            Expense(amount: 2, date: try date(2026, 11, 1, hour: 23)),
+            Expense(amount: 8, date: try date(2026, 11, 2)),
+        ]
+        let week = StatisticsPeriod(kind: .week, containing: try date(2026, 11, 4), calendar: mondayCalendar)
+
+        let totals = SpendingStatistics.periodTotals(expenses, endingIn: week, count: 2, calendar: mondayCalendar)
+
+        #expect(totals.map(\.period.start) == [try date(2026, 10, 26), try date(2026, 11, 2)])
+        #expect(totals.map(\.total) == [7, 8])
     }
 
-    @Test func latestMonthReachesFutureExpensesButNotDeletedOnes() throws {
+    @Test func elapsedDaysDependsOnThePeriod() throws {
+        let now = try date(2026, 3, 15, hour: 10)
+        func elapsed(_ kind: StatisticsPeriod.Kind, _ date: Date) -> Int {
+            SpendingStatistics.elapsedDays(in: StatisticsPeriod(kind: kind, containing: date, calendar: mondayCalendar), now: now, calendar: mondayCalendar)
+        }
+        #expect(elapsed(.month, try date(2026, 3, 2)) == 15)
+        #expect(elapsed(.month, try date(2026, 2, 2)) == 28)
+        #expect(elapsed(.month, try date(2026, 4, 2)) == 0)
+        // El 15 de marzo de 2026 es domingo: la semana del lunes 9 ya ha empezado entera.
+        #expect(elapsed(.week, try date(2026, 3, 12)) == 7)
+        #expect(elapsed(.week, try date(2026, 3, 16)) == 0)
+        #expect(elapsed(.day, try date(2026, 3, 15)) == 1)
+    }
+
+    @Test func dailyTotalsFollowTheDaysOfTheWeek() throws {
+        let week = StatisticsPeriod(kind: .week, containing: try date(2026, 10, 29), calendar: mondayCalendar)
+        let expenses = [
+            Expense(amount: 3, date: try date(2026, 10, 26, hour: 9)),
+            Expense(amount: 4, date: try date(2026, 11, 1, hour: 20)),
+            Expense(amount: 50, date: try date(2026, 11, 2)),
+        ]
+
+        let totals = SpendingStatistics.dailyTotals(expenses, in: week, calendar: mondayCalendar)
+
+        #expect(totals == [3, 0, 0, 0, 0, 0, 4])
+    }
+
+    @Test func latestPeriodReachesFutureExpensesButNotDeletedOnes() throws {
         let now = try date(2026, 10, 29)
         let deleted = Expense(amount: 1, date: try date(2027, 3, 1))
         deleted.isSoftDeleted = true
+        func latest(_ kind: StatisticsPeriod.Kind, _ expenses: [Expense]) -> Date {
+            SpendingStatistics.latestPeriod(kind, expenses: expenses, now: now, calendar: mondayCalendar).start
+        }
 
-        #expect(SpendingStatistics.latestMonth([], now: now) == (try date(2026, 10, 1)))
-        #expect(SpendingStatistics.latestMonth([Expense(amount: 1, date: try date(2026, 5, 3))], now: now) == (try date(2026, 10, 1)))
-        #expect(SpendingStatistics.latestMonth([Expense(amount: 1, date: try date(2026, 12, 24)), deleted], now: now) == (try date(2026, 12, 1)))
+        #expect(latest(.month, []) == (try date(2026, 10, 1)))
+        #expect(latest(.month, [Expense(amount: 1, date: try date(2026, 5, 3))]) == (try date(2026, 10, 1)))
+        #expect(latest(.month, [Expense(amount: 1, date: try date(2026, 12, 24)), deleted]) == (try date(2026, 12, 1)))
+        #expect(latest(.week, [Expense(amount: 1, date: try date(2026, 12, 24))]) == (try date(2026, 12, 21)))
+        #expect(latest(.day, []) == (try date(2026, 10, 29)))
+    }
+
+    @Test func switchingKindKeepsTodayOrTheFirstDay() throws {
+        let now = try date(2026, 10, 29, hour: 12)
+        let october = StatisticsPeriod(kind: .month, containing: now, calendar: mondayCalendar)
+        let august = StatisticsPeriod(kind: .month, containing: try date(2026, 8, 20), calendar: mondayCalendar)
+
+        #expect(october.converted(to: .week, now: now, calendar: mondayCalendar).start == (try date(2026, 10, 26)))
+        #expect(august.converted(to: .week, now: now, calendar: mondayCalendar).start == (try date(2026, 7, 27)))
+        #expect(august.converted(to: .day, now: now, calendar: mondayCalendar).start == (try date(2026, 8, 1)))
+        let weekOfJuly = StatisticsPeriod(kind: .week, containing: try date(2026, 7, 29), calendar: mondayCalendar)
+        #expect(weekOfJuly.converted(to: .month, now: now, calendar: mondayCalendar).start == (try date(2026, 7, 1)))
+    }
+
+    // Semanas de lunes a domingo, como en España, sea cual sea la región del simulador.
+    private var mondayCalendar: Calendar {
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        return calendar
     }
 
     private func date(_ year: Int, _ month: Int, _ day: Int, hour: Int = 0, minute: Int = 0) throws -> Date {

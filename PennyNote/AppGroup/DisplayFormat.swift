@@ -9,6 +9,15 @@ enum DisplayFormat {
     private static let monthFormatter = makeDateFormatter("LLLL")
     private static let shortMonthFormatter = makeDateFormatter("LLL")
     private static let monthAndYearFormatter = makeDateFormatter("LLLL yyyy")
+    private static let shortDayFormatter = makeTemplateFormatter("dMMM")
+    private static let fullDayFormatter = makeTemplateFormatter("EEEEdMMMy")
+
+    private static let dayRangeFormatter: DateIntervalFormatter = {
+        let formatter = DateIntervalFormatter()
+        formatter.locale = locale
+        formatter.dateTemplate = "dMMMy"
+        return formatter
+    }()
 
     private static let percentFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -45,6 +54,27 @@ enum DisplayFormat {
         monthAndYearFormatter.string(from: date).capitalized
     }
 
+    // "26 oct – 1 nov 2026", con los dos días incluidos.
+    static func dayRange(from firstDay: Date, to lastDay: Date) -> String {
+        dayRangeFormatter.string(from: firstDay, to: lastDay)
+    }
+
+    // "Jueves, 29 de oct de 2026".
+    static func fullDay(_ date: Date) -> String {
+        let text = fullDayFormatter.string(from: date)
+        return text.prefix(1).uppercased() + text.dropFirst()
+    }
+
+    // "oct", para las barras de la evolución por meses.
+    static func shortMonth(_ date: Date) -> String {
+        shortMonthFormatter.string(from: date)
+    }
+
+    // "26 oct", para las barras de la evolución por semanas.
+    static func shortDay(_ date: Date) -> String {
+        shortDayFormatter.string(from: date)
+    }
+
     // 0.38 -> "38 %".
     static func percent(_ fraction: Double) -> String {
         percentFormatter.string(from: fraction as NSNumber) ?? ""
@@ -60,6 +90,13 @@ enum DisplayFormat {
         }
         let percentText = signedPercentFormatter.string(from: change as NSNumber) ?? ""
         return short ? "\(percentText) vs \(month)" : "\(percentText) vs \(month) a estas alturas"
+    }
+
+    private static func makeTemplateFormatter(_ template: String) -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        formatter.setLocalizedDateFormatFromTemplate(template)
+        return formatter
     }
 
     private static func makeDateFormatter(_ format: String) -> DateFormatter {

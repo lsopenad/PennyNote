@@ -1,33 +1,39 @@
 import SwiftUI
 import Charts
 
-// Gasto por día de un mes con la media diaria. Al tocar una barra se muestra su importe.
+// Gasto por día de un mes o una semana con la media diaria. Al tocar una barra se muestra su importe.
 struct DailySpendingChart: View {
     @Environment(\.currency) private var currency
 
-    let spending: MonthSpending
-    // Días ya empezados del mes: la media se calcula sobre ellos, no sobre el mes entero.
+    // Primer instante de cada día y su gasto, en el mismo orden.
+    let days: [Date]
+    let dailyTotals: [Decimal]
+    // Días ya empezados: la media se calcula sobre ellos, no sobre el periodo entero.
     let elapsedDays: Int
 
+    // Posición del día seleccionado (1 = el primero).
     @State private var selectedDay: Int?
 
-    private var days: [(day: Int, date: Date, amount: Double)] {
-        let calendar = Calendar.current
-        return spending.dailyTotals.enumerated().compactMap { index, amount in
-            calendar.date(byAdding: .day, value: index, to: spending.monthStart)
-                .map { (day: index + 1, date: $0, amount: amount.doubleValue) }
+    private var items: [(day: Int, date: Date, amount: Double)] {
+        zip(days, dailyTotals).enumerated().map { index, item in
+            (day: index + 1, date: item.0, amount: item.1.doubleValue)
         }
     }
 
     private var average: Double? {
         guard elapsedDays > 0 else { return nil }
-        return spending.total(throughDay: elapsedDays).doubleValue / Double(elapsedDays)
+        return dailyTotals.prefix(elapsedDays).sum(of: { $0 }).doubleValue / Double(elapsedDays)
+    }
+
+    // Una semana cabe con el nombre de cada día; un mes, con el número cada 7 días.
+    private var isWeek: Bool {
+        days.count <= 7
     }
 
     var body: some View {
-        let days = self.days
+        let items = self.items
         Chart {
-            ForEach(days, id: \.day) { item in
+            ForEach(items, id: \.day) { item in
                 BarMark(
                     x: .value("Día", item.date, unit: .day),
                     y: .value("Importe", item.amount)
@@ -42,7 +48,7 @@ struct DailySpendingChart: View {
                     .foregroundStyle(Color.secondary)
             }
 
-            if let selectedDay, let item = days.first(where: { $0.day == selectedDay }) {
+            if let selectedDay, let item = items.first(where: { $0.day == selectedDay }) {
                 RuleMark(x: .value("Día", item.date, unit: .day))
                     .foregroundStyle(.clear)
                     .annotation(position: .top, overflowResolution: .init(x: .fit(to: .chart), y: .disabled)) {
@@ -51,9 +57,15 @@ struct DailySpendingChart: View {
             }
         }
         .chartXAxis {
-            AxisMarks(values: .stride(by: .day, count: 7)) {
-                AxisGridLine()
-                AxisValueLabel(format: .dateTime.day())
+            if isWeek {
+                AxisMarks(values: days) {
+                    AxisValueLabel(format: .dateTime.weekday(.abbreviated), centered: true)
+                }
+            } else {
+                AxisMarks(values: .stride(by: .day, count: 7)) {
+                    AxisGridLine()
+                    AxisValueLabel(format: .dateTime.day())
+                }
             }
         }
         .chartYAxis {
@@ -99,9 +111,9 @@ struct DailySpendingChart: View {
         guard let plotFrame = proxy.plotFrame else { return }
         let x = location.x - geometry[plotFrame].origin.x
         guard let date: Date = proxy.value(atX: x) else { return }
-        let calendar = Calendar.current
-        guard calendar.isDate(date, equalTo: spending.monthStart, toGranularity: .month) else { return }
-        let day = calendar.component(.day, from: date)
+        let tappedDay = Calendar.current.startOfDay(for: date)
+        guard let index = days.firstIndex(of: tappedDay) else { return }
+        let day = index + 1
         selectedDay = selectedDay == day ? nil : day
     }
 }
