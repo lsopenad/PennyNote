@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.2.0",
+          "buildVersion": "5",
+          "date": "2026-10-29",
+          "localizedDescription": "Novedad: en Estadísticas puedes ver cada mes, semana o día. La semana va de lunes a domingo con un gráfico por días, y el día muestra la lista de sus gastos. Categorías, métodos de pago y evolución se adaptan al periodo elegido.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.2.0/PennyNote.ipa",
+          "size": 1643734,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.1.1",
           "buildVersion": "4",
           "date": "2026-10-29",
@@ -62,11 +71,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.1.1",
+      "version": "1.2.0",
       "versionDate": "2026-10-29",
-      "versionDescription": "Correcciones: el icono de cada gasto en la lista sale con el color de su categoría, y Estadísticas deja avanzar hasta los meses futuros que tengan gastos.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.1.1/PennyNote.ipa",
-      "size": 1630717
+      "versionDescription": "Novedad: en Estadísticas puedes ver cada mes, semana o día. La semana va de lunes a domingo con un gráfico por días, y el día muestra la lista de sus gastos. Categorías, métodos de pago y evolución se adaptan al periodo elegido.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.2.0/PennyNote.ipa",
+      "size": 1643734
     }
   ],
   "news": []
