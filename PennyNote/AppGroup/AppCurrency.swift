@@ -39,6 +39,11 @@ enum AppCurrency: String, CaseIterable, Identifiable {
         Locale.current.localizedString(forCurrencyCode: rawValue)?.capitalizedFirstLetter ?? rawValue
     }
 
+    // "Dólar estadounidense (US$)": en la lista de monedas y en Ajustes.
+    var displayName: String {
+        "\(localizedName) (\(symbol))"
+    }
+
     // "US$", "€"…: el símbolo que usa el formato del móvil.
     var symbol: String {
         let formatter = NumberFormatter()

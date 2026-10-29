@@ -24,7 +24,7 @@ struct SettingsView: View {
                     NavigationLink {
                         CurrencySettingsView(currency: currencySettings.currency)
                     } label: {
-                        LabeledContent("Moneda", value: currencySettings.currency.localizedName)
+                        LabeledContent("Moneda", value: currencySettings.currency.displayName)
                     }
                 }
                 AccountSettingsSections()

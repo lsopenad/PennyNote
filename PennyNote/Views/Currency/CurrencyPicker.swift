@@ -6,8 +6,9 @@ struct CurrencyPicker: View {
 
     var body: some View {
         Picker("Moneda", selection: $selection) {
+            // Un solo Text: el Picker en línea solo muestra el valor de un LabeledContent, no su título.
             ForEach(AppCurrency.allCases) { currency in
-                LabeledContent(currency.localizedName, value: currency.symbol)
+                Text(currency.displayName)
                     .tag(currency)
             }
         }
