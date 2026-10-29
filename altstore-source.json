@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.1.0",
+          "buildVersion": "3",
+          "date": "2026-10-29",
+          "localizedDescription": "Novedad: elige la moneda de tu cuenta (euro, dólar, libra, yen, yuan, peso mexicano, argentino o colombiano, franco suizo o dólar canadiense). Se pregunta una vez al entrar y se cambia en Ajustes → Moneda; se sincroniza entre dispositivos. Los importes no se convierten: solo cambia cómo se muestran.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.1.0/PennyNote.ipa",
+          "size": 1629353,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.0.1",
           "buildVersion": "2",
           "date": "2026-10-26",
@@ -44,11 +53,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.0.1",
-      "versionDate": "2026-10-26",
-      "versionDescription": "Corrección: el atajo «Registrar gasto» solo funciona con la sesión iniciada; con la sesión caducada pide volver a entrar en vez de guardar el gasto.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.0.1/PennyNote.ipa",
-      "size": 1602642
+      "version": "1.1.0",
+      "versionDate": "2026-10-29",
+      "versionDescription": "Novedad: elige la moneda de tu cuenta (euro, dólar, libra, yen, yuan, peso mexicano, argentino o colombiano, franco suizo o dólar canadiense). Se pregunta una vez al entrar y se cambia en Ajustes → Moneda; se sincroniza entre dispositivos. Los importes no se convierten: solo cambia cómo se muestran.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.1.0/PennyNote.ipa",
+      "size": 1629353
     }
   ],
   "news": []
