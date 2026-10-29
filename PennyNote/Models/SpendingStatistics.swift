@@ -83,6 +83,14 @@ enum SpendingStatistics {
         return months.map { MonthTotal(monthStart: $0, total: totals[$0] ?? .zero) }
     }
 
+    // Último mes al que se puede llegar en Estadísticas: el actual o, si hay gastos con fecha futura,
+    // el del más tardío.
+    static func latestMonth(_ expenses: [Expense], now: Date = .now, calendar: Calendar = .current) -> Date {
+        let currentMonth = calendar.startOfMonth(for: now)
+        guard let lastDate = expenses.lazy.filter({ !$0.isSoftDeleted }).map(\.date).max() else { return currentMonth }
+        return max(currentMonth, calendar.startOfMonth(for: lastDate))
+    }
+
     // A igualdad de gasto se ordena por nombre para que el orden no baile entre recálculos.
     private static func isLarger(_ lhs: CategoryTotal, _ rhs: CategoryTotal) -> Bool {
         if lhs.total != rhs.total { return lhs.total > rhs.total }
