@@ -43,6 +43,8 @@ targets:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         UILaunchScreen: {}
+        # Traducido en PennyNote/Resources/InfoPlist.xcstrings.
+        NSFaceIDUsageDescription: PennyNote usa Face ID para desbloquear la app y proteger tus gastos.
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         CFBundleURLTypes:

@@ -54,6 +54,7 @@ struct SettingsView: View {
                         LabeledContent("Moneda", value: currencySettings.currency.displayName)
                     }
                 }
+                AppLockSettingsSection()
                 AccountSettingsSections()
             }
         }
@@ -75,4 +76,5 @@ struct SettingsView: View {
     .environment(AccountSession(client: nil))
     .environment(SyncCoordinator.shared)
     .environment(CurrencySettings.shared)
+    .environment(AppLock.shared)
 }

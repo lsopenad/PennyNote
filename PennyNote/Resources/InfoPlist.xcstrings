@@ -1,0 +1,30 @@
+{
+  "sourceLanguage": "es",
+  "strings": {
+    "NSFaceIDUsageDescription": {
+      "comment": "Por qué la app pide Face ID (aviso de permiso de iOS).",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PennyNote uses Face ID to unlock the app and protect your expenses."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PennyNote usa Face ID para desbloquear la app y proteger tus gastos."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PennyNote 使用面容 ID 解锁 App 并保护你的支出。"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

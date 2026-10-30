@@ -96,6 +96,7 @@ final class AccountSession {
             return .failed(message: String(localized: "No se han podido borrar los datos de este iPhone. Inténtalo de nuevo."))
         }
         await signOutLocally()
+        AppLock.shared.reset()
         return .signedOut
     }
 
@@ -110,6 +111,7 @@ final class AccountSession {
             Log.sync.error("Fallo al borrar los datos locales tras borrar la cuenta: \(error.localizedDescription)")
         }
         await signOutLocally()
+        AppLock.shared.reset()
     }
 
     // MARK: - Privado
