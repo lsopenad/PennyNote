@@ -49,6 +49,9 @@ final class SyncEngine {
         try await pull()
         // Tras bajar todo, una cuenta sin categorías es una cuenta nueva: se le crean las de serie.
         SeedDataService.seedIfNeeded(context: context)
+        // Después de bajar, para seguir las plantillas tal como las dejaron los demás móviles; los
+        // gastos creados suben en esta misma pasada.
+        RecurringExpenseGenerator.generateDueExpenses(context: context)
         try context.save()
         let remainingChanges = try await push()
         state.lastSyncDate = .now
@@ -58,15 +61,21 @@ final class SyncEngine {
     static func pendingChangeCount(context: ModelContext, state: SyncStateStore, currency: CurrencySettings) -> Int {
         let categories = context.categories(failureMessage: "Fallo al contar categorías pendientes")
         let expenses = context.fetchOrEmpty(FetchDescriptor<Expense>(), failureMessage: "Fallo al contar gastos pendientes")
+        let recurringExpenses = context.fetchOrEmpty(
+            FetchDescriptor<RecurringExpense>(),
+            failureMessage: "Fallo al contar gastos recurrentes pendientes"
+        )
         return categories.filter { $0.syncStatus == .pending }.count
             + state.categoryTombstones.count
             + expenses.filter { $0.syncStatus == .pending }.count
+            + recurringExpenses.filter { $0.syncStatus == .pending }.count
             + (currency.isPending ? 1 : 0)
     }
 
     // Borra todos los datos del móvil y el estado de la sincronización (al cerrar sesión o borrar la cuenta).
     static func wipeLocalData(context: ModelContext, state: SyncStateStore, currency: CurrencySettings) throws {
         try context.fetch(FetchDescriptor<Expense>()).forEach(context.delete)
+        try context.fetch(FetchDescriptor<RecurringExpense>()).forEach(context.delete)
         try context.fetch(FetchDescriptor<ExpenseCategory>()).forEach(context.delete)
         try context.save()
         state.reset()
@@ -79,15 +88,23 @@ final class SyncEngine {
     private func pull() async throws {
         let remoteCategories = try await remote.fetchCategories(changedSince: Self.pullStart(after: state.categoriesCursor))
         let remoteExpenses = try await remote.fetchExpenses(changedSince: Self.pullStart(after: state.expensesCursor))
+        let remoteRecurringExpenses = try await remote.fetchRecurringExpenses(
+            changedSince: Self.pullStart(after: state.recurringExpensesCursor)
+        )
         let remoteSettings = try await remote.fetchUserSettings()
 
         let categoriesByID = apply(remoteCategories)
         apply(remoteExpenses, categoriesByID: categoriesByID)
+        apply(remoteRecurringExpenses, categoriesByID: categoriesByID)
         // Primero se guarda y luego se avanza el cursor: si el guardado falla, la próxima vez se piden otra vez.
         try context.save()
 
         state.categoriesCursor = Self.latest(state.categoriesCursor, remoteCategories.compactMap(\.serverUpdatedAt))
         state.expensesCursor = Self.latest(state.expensesCursor, remoteExpenses.compactMap(\.serverUpdatedAt))
+        state.recurringExpensesCursor = Self.latest(
+            state.recurringExpensesCursor,
+            remoteRecurringExpenses.compactMap(\.serverUpdatedAt)
+        )
 
         // Una cuenta sin moneda que ya tiene gastos es de la 1.0.x, que los mostraba en euros.
         currency.apply(remote: remoteSettings) { [context] in
@@ -150,6 +167,32 @@ final class SyncEngine {
         }
     }
 
+    private func apply(_ remoteRecurringExpenses: [RemoteRecurringExpense], categoriesByID: [UUID: ExpenseCategory]) {
+        guard !remoteRecurringExpenses.isEmpty else { return }
+        let locals = Dictionary(allRecurringExpenses().map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+
+        for remoteRecurringExpense in remoteRecurringExpenses {
+            if let local = locals[remoteRecurringExpense.id] {
+                guard !Self.localWins(local.syncStatus, local.localLastModified, over: remoteRecurringExpense.updatedAt) else { continue }
+                if remoteRecurringExpense.isDeleted {
+                    context.delete(local)
+                } else {
+                    local.update(from: remoteRecurringExpense, categoriesByID: categoriesByID)
+                }
+            } else if !remoteRecurringExpense.isDeleted {
+                let recurringExpense = RecurringExpense(
+                    id: remoteRecurringExpense.id,
+                    amount: remoteRecurringExpense.amount,
+                    frequency: .monthly,
+                    startDate: remoteRecurringExpense.startDate,
+                    nextDate: remoteRecurringExpense.nextDate
+                )
+                recurringExpense.update(from: remoteRecurringExpense, categoriesByID: categoriesByID)
+                context.insert(recurringExpense)
+            }
+        }
+    }
+
     // Lo local solo gana si tiene cambios sin subir posteriores a la versión del servidor. Con la misma
     // fecha es la misma escritura (la nuestra, de vuelta) y da igual cuál se quede.
     static func localWins(_ status: SyncStatus, _ localModified: Date, over remoteModified: Date) -> Bool {
@@ -191,6 +234,23 @@ final class SyncEngine {
         state.categoryTombstones = state.categoryTombstones.filter { !tombstones.contains($0) }
         try context.save()
 
+        // Antes que los gastos, que también las referencian.
+        let recurringRows = allRecurringExpenses().filter { $0.syncStatus == .pending }.map { RemoteRecurringExpense($0) }
+        var syncedRecurringCount = 0
+        for batch in recurringRows.chunked(into: Self.pushBatchSize) {
+            try await remote.upsertRecurringExpenses(batch)
+            let sentDates = Dictionary(batch.map { ($0.id, $0.updatedAt) }, uniquingKeysWith: { first, _ in first })
+            for recurringExpense in allRecurringExpenses() where sentDates[recurringExpense.id] == recurringExpense.localLastModified {
+                if recurringExpense.isSoftDeleted {
+                    context.delete(recurringExpense)
+                } else {
+                    recurringExpense.syncStatus = .synced
+                }
+                syncedRecurringCount += 1
+            }
+            try context.save()
+        }
+
         let expenseRows = allExpenses().filter { $0.syncStatus == .pending }.map { RemoteExpense($0) }
         var syncedExpenseCount = 0
         for batch in expenseRows.chunked(into: Self.pushBatchSize) {
@@ -209,6 +269,7 @@ final class SyncEngine {
         }
         // Lo que se modifique a partir de aquí lo cuenta la siguiente pasada, que ya habrá pedido requestSync.
         return pendingCategoryCount + state.categoryTombstones.count + expenseRows.count - syncedExpenseCount
+            + recurringRows.count - syncedRecurringCount
             + (currency.isPending ? 1 : 0)
     }
 
@@ -220,6 +281,10 @@ final class SyncEngine {
 
     private func allExpenses() -> [Expense] {
         context.fetchOrEmpty(FetchDescriptor<Expense>(), failureMessage: "Fallo al leer los gastos para sincronizar")
+    }
+
+    private func allRecurringExpenses() -> [RecurringExpense] {
+        context.fetchOrEmpty(FetchDescriptor<RecurringExpense>(), failureMessage: "Fallo al leer los gastos recurrentes para sincronizar")
     }
 
     private func expenses(withIDs ids: [UUID]) -> [Expense] {
@@ -242,6 +307,29 @@ extension Expense {
         title = remote.title
         paymentMethod = PaymentMethod(serverCode: remote.paymentMethod) ?? .other
         category = remote.categoryID.flatMap { categoriesByID[$0] }
+        recurringExpenseID = remote.recurringExpenseID
+        isSoftDeleted = false
+        createdAt = remote.createdAt
+        localLastModified = remote.updatedAt
+        syncStatus = .synced
+    }
+}
+
+extension RecurringExpense {
+    func markPendingSync() {
+        localLastModified = .now
+        syncStatus = .pending
+    }
+
+    fileprivate func update(from remote: RemoteRecurringExpense, categoriesByID: [UUID: ExpenseCategory]) {
+        amount = remote.amount
+        title = remote.title
+        paymentMethod = PaymentMethod(serverCode: remote.paymentMethod) ?? .other
+        frequency = RecurrenceFrequency(serverCode: remote.frequency) ?? .monthly
+        category = remote.categoryID.flatMap { categoriesByID[$0] }
+        startDate = remote.startDate
+        nextDate = remote.nextDate
+        isPaused = remote.isPaused
         isSoftDeleted = false
         createdAt = remote.createdAt
         localLastModified = remote.updatedAt

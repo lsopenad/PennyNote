@@ -73,6 +73,50 @@
         }
       }
     },
+    "%@ · En pausa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · Paused"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · En pausa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · 已暂停"
+          }
+        }
+      }
+    },
+    "%@ · Próximo: %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · Next: %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · Próximo: %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · 下次：%2$@"
+          }
+        }
+      }
+    },
     "%lld cambios no se han podido subir. Si cierras sesión ahora se perderán. Prueba antes a sincronizar con conexión a internet.": {
       "localizations": {
         "en": {
@@ -687,6 +731,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "搜索支出"
+          }
+        }
+      }
+    },
+    "Cada año": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every year"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada año"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每年"
+          }
+        }
+      }
+    },
+    "Cada mes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every month"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada mes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每月"
+          }
+        }
+      }
+    },
+    "Cada semana": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Every week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada semana"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每周"
           }
         }
       }
@@ -1527,6 +1637,28 @@
         }
       }
     },
+    "Elige «Repetir» al añadir un gasto para que se apunte solo cada semana, mes o año.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose “Repeat” when adding an expense to log it automatically every week, month or year."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige «Repetir» al añadir un gasto para que se apunte solo cada semana, mes o año."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加支出时选择“重复”，即可每周、每月或每年自动记录。"
+          }
+        }
+      }
+    },
     "Eliminar": {
       "localizations": {
         "en": {
@@ -1545,6 +1677,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除"
+          }
+        }
+      }
+    },
+    "Eliminar gasto recurrente": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Recurring Expense"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar gasto recurrente"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除定期支出"
           }
         }
       }
@@ -1589,6 +1743,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "邮箱或密码不正确。"
+          }
+        }
+      }
+    },
+    "En pausa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paused"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En pausa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已暂停"
+          }
+        }
+      }
+    },
+    "En pausa no se crean gastos. Al reanudarlo, sigue desde la próxima fecha sin añadir los que no se crearon.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "While paused, no expenses are created. When resumed, it continues from the next date without adding the ones that were skipped."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En pausa no se crean gastos. Al reanudarlo, sigue desde la próxima fecha sin añadir los que no se crearon."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂停期间不会创建支出。恢复后将从下一个日期继续，不会补上暂停期间的支出。"
           }
         }
       }
@@ -2011,6 +2209,28 @@
         }
       }
     },
+    "Gasto recurrente": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recurring Expense"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasto recurrente"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "定期支出"
+          }
+        }
+      }
+    },
     "Gastos": {
       "localizations": {
         "en": {
@@ -2029,6 +2249,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "支出"
+          }
+        }
+      }
+    },
+    "Gastos recurrentes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recurring Expenses"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gastos recurrentes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "定期支出"
           }
         }
       }
@@ -2561,6 +2803,50 @@
         }
       }
     },
+    "Los cambios en la repetición se aplican a los próximos gastos.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes to the repetition apply to upcoming expenses."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los cambios en la repetición se aplican a los próximos gastos."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "对重复设置的更改将应用于之后的支出。"
+          }
+        }
+      }
+    },
+    "Los cambios se aplican a los próximos gastos; los ya creados no cambian.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes apply to upcoming expenses; those already created stay the same."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los cambios se aplican a los próximos gastos; los ya creados no cambian."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更改将应用于之后的支出；已创建的支出不变。"
+          }
+        }
+      }
+    },
     "Los gastos de esta categoría pasarán a la categoría por defecto.": {
       "localizations": {
         "en": {
@@ -2579,6 +2865,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "此类别中的支出将移至默认类别。"
+          }
+        }
+      }
+    },
+    "Los gastos que ya ha creado se conservan.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expenses it has already created are kept."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los gastos que ya ha creado se conservan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已创建的支出将保留。"
           }
         }
       }
@@ -3089,6 +3397,28 @@
         }
       }
     },
+    "No se crearán más gastos. Los que ya ha creado se conservan.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No more expenses will be created. Those already created are kept."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se crearán más gastos. Los que ya ha creado se conservan."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将不再创建支出。已创建的支出将保留。"
+          }
+        }
+      }
+    },
     "No se ha podido completar": {
       "localizations": {
         "en": {
@@ -3261,6 +3591,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "新类别"
+          }
+        }
+      }
+    },
+    "Nunca": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nunca"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "从不"
           }
         }
       }
@@ -3639,6 +3991,50 @@
         }
       }
     },
+    "Próximo gasto": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next Expense"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Próximo gasto"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下次支出"
+          }
+        }
+      }
+    },
+    "Recurrente": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recurring"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recurrente"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "定期"
+          }
+        }
+      }
+    },
     "Registrar gasto": {
       "localizations": {
         "en": {
@@ -3679,6 +4075,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "在${category}中记录 ${amount} 的支出"
+          }
+        }
+      }
+    },
+    "Repetir": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repetir"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重复"
           }
         }
       }
@@ -3859,6 +4277,28 @@
         }
       }
     },
+    "Se añadirán también los gastos de las fechas que ya han pasado.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expenses for dates that have already passed will also be added."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se añadirán también los gastos de las fechas que ya han pasado."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "也会添加已过去日期的支出。"
+          }
+        }
+      }
+    },
     "Se borrarán todos tus gastos y categorías. No se puede deshacer.": {
       "localizations": {
         "en": {
@@ -4009,6 +4449,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "本月没有支出"
+          }
+        }
+      }
+    },
+    "Sin gastos recurrentes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Recurring Expenses"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin gastos recurrentes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有定期支出"
           }
         }
       }
@@ -4559,6 +5021,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除类别？"
+          }
+        }
+      }
+    },
+    "¿Eliminar gasto recurrente?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete recurring expense?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Eliminar gasto recurrente?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除定期支出？"
           }
         }
       }

@@ -84,5 +84,5 @@ struct ExportView: View {
     NavigationStack {
         ExportView()
     }
-    .modelContainer(for: [Expense.self, ExpenseCategory.self], inMemory: true)
+    .modelContainer(for: [Expense.self, ExpenseCategory.self, RecurringExpense.self], inMemory: true)
 }

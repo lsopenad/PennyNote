@@ -8,38 +8,37 @@ struct AddEditExpenseView: View {
 
     private let expenseToEdit: Expense?
 
-    @State private var amountText: String
+    @State private var amount: AmountInput
     @State private var date: Date
     @State private var title: String
     @State private var paymentMethod: PaymentMethod
     @State private var category: ExpenseCategory?
+    @State private var repeatFrequency: RecurrenceFrequency?
+
+    // El gasto recurrente que creó este gasto, si sigue existiendo: como mucho uno.
+    @Query private var sourceRecurringExpenses: [RecurringExpense]
 
     init(expense: Expense? = nil) {
         self.expenseToEdit = expense
-        _amountText = State(initialValue: expense.map { "\($0.amount)" } ?? "")
+        _amount = State(initialValue: AmountInput(expense?.amount))
         _date = State(initialValue: expense?.date ?? .now)
         _title = State(initialValue: expense?.title ?? "")
         _paymentMethod = State(initialValue: expense?.paymentMethod ?? .card)
         _category = State(initialValue: expense?.category)
-    }
-
-    private var parsedAmount: Decimal? {
-        let normalized = amountText.replacingOccurrences(of: ",", with: ".")
-        return Decimal(string: normalized)
+        // Sin plantilla, un id que no coincide con ninguna.
+        let recurringExpenseID = expense?.recurringExpenseID ?? UUID()
+        _sourceRecurringExpenses = Query(filter: #Predicate { $0.id == recurringExpenseID && !$0.isSoftDeleted })
     }
 
     private var canSave: Bool {
-        guard let amount = parsedAmount else { return false }
-        return ExpenseLimits.isValidAmount(amount) && ExpenseLimits.hasValidFractionDigits(amount, for: currency)
+        amount.isValid(for: currency)
     }
 
-    // Más decimales de los que usa la moneda, p. ej. céntimos en yenes o un gasto antiguo tras cambiarla.
-    private var hasTooManyDecimals: Bool {
-        parsedAmount.map { !ExpenseLimits.hasValidFractionDigits($0, for: currency) } ?? false
-    }
-
-    private var amountPlaceholder: String {
-        Decimal.zero.formatted(.number.precision(.fractionLength(currency.fractionDigits)))
+    // Repetir desde una fecha pasada crea también los gastos que faltan hasta hoy.
+    private var createsPastExpenses: Bool {
+        guard let repeatFrequency,
+              let next = RecurrenceSchedule(frequency: repeatFrequency, startDate: date).occurrence(1) else { return false }
+        return Calendar.current.startOfDay(for: next) <= Calendar.current.startOfDay(for: .now)
     }
 
     var body: some View {
@@ -50,15 +49,7 @@ struct AddEditExpenseView: View {
                         Text("Título")
                         TextField("", text: $title)
                     }
-                    HStack {
-                        Text("Cantidad")
-                        Spacer()
-                        TextField(amountPlaceholder, text: $amountText)
-                            .keyboardType(currency.fractionDigits == 0 ? .numberPad : .decimalPad)
-                            .multilineTextAlignment(.trailing)
-                        Text(currency.symbol)
-                            .foregroundStyle(.secondary)
-                    }
+                    AmountField(input: $amount)
                     CategoryPickerView(selection: $category)
                     Picker("Método de pago", selection: $paymentMethod) {
                         ForEach(PaymentMethod.allCases) { method in
@@ -67,12 +58,35 @@ struct AddEditExpenseView: View {
                     }
                     DatePicker("Fecha", selection: $date, displayedComponents: .date)
                 } footer: {
-                    if hasTooManyDecimals {
-                        if currency.fractionDigits == 0 {
-                            Text("Tu moneda no usa decimales.")
-                        } else {
-                            Text("Tu moneda usa como máximo \(currency.fractionDigits) decimales.")
+                    AmountDecimalsWarning(input: amount)
+                }
+
+                Section {
+                    if let recurringExpense = sourceRecurringExpenses.first {
+                        NavigationLink {
+                            RecurringExpenseEditView(recurringExpense: recurringExpense)
+                        } label: {
+                            LabeledContent {
+                                Text(recurringExpense.frequency.title)
+                            } label: {
+                                Label("Repetir", systemImage: "repeat")
+                            }
                         }
+                    } else {
+                        Picker(selection: $repeatFrequency) {
+                            Text("Nunca").tag(RecurrenceFrequency?.none)
+                            ForEach(RecurrenceFrequency.allCases) { frequency in
+                                Text(frequency.title).tag(RecurrenceFrequency?.some(frequency))
+                            }
+                        } label: {
+                            Label("Repetir", systemImage: "repeat")
+                        }
+                    }
+                } footer: {
+                    if !sourceRecurringExpenses.isEmpty {
+                        Text("Los cambios en la repetición se aplican a los próximos gastos.")
+                    } else if createsPastExpenses {
+                        Text("Se añadirán también los gastos de las fechas que ya han pasado.")
                     }
                 }
             }
@@ -91,7 +105,9 @@ struct AddEditExpenseView: View {
     }
 
     private func save() {
-        guard let amount = parsedAmount else { return }
+        guard let amount = amount.value else { return }
+        // Un gasto que ya viene de un recurrente no puede empezar otro.
+        let repeatFrequency = sourceRecurringExpenses.isEmpty ? repeatFrequency : nil
 
         if let expense = expenseToEdit {
             ExpenseRepository.updateExpense(
@@ -101,6 +117,7 @@ struct AddEditExpenseView: View {
                 title: title,
                 paymentMethod: paymentMethod,
                 category: category,
+                repeatFrequency: repeatFrequency,
                 context: modelContext
             )
         } else {
@@ -110,6 +127,7 @@ struct AddEditExpenseView: View {
                 title: title,
                 paymentMethod: paymentMethod,
                 category: category,
+                repeatFrequency: repeatFrequency,
                 context: modelContext
             )
         }

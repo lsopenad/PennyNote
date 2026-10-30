@@ -13,7 +13,7 @@ struct SyncEngineTests {
 
     init() throws {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: Expense.self, ExpenseCategory.self, configurations: configuration)
+        let container = try ModelContainer(for: Expense.self, ExpenseCategory.self, RecurringExpense.self, configurations: configuration)
         context = ModelContext(container)
         state = SyncStateStore(defaults: try #require(UserDefaults(suiteName: "SyncEngineTests.\(UUID())")))
         currency = CurrencySettings(defaults: try #require(UserDefaults(suiteName: "SyncEngineTests.currency.\(UUID())")))
@@ -263,6 +263,100 @@ struct SyncEngineTests {
         }
     }
 
+    // MARK: - Gastos recurrentes
+
+    @Test func recurringExpenseAndItsExpensesAreUploaded() async throws {
+        try engine.prepareLocalData(for: userID)
+        let start = try #require(Calendar.current.date(byAdding: .month, value: -1, to: .now))
+        let template = RecurringExpense(amount: 5, title: "Gimnasio", frequency: .monthly, startDate: start, nextDate: start)
+        context.insert(template)
+
+        try await engine.sync()
+
+        let uploaded = try #require(remote.recurringExpenses[template.id])
+        #expect(uploaded.title == "Gimnasio")
+        #expect(uploaded.frequency == "monthly")
+        #expect(uploaded.nextDate == template.nextDate)
+        #expect(template.syncStatus == .synced)
+        let generated = remote.expenses.values.filter { $0.recurringExpenseID == template.id }
+        #expect(generated.count == 2)
+    }
+
+    @Test func remoteRecurringExpenseIsDownloadedAndGenerates() async throws {
+        let next = try #require(Calendar.current.date(byAdding: .day, value: -1, to: .now))
+        let remoteTemplate = remote.add(recurringExpense: "Alquiler", next: next)
+        try engine.prepareLocalData(for: userID)
+
+        try await engine.sync()
+
+        let template = try #require(try context.fetch(FetchDescriptor<RecurringExpense>()).first)
+        #expect(template.id == remoteTemplate.id)
+        #expect(template.frequency == .monthly)
+        #expect(template.nextDate > .now)
+        #expect(try fetchExpenses().filter { $0.recurringExpenseID == template.id }.count == 1)
+        #expect(remote.recurringExpenses[template.id]?.nextDate == template.nextDate)
+    }
+
+    @Test func deletedRecurringExpenseIsUploadedAndRemovedLocally() async throws {
+        try engine.prepareLocalData(for: userID)
+        let next = try #require(Calendar.current.date(byAdding: .month, value: 1, to: .now))
+        let template = RecurringExpense(amount: 5, frequency: .weekly, startDate: next, nextDate: next)
+        context.insert(template)
+        try await engine.sync()
+
+        template.isSoftDeleted = true
+        template.markPendingSync()
+        try await engine.sync()
+
+        #expect(remote.recurringExpenses[template.id]?.isDeleted == true)
+        #expect(try context.fetch(FetchDescriptor<RecurringExpense>()).isEmpty)
+    }
+
+    @Test func regeneratingAnExpenseDeletedElsewhereDoesNotBringItBack() async throws {
+        try engine.prepareLocalData(for: userID)
+        let start = try #require(Calendar.current.date(byAdding: .day, value: -1, to: .now))
+        let template = RecurringExpense(amount: 5, frequency: .monthly, startDate: start, nextDate: start)
+        context.insert(template)
+        try await engine.sync()
+        let generatedID = try #require(remote.expenses.values.first { $0.recurringExpenseID == template.id }?.id)
+
+        // Otro móvil lo borra; este aún tiene la plantilla sin avanzar y lo vuelve a crear.
+        remote.edit(expense: generatedID) { $0.isDeleted = true }
+        try context.delete(#require(try fetchExpenses().first { $0.id == generatedID }))
+        template.nextDate = start
+        try await engine.sync()
+
+        #expect(remote.expenses[generatedID]?.isDeleted == true)
+        #expect(try fetchExpenses().allSatisfy { $0.id != generatedID })
+    }
+
+    @Test func recurringExpenseRowRoundTripsThroughJSON() throws {
+        let row = RemoteRecurringExpense(
+            id: UUID(),
+            amount: Decimal(string: "12.99")!,
+            title: "Netflix",
+            paymentMethod: "card",
+            categoryID: nil,
+            frequency: "yearly",
+            startDate: Date(timeIntervalSinceReferenceDate: 800_000_000),
+            nextDate: Date(timeIntervalSinceReferenceDate: 831_536_000),
+            isPaused: true,
+            isDeleted: false,
+            createdAt: Date(timeIntervalSinceReferenceDate: 800_000_000),
+            updatedAt: Date(timeIntervalSinceReferenceDate: 800_000_100)
+        )
+
+        let decoded = try JSONDecoder().decode(RemoteRecurringExpense.self, from: JSONEncoder().encode(row))
+
+        #expect(decoded == row)
+    }
+
+    @Test func recurrenceFrequencyServerCodesRoundTrip() {
+        for frequency in RecurrenceFrequency.allCases {
+            #expect(RecurrenceFrequency(serverCode: frequency.serverCode) == frequency)
+        }
+    }
+
     // MARK: - Utilidades
 
     private func signedInWithSyncedExpense() async throws -> Expense {
@@ -289,6 +383,7 @@ struct SyncEngineTests {
 private final class FakeSyncRemote: SyncRemote {
     private(set) var categories: [UUID: RemoteCategory] = [:]
     private(set) var expenses: [UUID: RemoteExpense] = [:]
+    private(set) var recurringExpenses: [UUID: RemoteRecurringExpense] = [:]
     private(set) var userSettings: RemoteUserSettings?
     var onUpsertExpenses: (() -> Void)?
     private var clock = Date(timeIntervalSinceReferenceDate: 800_000_000)
@@ -309,6 +404,18 @@ private final class FakeSyncRemote: SyncRemote {
         }
         onUpsertExpenses?()
         onUpsertExpenses = nil
+    }
+
+    func upsertRecurringExpenses(_ rows: [RemoteRecurringExpense]) async throws {
+        for row in rows where (recurringExpenses[row.id]?.updatedAt ?? .distantPast) <= row.updatedAt {
+            var stored = row
+            stored.serverUpdatedAt = tick()
+            recurringExpenses[row.id] = stored
+        }
+    }
+
+    func fetchRecurringExpenses(changedSince since: Date?) async throws -> [RemoteRecurringExpense] {
+        recurringExpenses.values.filter { since == nil || $0.serverUpdatedAt! > since! }
     }
 
     func fetchCategories(changedSince since: Date?) async throws -> [RemoteCategory] {
@@ -365,6 +472,27 @@ private final class FakeSyncRemote: SyncRemote {
         )
         categories[category.id] = category
         return category
+    }
+
+    // Un gasto recurrente mensual creado desde otro dispositivo.
+    func add(recurringExpense title: String, next: Date) -> RemoteRecurringExpense {
+        let row = RemoteRecurringExpense(
+            id: UUID(),
+            amount: 700,
+            title: title,
+            paymentMethod: "transfer",
+            categoryID: nil,
+            frequency: "monthly",
+            startDate: next,
+            nextDate: next,
+            isPaused: false,
+            isDeleted: false,
+            createdAt: .now,
+            updatedAt: .now,
+            serverUpdatedAt: tick()
+        )
+        recurringExpenses[row.id] = row
+        return row
     }
 
     // Simula un cambio hecho desde otro dispositivo.

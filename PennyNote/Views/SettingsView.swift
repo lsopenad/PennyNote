@@ -15,6 +15,10 @@ struct SettingsView: View {
             }
 
             Section {
+                NavigationLink("Gastos recurrentes") {
+                    RecurringExpenseListView()
+                }
+                .disabled(isReadOnly)
                 NavigationLink("Exportar") {
                     ExportView()
                 }

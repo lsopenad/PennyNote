@@ -127,6 +127,11 @@ final class SyncCoordinator {
             lastSyncDate = state.lastSyncDate
             lastErrorMessage = nil
         } catch {
+            // Sin conexión, los gastos recurrentes que tocan se crean igual y suben en la próxima pasada.
+            RecurringExpenseGenerator.generateDueExpenses(context: container.mainContext)
+            if container.mainContext.hasChanges {
+                container.mainContext.saveOrLog(failureMessage: "Fallo al guardar los gastos recurrentes creados sin conexión")
+            }
             // Si la pasada se corta a medias no se sabe cuánto ha subido: se cuenta en el almacén.
             pendingChangeCount = unsyncedChangeCount()
             guard !(error is CancellationError) else { return }

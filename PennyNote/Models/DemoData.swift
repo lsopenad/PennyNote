@@ -27,7 +27,7 @@ enum DemoData {
     ]
 
     static func makeContainer() -> ModelContainer {
-        let schema = Schema([Expense.self, ExpenseCategory.self])
+        let schema = Schema([Expense.self, ExpenseCategory.self, RecurringExpense.self])
         let configuration = ModelConfiguration("Demo", schema: schema, isStoredInMemoryOnly: true)
         let container: ModelContainer
         do {

@@ -6,7 +6,7 @@ import SwiftData
 // cualquier otro proceso que se añada (p. ej. una extensión) apunte al mismo store.
 enum SharedModelContainer {
     static let container: ModelContainer = {
-        let schema = Schema(versionedSchema: SchemaV2.self)
+        let schema = Schema(versionedSchema: SchemaV3.self)
         let configuration = ModelConfiguration(
             schema: schema,
             groupContainer: .identifier(AppGroupConstants.identifier)
