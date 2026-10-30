@@ -18,6 +18,9 @@ final class Expense {
     }
 
     var category: ExpenseCategory?
+    // Plantilla que lo creó, si viene de un gasto recurrente. Es solo el id y no una relación: la
+    // plantilla puede borrarse o no haber llegado aún a este móvil, y el gasto sigue igual.
+    var recurringExpenseID: UUID?
 
     var createdAt: Date
     // Contabilidad de la sincronización con Supabase: localLastModified decide qué versión gana
@@ -36,7 +39,8 @@ final class Expense {
         date: Date = .now,
         title: String = "",
         paymentMethod: PaymentMethod = .card,
-        category: ExpenseCategory? = nil
+        category: ExpenseCategory? = nil,
+        recurringExpenseID: UUID? = nil
     ) {
         self.id = id
         self.amount = amount
@@ -44,6 +48,7 @@ final class Expense {
         self.title = title
         self.storedPaymentMethod = paymentMethod.rawValue
         self.category = category
+        self.recurringExpenseID = recurringExpenseID
         self.createdAt = .now
         self.localLastModified = .now
         self.syncStatus = .pending

@@ -24,6 +24,9 @@ final class ExpenseCategory {
     @Relationship(deleteRule: .nullify, inverse: \Expense.category)
     var expenses: [Expense] = []
 
+    @Relationship(deleteRule: .nullify, inverse: \RecurringExpense.category)
+    var recurringExpenses: [RecurringExpense] = []
+
     init(
         id: UUID = UUID(),
         name: String,

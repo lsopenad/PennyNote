@@ -25,6 +25,13 @@ extension ModelContext {
         return fetchOrEmpty(descriptor, failureMessage: failureMessage).first
     }
 
+    // La plantilla recurrente con ese id, si existe y no está borrada.
+    func activeRecurringExpense(withID id: UUID, failureMessage: String) -> RecurringExpense? {
+        var descriptor = FetchDescriptor<RecurringExpense>(predicate: #Predicate { $0.id == id && !$0.isSoftDeleted })
+        descriptor.fetchLimit = 1
+        return fetchOrEmpty(descriptor, failureMessage: failureMessage).first
+    }
+
     // Guarda registrando el error en vez de propagarlo, para los puntos de escritura que no pueden fallar.
     func saveOrLog(failureMessage: String) {
         do {

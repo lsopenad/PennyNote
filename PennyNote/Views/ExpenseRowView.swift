@@ -35,6 +35,13 @@ struct ExpenseRowView: View {
 
             Spacer()
 
+            if expense.recurringExpenseID != nil {
+                Image(systemName: "repeat")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .accessibilityLabel(Text("Recurrente"))
+            }
+
             Text(DisplayFormat.currency(expense.amount, in: currency))
                 .font(.body.monospacedDigit())
         }

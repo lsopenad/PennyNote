@@ -1,7 +1,7 @@
 import Foundation
 import Supabase
 
-// SyncRemote contra las tablas public.categories, public.expenses y public.user_settings. RLS limita cada consulta a las
+// SyncRemote contra las tablas public.categories, public.expenses, public.recurring_expenses y public.user_settings. RLS limita cada consulta a las
 // filas del usuario de la sesión, así que no hace falta filtrar por user_id.
 struct SupabaseSyncRemote: SyncRemote {
     // El máximo de filas que devuelve PostgREST por petición en Supabase (max_rows).
@@ -9,7 +9,8 @@ struct SupabaseSyncRemote: SyncRemote {
 
     private static let categoryColumns = "id,name,symbol_name,sort_order,color_name,is_deleted,updated_at,server_updated_at"
     // amount::text: el importe llega como texto y no pierde precisión al decodificarlo.
-    private static let expenseColumns = "id,amount::text,date,title,payment_method,category_id,is_deleted,created_at,updated_at,server_updated_at"
+    private static let expenseColumns = "id,amount::text,date,title,payment_method,category_id,recurring_expense_id,is_deleted,created_at,updated_at,server_updated_at"
+    private static let recurringExpenseColumns = "id,amount::text,title,payment_method,category_id,frequency,start_date,next_date,is_paused,is_deleted,created_at,updated_at,server_updated_at"
 
     private static let userSettingsColumns = "currency,updated_at,server_updated_at"
 
@@ -27,12 +28,22 @@ struct SupabaseSyncRemote: SyncRemote {
             .execute()
     }
 
+    func upsertRecurringExpenses(_ recurringExpenses: [RemoteRecurringExpense]) async throws {
+        try await client.from("recurring_expenses")
+            .upsert(recurringExpenses, onConflict: "id", returning: .minimal)
+            .execute()
+    }
+
     func fetchCategories(changedSince since: Date?) async throws -> [RemoteCategory] {
         try await fetchAll(table: "categories", columns: Self.categoryColumns, changedSince: since)
     }
 
     func fetchExpenses(changedSince since: Date?) async throws -> [RemoteExpense] {
         try await fetchAll(table: "expenses", columns: Self.expenseColumns, changedSince: since)
+    }
+
+    func fetchRecurringExpenses(changedSince since: Date?) async throws -> [RemoteRecurringExpense] {
+        try await fetchAll(table: "recurring_expenses", columns: Self.recurringExpenseColumns, changedSince: since)
     }
 
     func fetchUserSettings() async throws -> RemoteUserSettings? {

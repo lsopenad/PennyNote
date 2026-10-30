@@ -11,10 +11,11 @@ final class SyncStateStore {
         static let ownerUserID = "sync.ownerUserID"
         static let categoriesCursor = "sync.categoriesCursor"
         static let expensesCursor = "sync.expensesCursor"
+        static let recurringExpensesCursor = "sync.recurringExpensesCursor"
         static let categoryTombstones = "sync.categoryTombstones"
         static let lastSyncDate = "sync.lastSyncDate"
         static let hasActiveSession = "sync.hasActiveSession"
-        static let all = [ownerUserID, categoriesCursor, expensesCursor, categoryTombstones, lastSyncDate, hasActiveSession]
+        static let all = [ownerUserID, categoriesCursor, expensesCursor, recurringExpensesCursor, categoryTombstones, lastSyncDate, hasActiveSession]
     }
 
     init(defaults: UserDefaults) {
@@ -44,6 +45,11 @@ final class SyncStateStore {
     var expensesCursor: Date? {
         get { defaults.object(forKey: Keys.expensesCursor) as? Date }
         set { defaults.set(newValue, forKey: Keys.expensesCursor) }
+    }
+
+    var recurringExpensesCursor: Date? {
+        get { defaults.object(forKey: Keys.recurringExpensesCursor) as? Date }
+        set { defaults.set(newValue, forKey: Keys.recurringExpensesCursor) }
     }
 
     var lastSyncDate: Date? {

@@ -9,7 +9,7 @@ struct SpendingStatisticsTests {
 
     init() throws {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: Expense.self, ExpenseCategory.self, configurations: configuration)
+        let container = try ModelContainer(for: Expense.self, ExpenseCategory.self, RecurringExpense.self, configurations: configuration)
         context = ModelContext(container)
     }
 

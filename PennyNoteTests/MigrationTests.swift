@@ -26,7 +26,7 @@ struct MigrationTests {
             try context.save()
         }
 
-        let schema = Schema(versionedSchema: SchemaV2.self)
+        let schema = Schema(versionedSchema: SchemaV3.self)
         let container = try ModelContainer(
             for: schema,
             migrationPlan: PennyNoteMigrationPlan.self,
@@ -39,6 +39,44 @@ struct MigrationTests {
         #expect(migrated.paymentMethod == .transfer)
         #expect(migrated.amount == 12)
         #expect(migrated.category?.name == "Comida")
+    }
+
+    @Test func v2StoreOpensWithRecurringExpenses() throws {
+        let directory = FileManager.default.temporaryDirectory.appending(path: "MigrationTests-\(UUID())")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appending(path: "default.store")
+
+        // Almacén creado por la 1.5.0.
+        let expenseID = UUID()
+        do {
+            let schema = Schema(versionedSchema: SchemaV2.self)
+            let container = try ModelContainer(for: schema, configurations: [ModelConfiguration(schema: schema, url: url)])
+            let context = ModelContext(container)
+            let category = SchemaV2.ExpenseCategory(name: "Casa", symbolName: "house.fill", sortOrder: 0)
+            context.insert(category)
+            let expense = SchemaV2.Expense(id: expenseID, amount: 700, paymentMethod: .transfer)
+            expense.category = category
+            context.insert(expense)
+            try context.save()
+        }
+
+        let schema = Schema(versionedSchema: SchemaV3.self)
+        let container = try ModelContainer(
+            for: schema,
+            migrationPlan: PennyNoteMigrationPlan.self,
+            configurations: [ModelConfiguration(schema: schema, url: url)]
+        )
+        let context = ModelContext(container)
+        let migrated = try #require(try context.fetch(FetchDescriptor<Expense>()).first)
+
+        #expect(migrated.id == expenseID)
+        #expect(migrated.paymentMethod == .transfer)
+        #expect(migrated.category?.name == "Casa")
+        #expect(migrated.recurringExpenseID == nil)
+        context.insert(RecurringExpense(amount: 700, frequency: .monthly, startDate: .now, nextDate: .now))
+        try context.save()
+        #expect(try context.fetch(FetchDescriptor<RecurringExpense>()).count == 1)
     }
 
     @Test func unknownStoredPaymentMethodReadsAsOther() {
