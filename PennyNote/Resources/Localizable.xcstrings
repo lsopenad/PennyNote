@@ -15,6 +15,12 @@
             "value": "%1$@ vs %2$@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ vs %@"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -31,6 +37,12 @@
             "value": "%1$@ vs %2$@ at this point"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ vs %@ a estas alturas"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -45,6 +57,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ · %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %@"
           }
         },
         "zh-Hans": {
@@ -219,6 +237,12 @@
             "value": "Opens PennyNote on the add expense screen."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre PennyNote en la pantalla de registrar gasto."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -233,6 +257,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Opens PennyNote to log a new expense."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre PennyNote para registrar un gasto nuevo."
           }
         },
         "zh-Hans": {
@@ -251,6 +281,12 @@
             "value": "Opens statistics"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre las estadísticas"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -265,6 +301,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "OK"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aceptar"
           }
         },
         "zh-Hans": {
@@ -283,6 +325,12 @@
             "value": "Settings"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -297,6 +345,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Up to date, %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al día, %@"
           }
         },
         "zh-Hans": {
@@ -315,6 +369,12 @@
             "value": "At least %lld characters."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al menos %lld caracteres."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -331,6 +391,12 @@
             "value": "Yellow"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amarillo"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -342,6 +408,12 @@
     "Amazon": {
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amazon"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Amazon"
@@ -363,6 +435,12 @@
             "value": "Previous"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anterior"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -377,6 +455,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Blue"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azul"
           }
         },
         "zh-Hans": {
@@ -395,6 +479,12 @@
             "value": "Adds an expense to PennyNote."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade un gasto a PennyNote."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -409,6 +499,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Add"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir"
           }
         },
         "zh-Hans": {
@@ -427,6 +523,12 @@
             "value": "Add Expense"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir gasto"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -441,6 +543,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deletes the account and all its expenses and categories, from the server and from this iPhone. This can't be undone."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borra la cuenta y todos sus gastos y categorías, del servidor y de este iPhone. No se puede deshacer."
           }
         },
         "zh-Hans": {
@@ -459,6 +567,12 @@
             "value": "Delete Account and Data"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar cuenta y datos"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -473,6 +587,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Delete My Account and Data"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar mi cuenta y mis datos"
           }
         },
         "zh-Hans": {
@@ -491,6 +611,12 @@
             "value": "Search expenses"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscar gastos"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -505,6 +631,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Coffee"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Café"
           }
         },
         "zh-Hans": {
@@ -523,6 +655,12 @@
             "value": "Change Password"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar contraseña"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -537,6 +675,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cancel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
           }
         },
         "zh-Hans": {
@@ -555,6 +699,12 @@
             "value": "Amount"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cantidad"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -569,6 +719,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Category"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Categoría"
           }
         },
         "zh-Hans": {
@@ -587,6 +743,12 @@
             "value": "Categories"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Categorías"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -601,6 +763,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dinner out"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cena fuera"
           }
         },
         "zh-Hans": {
@@ -619,6 +787,12 @@
             "value": "Sign Out"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar sesión"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -633,6 +807,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sign Out Anyway"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar sesión igualmente"
           }
         },
         "zh-Hans": {
@@ -651,6 +831,12 @@
             "value": "Cinema"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cine"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -662,6 +848,12 @@
     "Color": {
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Color"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Color"
@@ -683,6 +875,12 @@
             "value": "Food"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comida"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -697,6 +895,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Shopping"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compras"
           }
         },
         "zh-Hans": {
@@ -715,6 +919,12 @@
             "value": "Concert"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Concierto"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -729,6 +939,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Continue"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continuar"
           }
         },
         "zh-Hans": {
@@ -747,6 +963,12 @@
             "value": "Password"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contraseña"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -761,6 +983,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Password changed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contraseña cambiada"
           }
         },
         "zh-Hans": {
@@ -779,6 +1007,12 @@
             "value": "New password"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contraseña nueva"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -793,6 +1027,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Create Account"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crear cuenta"
           }
         },
         "zh-Hans": {
@@ -811,6 +1051,12 @@
             "value": "Create an account"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crear una cuenta"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -825,6 +1071,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Account"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuenta"
           }
         },
         "zh-Hans": {
@@ -843,6 +1095,12 @@
             "value": "Account created, but the server requires email confirmation and doesn't send emails. Tell whoever manages PennyNote."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuenta creada, pero el servidor pide confirmar el email y no envía correos. Avisa a quien administra PennyNote."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -857,6 +1115,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "There must be at least one category."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debe quedar al menos una categoría."
           }
         },
         "zh-Hans": {
@@ -875,6 +1139,12 @@
             "value": "Too many attempts. Wait a few minutes and try again."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demasiados intentos. Espera unos minutos y vuelve a probar."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -891,10 +1161,38 @@
             "value": "Demo"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Demo"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "演示"
+          }
+        }
+      }
+    },
+    "Desde": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desde"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开始"
           }
         }
       }
@@ -905,6 +1203,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Day"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Día"
           }
         },
         "zh-Hans": {
@@ -923,6 +1227,12 @@
             "value": "Edit Expense"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar gasto"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -937,6 +1247,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cash"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Efectivo"
           }
         },
         "zh-Hans": {
@@ -955,6 +1271,12 @@
             "value": "The server tried to send an email and reached its limit. Tell whoever manages PennyNote."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El servidor ha intentado enviar un email y ha llegado a su límite. Avisa a quien administra PennyNote."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -969,6 +1291,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The server rejected the data. Try again later."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El servidor ha rechazado los datos. Inténtalo de nuevo más tarde."
           }
         },
         "zh-Hans": {
@@ -987,6 +1315,12 @@
             "value": "The server isn't responding. Try again in a moment."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El servidor no responde. Inténtalo de nuevo en un momento."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1001,6 +1335,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The server requires email confirmation and doesn't send emails. Tell whoever manages PennyNote."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El servidor pide confirmar el email y no envía correos. Avisa a quien administra PennyNote."
           }
         },
         "zh-Hans": {
@@ -1019,6 +1359,12 @@
             "value": "Choose Your Currency"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige tu moneda"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1035,6 +1381,12 @@
             "value": "Delete"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1046,6 +1398,12 @@
     "Email": {
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Email"
@@ -1067,6 +1425,12 @@
             "value": "Incorrect email or password."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email o contraseña incorrectos."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1081,6 +1445,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "This build doesn't include the Supabase configuration (Config/Supabase.xcconfig)."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta compilación no incluye la configuración de Supabase (Config/Supabase.xcconfig)."
           }
         },
         "zh-Hans": {
@@ -1099,6 +1469,12 @@
             "value": "This version of the app has no server configured."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta versión de la app no tiene configurado el servidor."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1115,10 +1491,38 @@
             "value": "Statistics"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estadísticas"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "统计"
+          }
+        }
+      }
+    },
+    "Este año": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This year"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este año"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今年"
           }
         }
       }
@@ -1129,6 +1533,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "This month"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este mes"
           }
         },
         "zh-Hans": {
@@ -1147,6 +1557,12 @@
             "value": "You're viewing sample data. It can't be changed and isn't saved."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estás viendo datos de ejemplo. No se pueden modificar y no se guardan."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1161,6 +1577,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Trend"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evolución"
           }
         },
         "zh-Hans": {
@@ -1179,6 +1601,12 @@
             "value": "Monthly spending trend"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evolución mensual del gasto"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1195,10 +1623,38 @@
             "value": "Weekly spending trend"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evolución semanal del gasto"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "每周支出趋势"
+          }
+        }
+      }
+    },
+    "Exportar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exportar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导出"
           }
         }
       }
@@ -1209,6 +1665,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Server Not Configured"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falta configurar el servidor"
           }
         },
         "zh-Hans": {
@@ -1227,6 +1689,12 @@
             "value": "Pharmacy"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Farmacia"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1241,6 +1709,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fecha"
           }
         },
         "zh-Hans": {
@@ -1259,10 +1733,38 @@
             "value": "Hardware store"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferretería"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "五金店"
+          }
+        }
+      }
+    },
+    "Formato": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Format"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Formato"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "格式"
           }
         }
       }
@@ -1273,6 +1775,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fuel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasolina"
           }
         },
         "zh-Hans": {
@@ -1291,6 +1799,12 @@
             "value": "Monthly Spending"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasto del mes"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1305,6 +1819,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Daily Spending"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasto diario"
           }
         },
         "zh-Hans": {
@@ -1323,6 +1843,12 @@
             "value": "Daily spending this month"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasto diario del mes"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1337,6 +1863,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Expenses"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gastos"
           }
         },
         "zh-Hans": {
@@ -1355,6 +1887,12 @@
             "value": "Gym"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gimnasio"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1371,10 +1909,38 @@
             "value": "Save"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "保存"
+          }
+        }
+      }
+    },
+    "Hasta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hasta"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "结束"
           }
         }
       }
@@ -1385,6 +1951,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Some Changes Aren't Saved to Your Account"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hay cambios sin guardar en tu cuenta"
           }
         },
         "zh-Hans": {
@@ -1403,6 +1975,12 @@
             "value": "Home"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hogar"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1417,6 +1995,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Language"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma"
           }
         },
         "zh-Hans": {
@@ -1435,6 +2019,12 @@
             "value": "Same as %@"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Igual que %@"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1449,6 +2039,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Same as %@ at this point"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Igual que %@ a estas alturas"
           }
         },
         "zh-Hans": {
@@ -1467,10 +2063,38 @@
             "value": "Amount"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importe"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "金额"
+          }
+        }
+      }
+    },
+    "Importe (%@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amount (%@)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importe (%@)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "金额（%@）"
           }
         }
       }
@@ -1481,6 +2105,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sign in to PennyNote to log expenses."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión en PennyNote para registrar gastos."
           }
         },
         "zh-Hans": {
@@ -1499,6 +2129,12 @@
             "value": "Sign in to keep your expenses in your account."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión para guardar tus gastos en tu cuenta."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1515,6 +2151,12 @@
             "value": "Sign In"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniciar sesión"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1526,6 +2168,12 @@
     "Internet": {
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Internet"
@@ -1547,6 +2195,12 @@
             "value": "The amount has more decimals than your account's currency uses."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cantidad tiene más decimales de los que usa la moneda de tu cuenta."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1561,6 +2215,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The amount must be greater than 0."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cantidad tiene que ser mayor que 0."
           }
         },
         "zh-Hans": {
@@ -1579,6 +2239,12 @@
             "value": "The password must have at least %lld characters."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La contraseña debe tener al menos %lld caracteres."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1593,6 +2259,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The password is too weak. Use at least %lld characters."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La contraseña es demasiado débil. Usa al menos %lld caracteres."
           }
         },
         "zh-Hans": {
@@ -1611,6 +2283,12 @@
             "value": "The new password must be different from the old one."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La nueva contraseña tiene que ser distinta de la anterior."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1625,6 +2303,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Your session has expired. Sign in again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La sesión ha caducado. Vuelve a iniciar sesión."
           }
         },
         "zh-Hans": {
@@ -1643,6 +2327,12 @@
             "value": "The passwords don't match."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las contraseñas no coinciden."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1657,6 +2347,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Books"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Libros"
           }
         },
         "zh-Hans": {
@@ -1675,6 +2371,12 @@
             "value": "Clear Filters"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiar filtros"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1689,6 +2391,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Expenses in this category will move to the default category."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los gastos de esta categoría pasarán a la categoría por defecto."
           }
         },
         "zh-Hans": {
@@ -1707,6 +2415,12 @@
             "value": "Amounts aren't converted: only how they're shown changes."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los importes no se convierten: solo cambia cómo se muestran."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1721,6 +2435,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Electricity"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luz"
           }
         },
         "zh-Hans": {
@@ -1739,6 +2459,12 @@
             "value": "Average"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1753,6 +2479,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Daily average: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media diaria: %@"
           }
         },
         "zh-Hans": {
@@ -1771,6 +2503,12 @@
             "value": "Mint"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menta"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1785,6 +2523,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lunch menu"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menú del día"
           }
         },
         "zh-Hans": {
@@ -1803,6 +2547,12 @@
             "value": "Supermarket"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mercadona"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1819,10 +2569,38 @@
             "value": "Month"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mes"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "月"
+          }
+        }
+      }
+    },
+    "Mes pasado": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last month"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mes pasado"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上个月"
           }
         }
       }
@@ -1833,6 +2611,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Subway"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metro"
           }
         },
         "zh-Hans": {
@@ -1851,6 +2635,12 @@
             "value": "Currency"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moneda"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1865,6 +2655,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Purple"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morado"
           }
         },
         "zh-Hans": {
@@ -1883,6 +2679,12 @@
             "value": "Shows this month's spending and how it compares with last month."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muestra el gasto del mes y cómo va respecto al anterior."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1897,6 +2699,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Top spending"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Más gasto"
           }
         },
         "zh-Hans": {
@@ -1915,6 +2723,12 @@
             "value": "Payment Method"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Método de pago"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1929,6 +2743,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Orange"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naranja"
           }
         },
         "zh-Hans": {
@@ -1947,10 +2767,38 @@
             "value": "Netflix"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Netflix"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "Netflix"
+          }
+        }
+      }
+    },
+    "No disponible en la demo.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not available in the demo."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No disponible en la demo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "演示模式下不可用。"
           }
         }
       }
@@ -1961,6 +2809,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "There's no internet connection."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay conexión a internet."
           }
         },
         "zh-Hans": {
@@ -1979,6 +2833,12 @@
             "value": "No expenses this week."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay gastos en esta semana."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1995,10 +2855,38 @@
             "value": "No expenses this month."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay gastos en este mes."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "本月没有支出。"
+          }
+        }
+      }
+    },
+    "No hay gastos en este periodo.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "There are no expenses in this period."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay gastos en este periodo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此期间没有支出。"
           }
         }
       }
@@ -2009,6 +2897,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "No expenses on this day."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay gastos este día."
           }
         },
         "zh-Hans": {
@@ -2027,6 +2921,12 @@
             "value": "Couldn't Complete"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido completar"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2041,6 +2941,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The operation couldn't be completed. Try again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido completar la operación. Inténtalo de nuevo."
           }
         },
         "zh-Hans": {
@@ -2059,6 +2965,12 @@
             "value": "Couldn't connect to the server."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido conectar con el servidor."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2073,6 +2985,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Couldn't delete the data on this iPhone. Try again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han podido borrar los datos de este iPhone. Inténtalo de nuevo."
           }
         },
         "zh-Hans": {
@@ -2091,6 +3009,12 @@
             "value": "Couldn't prepare this iPhone's data for your account."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han podido preparar los datos de este iPhone para tu cuenta."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2105,6 +3029,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "The password can't be changed without verifying the account again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se puede cambiar la contraseña sin volver a verificar la cuenta."
           }
         },
         "zh-Hans": {
@@ -2123,6 +3053,12 @@
             "value": "New accounts can't be created right now."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pueden crear cuentas nuevas ahora mismo."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2139,10 +3075,38 @@
             "value": "New category"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva categoría"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "新类别"
+          }
+        }
+      }
+    },
+    "Número de gastos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Number of Expenses"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Número de gastos"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支出笔数"
           }
         }
       }
@@ -2153,6 +3117,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Leisure"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ocio"
           }
         },
         "zh-Hans": {
@@ -2171,6 +3141,12 @@
             "value": "Other"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otro"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2185,6 +3161,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Other"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otros"
           }
         },
         "zh-Hans": {
@@ -2203,6 +3185,12 @@
             "value": "Bakery"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Panadería"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2217,6 +3205,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hairdresser"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peluquería"
           }
         },
         "zh-Hans": {
@@ -2235,6 +3229,12 @@
             "value": "Pending"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pendiente"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2246,6 +3246,12 @@
     "PennyNote": {
       "localizations": {
         "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PennyNote"
+          }
+        },
+        "es": {
           "stringUnit": {
             "state": "translated",
             "value": "PennyNote"
@@ -2267,10 +3273,38 @@
             "value": "Period"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periodo"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "周期"
+          }
+        }
+      }
+    },
+    "Personalizado": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalizado"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自定义"
           }
         }
       }
@@ -2283,10 +3317,38 @@
             "value": "By Category"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por categoría"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "按类别"
+          }
+        }
+      }
+    },
+    "Por mes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "By Month"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por mes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按月"
           }
         }
       }
@@ -2299,10 +3361,38 @@
             "value": "By Payment Method"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por método de pago"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "按支付方式"
+          }
+        }
+      }
+    },
+    "Porcentaje": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Porcentaje"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "占比"
           }
         }
       }
@@ -2313,6 +3403,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Log Expense"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registrar gasto"
           }
         },
         "zh-Hans": {
@@ -2331,6 +3427,12 @@
             "value": "Log expense of ${amount} in ${category}"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registrar gasto de ${amount} en ${category}"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2347,10 +3449,38 @@
             "value": "Repeat the password"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repite la contraseña"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "再次输入密码"
+          }
+        }
+      }
+    },
+    "Resumen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Summary"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resumen"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "汇总"
           }
         }
       }
@@ -2361,6 +3491,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Check the email: it doesn't look valid."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa el email: no parece válido."
           }
         },
         "zh-Hans": {
@@ -2379,6 +3515,12 @@
             "value": "Red"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rojo"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2393,6 +3535,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Clothes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ropa"
           }
         },
         "zh-Hans": {
@@ -2411,6 +3559,12 @@
             "value": "Pink"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rosa"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2425,6 +3579,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Exit Demo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salir de la demo"
           }
         },
         "zh-Hans": {
@@ -2443,6 +3603,12 @@
             "value": "Health"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salud"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2457,6 +3623,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "All your expenses and categories will be deleted. This can't be undone."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se borrarán todos tus gastos y categorías. No se puede deshacer."
           }
         },
         "zh-Hans": {
@@ -2475,6 +3647,12 @@
             "value": "Change it in iOS Settings. By default, the app uses the iPhone's language."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se cambia en los Ajustes de iOS. Por defecto, la app usa el idioma del iPhone."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2489,6 +3667,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semana"
           }
         },
         "zh-Hans": {
@@ -2507,6 +3691,12 @@
             "value": "Next"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siguiente"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2521,6 +3711,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uncategorized"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin categoría"
           }
         },
         "zh-Hans": {
@@ -2539,6 +3735,12 @@
             "value": "No Expenses"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin gastos"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2553,6 +3755,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "No expenses this month"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin gastos este mes"
           }
         },
         "zh-Hans": {
@@ -2571,6 +3779,12 @@
             "value": "Sync"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronización"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2585,6 +3799,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sync Now"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizar ahora"
           }
         },
         "zh-Hans": {
@@ -2603,6 +3823,12 @@
             "value": "Card"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarjeta"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2619,10 +3845,82 @@
             "value": "Taxi"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taxi"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "出租车"
+          }
+        }
+      }
+    },
+    "Texto con los gastos separados por comas, para abrirlo en cualquier hoja de cálculo.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plain text with comma-separated expenses that opens in any spreadsheet app."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Texto con los gastos separados por comas, para abrirlo en cualquier hoja de cálculo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以逗号分隔支出的纯文本文件，可用任何电子表格应用打开。"
+          }
+        }
+      }
+    },
+    "Todo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部"
+          }
+        }
+      }
+    },
+    "Total": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "总计"
           }
         }
       }
@@ -2633,6 +3931,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Total spent this month on the Lock Screen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total gastado este mes en la pantalla de bloqueo."
           }
         },
         "zh-Hans": {
@@ -2651,6 +3955,12 @@
             "value": "Transfer"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transferencia"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2665,6 +3975,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Transport"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transporte"
           }
         },
         "zh-Hans": {
@@ -2683,6 +3999,12 @@
             "value": "Your currency doesn't use decimals."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu moneda no usa decimales."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2697,6 +4019,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Your currency uses at most %lld decimals."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu moneda usa como máximo %lld decimales."
           }
         },
         "zh-Hans": {
@@ -2715,6 +4043,12 @@
             "value": "Teal"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turquesa"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2729,6 +4063,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Your expenses will be shown in this currency. You can change it in Settings."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus gastos se mostrarán en esta moneda. Puedes cambiarla en Ajustes."
           }
         },
         "zh-Hans": {
@@ -2747,6 +4087,12 @@
             "value": "Your expenses stay in your account and are removed from this iPhone."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus gastos siguen en tu cuenta y se borran de este iPhone."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2763,10 +4109,38 @@
             "value": "Title"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Título"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "标题"
+          }
+        }
+      }
+    },
+    "Una hoja con los gastos y otra con el resumen por categoría, método de pago y mes, con gráficos.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One sheet with your expenses and another with a summary by category, payment method and month, with charts."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una hoja con los gastos y otra con el resumen por categoría, método de pago y mes, con gráficos."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一个工作表列出支出，另一个按类别、支付方式和月份汇总，并附有图表。"
           }
         }
       }
@@ -2777,6 +4151,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Green"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verde"
           }
         },
         "zh-Hans": {
@@ -2795,6 +4175,12 @@
             "value": "There's already an account with that email. Sign in."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya hay una cuenta con ese email. Inicia sesión."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2809,6 +4195,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Delete your account and all your data?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Borrar tu cuenta y todos tus datos?"
           }
         },
         "zh-Hans": {
@@ -2827,6 +4219,12 @@
             "value": "Sign out?"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cerrar sesión?"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2841,6 +4239,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Delete category?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Eliminar categoría?"
           }
         },
         "zh-Hans": {
@@ -2859,6 +4263,12 @@
             "value": "Delete expense?"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Eliminar gasto?"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2875,6 +4285,12 @@
             "value": "Forgot your password? Ask whoever manages PennyNote for a temporary one and change it later in Settings."
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Has olvidado la contraseña? Pide una temporal a quien administra PennyNote y cámbiala después en Ajustes."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2889,6 +4305,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Indigo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Índigo"
           }
         },
         "zh-Hans": {

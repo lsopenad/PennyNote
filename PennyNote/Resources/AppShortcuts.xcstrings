@@ -9,6 +9,12 @@
             "value": "Add an expense in ${applicationName}"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade un gasto en ${applicationName}"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -23,6 +29,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Log an expense in ${applicationName}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra un gasto en ${applicationName}"
           }
         },
         "zh-Hans": {
