@@ -51,7 +51,7 @@ final class SyncCoordinator {
             try engine.prepareLocalData(for: activeUser.id)
         } catch {
             Log.sync.error("Fallo al preparar los datos locales para la sesión: \(error.localizedDescription)")
-            lastErrorMessage = "No se han podido preparar los datos de este iPhone para tu cuenta."
+            lastErrorMessage = String(localized: "No se han podido preparar los datos de este iPhone para tu cuenta.")
             return nil
         }
         state.hasActiveSession = true

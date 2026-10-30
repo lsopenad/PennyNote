@@ -44,7 +44,7 @@ struct CategoryColorPickerView: View {
                 }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(color.displayName)
+        .accessibilityLabel(Text(color.displayName))
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }

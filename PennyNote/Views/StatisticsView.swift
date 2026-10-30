@@ -99,11 +99,11 @@ struct StatisticsView: View {
         }
     }
 
-    private var emptyDescription: String {
+    private var emptyDescription: LocalizedStringResource {
         switch period.kind {
-        case .month: "No hay gastos en \(period.title().lowercased())."
-        case .week: "No hay gastos en la semana del \(period.title())."
-        case .day: "No hay gastos el \(period.title().lowercased())."
+        case .month: "No hay gastos en este mes."
+        case .week: "No hay gastos en esta semana."
+        case .day: "No hay gastos este día."
         }
     }
 
@@ -140,7 +140,7 @@ struct StatisticsView: View {
             Text(DisplayFormat.currency(total, in: currency))
                 .font(.system(size: 34, weight: .bold, design: .rounded))
             if period.kind == .day {
-                Text(periodExpenses.count == 1 ? "1 gasto" : "\(periodExpenses.count) gastos")
+                Text("\(periodExpenses.count) gastos")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             } else if elapsedDays > 0 {
@@ -190,13 +190,13 @@ struct StatisticsView: View {
         return ForEach(totals) { item in
             NavigationLink {
                 FilteredExpensesView(
-                    title: item.paymentMethod.rawValue,
+                    title: String(localized: item.paymentMethod.title),
                     period: period,
                     filter: ExpenseFilter(paymentMethods: [item.paymentMethod])
                 )
             } label: {
                 SpendingShareRow(
-                    title: item.paymentMethod.rawValue,
+                    title: String(localized: item.paymentMethod.title),
                     symbolName: item.paymentMethod.symbolName,
                     color: .accentColor,
                     total: item.total,

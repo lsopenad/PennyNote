@@ -1,9 +1,9 @@
 name: PennyNote
 options:
   bundleIdPrefix: com.pennynote
-  # La interfaz solo está en español: sin esto la app declara inglés y las fechas que formatea el
-  # sistema (cabeceras de día, «hace 8 segundos») salen en inglés aunque el iPhone esté en español.
-  developmentLanguage: es
+  # Inglés es el idioma de respaldo: el que se usa si el del iPhone no es ninguno de los de la app
+  # (es, en, zh-Hans). Los textos se traducen en PennyNote/Resources/*.xcstrings.
+  developmentLanguage: en
   deploymentTarget:
     iOS: "18.0"
   createIntermediateGroups: true
@@ -15,6 +15,9 @@ settings:
     MARKETING_VERSION: "1.2.0"
     CURRENT_PROJECT_VERSION: "5"
     SWIFT_VERSION: "5.0"
+    # Para que el compilador saque los textos traducibles al compilar (los .stringsdata con los que
+    # se comprueba que el catálogo los tiene todos).
+    SWIFT_EMIT_LOC_STRINGS: "YES"
     CODE_SIGN_STYLE: Automatic
     DEVELOPMENT_TEAM: "3875E33454"
 
@@ -75,6 +78,8 @@ targets:
       - path: PennyNote/Intents/OpenAddExpenseIntent.swift
       # Solo por AccentColor: así las gráficas del widget usan el mismo verde que la app.
       - path: PennyNote/Resources/Assets.xcassets
+      # Los textos del widget y de lo que comparte con la app (AppGroup, OpenAddExpenseIntent).
+      - path: PennyNote/Resources/Localizable.xcstrings
     info:
       path: Generated/PennyNoteWidgetExtension-Info.plist
       properties:

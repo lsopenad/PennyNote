@@ -24,7 +24,7 @@ enum CategoryColor: String, CaseIterable, Identifiable {
     }
 
     // Para VoiceOver en el selector de color.
-    var displayName: String {
+    var displayName: LocalizedStringResource {
         switch self {
         case .blue: "Azul"
         case .orange: "Naranja"

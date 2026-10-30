@@ -89,7 +89,7 @@ struct CategoryManagementView: View {
         for index in offsets {
             let didDelete = ExpenseRepository.deleteCategory(categories[index], context: modelContext)
             if !didDelete {
-                errorMessage = "Debe quedar al menos una categoría."
+                errorMessage = String(localized: "Debe quedar al menos una categoría.")
                 return
             }
         }

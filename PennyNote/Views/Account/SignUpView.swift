@@ -14,10 +14,10 @@ struct SignUpView: View {
 
     private var validationMessage: String? {
         if !password.isEmpty && !PasswordRules.isValid(password) {
-            return "La contraseña debe tener al menos \(PasswordRules.minimumLength) caracteres."
+            return String(localized: "La contraseña debe tener al menos \(PasswordRules.minimumLength) caracteres.")
         }
         if !passwordConfirmation.isEmpty && password != passwordConfirmation {
-            return "Las contraseñas no coinciden."
+            return String(localized: "Las contraseñas no coinciden.")
         }
         return nil
     }
@@ -40,7 +40,7 @@ struct SignUpView: View {
                     .submitLabel(.go)
                     .onSubmit(signUp)
             } footer: {
-                Text(validationMessage ?? "Al menos \(PasswordRules.minimumLength) caracteres.")
+                Text(validationMessage ?? String(localized: "Al menos \(PasswordRules.minimumLength) caracteres."))
                     .foregroundStyle(validationMessage == nil ? Color.secondary : Color.red)
             }
 

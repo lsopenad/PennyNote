@@ -17,7 +17,9 @@ struct ExpenseFilterMenu: View {
             }
             Section("Método de pago") {
                 ForEach(PaymentMethod.allCases) { method in
-                    Toggle(method.rawValue, isOn: $filter.paymentMethods.containing(method))
+                    Toggle(isOn: $filter.paymentMethods.containing(method)) {
+                        Text(method.title)
+                    }
                 }
             }
             if filter.isActive {

@@ -3,12 +3,13 @@ import Foundation
 // Formateo de importes y meses compartido por la app y el widget (este fichero se compila en
 // ambos targets). Los formateadores se crean una vez en vez de en cada evaluación de body.
 enum DisplayFormat {
-    // Los importes siguen el formato del móvil; los textos, de momento, siempre en español.
-    private static let locale = Locale(identifier: "es_ES")
+    // El idioma y la región del móvil (el idioma, entre los que tiene la app). Si cambian, iOS
+    // reinicia la app, así que basta con leerlos al crear los formateadores.
+    private static let locale = Locale.current
 
-    private static let monthFormatter = makeDateFormatter("LLLL")
-    private static let shortMonthFormatter = makeDateFormatter("LLL")
-    private static let monthAndYearFormatter = makeDateFormatter("LLLL yyyy")
+    private static let monthFormatter = makeTemplateFormatter("LLLL")
+    private static let shortMonthFormatter = makeTemplateFormatter("LLL")
+    private static let monthAndYearFormatter = makeTemplateFormatter("yMMMM")
     private static let shortDayFormatter = makeTemplateFormatter("dMMM")
     private static let fullDayFormatter = makeTemplateFormatter("EEEEdMMMy")
 
@@ -46,12 +47,12 @@ enum DisplayFormat {
     }
 
     static func monthName(_ date: Date) -> String {
-        monthFormatter.string(from: date).capitalized
+        capitalizingFirstLetter(monthFormatter.string(from: date))
     }
 
-    // "Octubre 2026".
+    // "Octubre de 2026", "October 2026", "2026年10月".
     static func monthAndYear(_ date: Date) -> String {
-        monthAndYearFormatter.string(from: date).capitalized
+        capitalizingFirstLetter(monthAndYearFormatter.string(from: date))
     }
 
     // "26 oct – 1 nov 2026", con los dos días incluidos.
@@ -61,8 +62,7 @@ enum DisplayFormat {
 
     // "Jueves, 29 de oct de 2026".
     static func fullDay(_ date: Date) -> String {
-        let text = fullDayFormatter.string(from: date)
-        return text.prefix(1).uppercased() + text.dropFirst()
+        capitalizingFirstLetter(fullDayFormatter.string(from: date))
     }
 
     // "oct", para las barras de la evolución por meses.
@@ -83,13 +83,17 @@ enum DisplayFormat {
     // Variación respecto al mismo día del mes anterior: "−12 % vs septiembre a estas alturas", o
     // "−12 % vs sept." en corto para los widgets.
     static func comparison(_ change: Double, previousMonth: Date, short: Bool = false) -> String {
-        let month = short ? shortMonthFormatter.string(from: previousMonth) + "." : monthFormatter.string(from: previousMonth)
+        let month = short ? shortMonthFormatter.string(from: previousMonth) : monthFormatter.string(from: previousMonth)
         // Lo que redondea a 0 % se dice con palabras: "+0 %" o "−0 %" despistan.
         guard (change * 100).rounded() != 0 else {
-            return short ? "Igual que \(month)" : "Igual que \(month) a estas alturas"
+            return short
+                ? String(localized: "Igual que \(month)", comment: "Widget: gasto igual que el mes anterior")
+                : String(localized: "Igual que \(month) a estas alturas", comment: "Gasto igual que el mes anterior hasta el mismo día")
         }
         let percentText = signedPercentFormatter.string(from: change as NSNumber) ?? ""
-        return short ? "\(percentText) vs \(month)" : "\(percentText) vs \(month) a estas alturas"
+        return short
+            ? String(localized: "\(percentText) vs \(month)", comment: "Widget: «−12 % vs sept»")
+            : String(localized: "\(percentText) vs \(month) a estas alturas", comment: "«−12 % vs septiembre a estas alturas»")
     }
 
     private static func makeTemplateFormatter(_ template: String) -> DateFormatter {
@@ -99,10 +103,8 @@ enum DisplayFormat {
         return formatter
     }
 
-    private static func makeDateFormatter(_ format: String) -> DateFormatter {
-        let formatter = DateFormatter()
-        formatter.locale = locale
-        formatter.dateFormat = format
-        return formatter
+    // Solo la primera letra: capitalized pondría en mayúscula también el "de" de "octubre de 2026".
+    private static func capitalizingFirstLetter(_ text: String) -> String {
+        text.prefix(1).uppercased() + text.dropFirst()
     }
 }
