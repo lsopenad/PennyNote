@@ -22,4 +22,13 @@ struct LocalizationTests {
         #expect(table["Ajustes"] == "Ajustes")
         #expect(table.count > 150)
     }
+
+    // El aviso de permiso de Face ID sale del Info.plist, que se traduce en InfoPlist.xcstrings.
+    @Test(arguments: ["es", "en", "zh-Hans"])
+    func faceIDUsageDescriptionIsTranslated(language: String) throws {
+        let path = try #require(Bundle.main.path(forResource: "InfoPlist", ofType: "strings", inDirectory: nil, forLocalization: language))
+        let table = try #require(NSDictionary(contentsOfFile: path) as? [String: String])
+
+        #expect(table["NSFaceIDUsageDescription"]?.isEmpty == false)
+    }
 }

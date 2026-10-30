@@ -537,6 +537,72 @@
         }
       }
     },
+    "Bloquear con Face ID": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lock with Face ID"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloquear con Face ID"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用面容 ID 锁定"
+          }
+        }
+      }
+    },
+    "Bloquear con Touch ID": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lock with Touch ID"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloquear con Touch ID"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用触控 ID 锁定"
+          }
+        }
+      }
+    },
+    "Bloquear con el código": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lock with passcode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bloquear con el código"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用密码锁定"
+          }
+        }
+      }
+    },
     "Borra la cuenta y todos sus gastos y categorías, del servidor y de este iPhone. No se puede deshacer.": {
       "localizations": {
         "en": {
@@ -933,6 +999,50 @@
         }
       }
     },
+    "Configura un código en el iPhone para usar el bloqueo.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set up an iPhone passcode to use the lock."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configura un código en el iPhone para usar el bloqueo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先在 iPhone 上设置密码，才能使用锁定功能。"
+          }
+        }
+      }
+    },
+    "Confirma que quieres activar el bloqueo de PennyNote.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm that you want to turn on the PennyNote lock."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirma que quieres activar el bloqueo de PennyNote."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认开启 PennyNote 锁定。"
+          }
+        }
+      }
+    },
     "Continuar": {
       "localizations": {
         "en": {
@@ -1171,6 +1281,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "演示"
+          }
+        }
+      }
+    },
+    "Desbloquea PennyNote para ver tus gastos.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock PennyNote to see your expenses."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquea PennyNote para ver tus gastos."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁 PennyNote 以查看你的支出。"
+          }
+        }
+      }
+    },
+    "Desbloquear": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁"
           }
         }
       }
@@ -2161,6 +2315,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "登录"
+          }
+        }
+      }
+    },
+    "Inmediatamente": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immediately"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inmediatamente"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "立即"
           }
         }
       }
@@ -3199,6 +3375,28 @@
         }
       }
     },
+    "Pedir desbloqueo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Require unlock"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pedir desbloqueo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要求解锁"
+          }
+        }
+      }
+    },
     "Peluquería": {
       "localizations": {
         "en": {
@@ -3265,6 +3463,28 @@
         }
       }
     },
+    "PennyNote está bloqueada": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PennyNote is locked"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PennyNote está bloqueada"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PennyNote 已锁定"
+          }
+        }
+      }
+    },
     "Periodo": {
       "localizations": {
         "en": {
@@ -3305,6 +3525,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "自定义"
+          }
+        }
+      }
+    },
+    "Pide desbloquear al abrir PennyNote. Siempre puedes usar el código del iPhone.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PennyNote asks you to unlock it when you open it. You can always use your iPhone passcode."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pide desbloquear al abrir PennyNote. Siempre puedes usar el código del iPhone."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开 PennyNote 时需要解锁。你随时可以使用 iPhone 密码。"
           }
         }
       }
@@ -3987,6 +4229,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "交通"
+          }
+        }
+      }
+    },
+    "Tras 1 minuto": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After 1 minute"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tras 1 minuto"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 分钟后"
+          }
+        }
+      }
+    },
+    "Tras 15 minutos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After 15 minutes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tras 15 minutos"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 分钟后"
+          }
+        }
+      }
+    },
+    "Tras 5 minutos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After 5 minutes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tras 5 minutos"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 分钟后"
           }
         }
       }
