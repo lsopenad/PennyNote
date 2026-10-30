@@ -9,7 +9,7 @@ enum DemoData {
 
     // Gastos del día a día: índice de categoría en SeedDataService.defaultCategories, título e
     // importe en céntimos. Los repetidos salen más a menudo.
-    private static let dailyTemplates: [(category: Int, title: String, cents: ClosedRange<Int>)] = [
+    private static let dailyTemplates: [(category: Int, title: LocalizedStringResource, cents: ClosedRange<Int>)] = [
         (0, "Mercadona", 2500...8000), (0, "Mercadona", 2500...8000), (0, "Café", 150...400),
         (0, "Café", 150...400), (0, "Menú del día", 1100...1600), (0, "Panadería", 200...600),
         (0, "Cena fuera", 2500...5500), (1, "Metro", 150...250), (1, "Gasolina", 4000...7000),
@@ -19,7 +19,7 @@ enum DemoData {
     ]
 
     // Gastos fijos de cada mes: categoría, título, importe en céntimos, día del mes y método de pago.
-    private static let monthlyTemplates: [(category: Int, title: String, cents: ClosedRange<Int>, day: Int, payment: PaymentMethod)] = [
+    private static let monthlyTemplates: [(category: Int, title: LocalizedStringResource, cents: ClosedRange<Int>, day: Int, payment: PaymentMethod)] = [
         (3, "Internet", 3500...3500, 2, .transfer),
         (3, "Luz", 4500...8000, 4, .transfer),
         (4, "Gimnasio", 3990...3990, 2, .card),
@@ -51,10 +51,10 @@ enum DemoData {
         let today = calendar.startOfDay(for: now)
         guard let firstMonth = calendar.date(byAdding: .month, value: -(monthCount - 1), to: calendar.startOfMonth(for: now)) else { return }
 
-        func addExpense(_ category: Int, _ title: String, _ cents: ClosedRange<Int>, on date: Date, payment: PaymentMethod) {
+        func addExpense(_ category: Int, _ title: LocalizedStringResource, _ cents: ClosedRange<Int>, on date: Date, payment: PaymentMethod) {
             guard date <= now else { return }
             let amount = Decimal(Int.random(in: cents, using: &generator)) / 100
-            context.insert(Expense(amount: amount, date: date, title: title, paymentMethod: payment, category: categories[category]))
+            context.insert(Expense(amount: amount, date: date, title: String(localized: title), paymentMethod: payment, category: categories[category]))
         }
 
         for monthOffset in 0..<monthCount {

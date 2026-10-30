@@ -92,10 +92,10 @@ struct AccountSettingsSections: View {
 
     private var syncSummary: String {
         if sync.pendingChangeCount > 0 {
-            return sync.pendingChangeCount == 1 ? "1 cambio pendiente" : "\(sync.pendingChangeCount) cambios pendientes"
+            return String(localized: "\(sync.pendingChangeCount) cambios pendientes")
         }
-        guard let lastSyncDate = sync.lastSyncDate else { return "Pendiente" }
-        return "Al día, \(lastSyncDate.formatted(.relative(presentation: .named)))"
+        guard let lastSyncDate = sync.lastSyncDate else { return String(localized: "Pendiente") }
+        return String(localized: "Al día, \(lastSyncDate.formatted(.relative(presentation: .named)))")
     }
 
     private func signOut(discardingPendingChanges: Bool) {

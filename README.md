@@ -29,7 +29,7 @@ A fast expense tracker for iPhone. Sign in with email and password and your expe
 ## Requirements
 
 - iOS 18 or later.
-- The app's interface is in Spanish.
+- The app is in English, Spanish and Simplified Chinese, and follows the iPhone's language. To use another one, go to iOS **Settings → PennyNote → Language**.
 
 ## Installation
 

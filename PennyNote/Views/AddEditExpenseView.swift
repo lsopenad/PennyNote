@@ -62,19 +62,21 @@ struct AddEditExpenseView: View {
                     CategoryPickerView(selection: $category)
                     Picker("Método de pago", selection: $paymentMethod) {
                         ForEach(PaymentMethod.allCases) { method in
-                            Text(method.rawValue).tag(method)
+                            Text(method.title).tag(method)
                         }
                     }
                     DatePicker("Fecha", selection: $date, displayedComponents: .date)
                 } footer: {
                     if hasTooManyDecimals {
-                        Text(currency.fractionDigits == 0
-                            ? "Tu moneda no usa decimales."
-                            : "Tu moneda usa como máximo \(currency.fractionDigits) decimales.")
+                        if currency.fractionDigits == 0 {
+                            Text("Tu moneda no usa decimales.")
+                        } else {
+                            Text("Tu moneda usa como máximo \(currency.fractionDigits) decimales.")
+                        }
                     }
                 }
             }
-            .navigationTitle(expenseToEdit == nil ? "Añadir gasto" : "Editar gasto")
+            .navigationTitle(expenseToEdit == nil ? Text("Añadir gasto") : Text("Editar gasto"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

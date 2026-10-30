@@ -7,7 +7,16 @@ final class Expense {
     var amount: Decimal
     var date: Date
     var title: String
-    var paymentMethod: PaymentMethod
+    // PaymentMethod.rawValue. Se guarda el texto y no el enum, como el color de las categorías, para
+    // que un valor desconocido no impida leer el gasto. Sustituye a la columna paymentMethod del
+    // esquema V1, que guardaba el nombre en español (ver PennyNoteMigrationPlan).
+    private(set) var storedPaymentMethod: String = PaymentMethod.card.rawValue
+
+    var paymentMethod: PaymentMethod {
+        get { PaymentMethod(rawValue: storedPaymentMethod) ?? PaymentMethod(legacyName: storedPaymentMethod) ?? .other }
+        set { storedPaymentMethod = newValue.rawValue }
+    }
+
     var category: ExpenseCategory?
 
     var createdAt: Date
@@ -33,7 +42,7 @@ final class Expense {
         self.amount = amount
         self.date = date
         self.title = title
-        self.paymentMethod = paymentMethod
+        self.storedPaymentMethod = paymentMethod.rawValue
         self.category = category
         self.createdAt = .now
         self.localLastModified = .now

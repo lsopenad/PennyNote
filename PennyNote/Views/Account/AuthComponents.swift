@@ -25,7 +25,7 @@ final class AccountOperation {
 }
 
 struct AuthHeader: View {
-    let subtitle: String
+    let subtitle: LocalizedStringKey
 
     var body: some View {
         VStack(spacing: 8) {
@@ -58,7 +58,7 @@ struct EmailField: View {
 }
 
 struct AuthSubmitButton: View {
-    let title: String
+    let title: LocalizedStringKey
     let isWorking: Bool
     let action: () -> Void
 

@@ -6,13 +6,13 @@ import SwiftData
 // cualquier otro proceso que se añada (p. ej. una extensión) apunte al mismo store.
 enum SharedModelContainer {
     static let container: ModelContainer = {
-        let schema = Schema([Expense.self, ExpenseCategory.self])
+        let schema = Schema(versionedSchema: SchemaV2.self)
         let configuration = ModelConfiguration(
             schema: schema,
             groupContainer: .identifier(AppGroupConstants.identifier)
         )
         do {
-            return try ModelContainer(for: schema, configurations: [configuration])
+            return try ModelContainer(for: schema, migrationPlan: PennyNoteMigrationPlan.self, configurations: [configuration])
         } catch {
             Log.data.fault("Fallo al crear el ModelContainer compartido, se usa uno en memoria como último recurso: \(error.localizedDescription)")
             let fallbackConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)

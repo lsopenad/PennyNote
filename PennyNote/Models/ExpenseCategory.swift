@@ -43,7 +43,7 @@ final class ExpenseCategory {
 
 extension ExpenseCategory {
     // Etiqueta que se muestra para los gastos sin categoría asignada.
-    static let uncategorizedLabel = "Sin categoría"
+    static var uncategorizedLabel: String { String(localized: "Sin categoría") }
     static let uncategorizedSymbolName = "questionmark.circle"
     // Icono de las categorías que crea el usuario desde Ajustes.
     static let defaultSymbolName = "tag.fill"

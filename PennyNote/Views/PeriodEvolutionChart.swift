@@ -65,7 +65,7 @@ struct PeriodEvolutionChart: View {
         }
         .frame(height: 160)
         .padding(.vertical, 8)
-        .accessibilityLabel(totals.first?.period.kind == .week ? "Evolución semanal del gasto" : "Evolución mensual del gasto")
+        .accessibilityLabel(totals.first?.period.kind == .week ? Text("Evolución semanal del gasto") : Text("Evolución mensual del gasto"))
     }
 
     private func select(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {

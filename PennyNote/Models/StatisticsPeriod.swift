@@ -10,7 +10,7 @@ struct StatisticsPeriod: Hashable {
 
         var id: Self { self }
 
-        var title: String {
+        var title: LocalizedStringResource {
             switch self {
             case .month: "Mes"
             case .week: "Semana"

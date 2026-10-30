@@ -93,7 +93,7 @@ final class AccountSession {
             try await sync.deactivateAndWipeLocalData()
         } catch {
             Log.sync.error("Fallo al borrar los datos locales al cerrar sesión: \(error.localizedDescription)")
-            return .failed(message: "No se han podido borrar los datos de este iPhone. Inténtalo de nuevo.")
+            return .failed(message: String(localized: "No se han podido borrar los datos de este iPhone. Inténtalo de nuevo."))
         }
         await signOutLocally()
         return .signedOut

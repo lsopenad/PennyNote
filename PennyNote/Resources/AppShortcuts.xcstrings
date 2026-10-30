@@ -1,0 +1,38 @@
+{
+  "sourceLanguage": "es",
+  "strings": {
+    "Añade un gasto en ${applicationName}": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add an expense in ${applicationName}"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在${applicationName}中添加支出"
+          }
+        }
+      }
+    },
+    "Registra un gasto en ${applicationName}": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log an expense in ${applicationName}"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在${applicationName}中记录一笔支出"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
