@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.6.0",
+          "buildVersion": "9",
+          "date": "2026-10-30",
+          "localizedDescription": "Novedad: gastos recurrentes. Elige «Repetir» al añadir un gasto (cada semana, mes o año) y PennyNote lo apuntará solo cada vez que toque, también los atrasados. Gestiónalos, páusalos o bórralos en Ajustes → Gastos recurrentes.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.0/PennyNote.ipa",
+          "size": 1948357,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.5.0",
           "buildVersion": "8",
           "date": "2026-10-30",
@@ -98,11 +107,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.5.0",
+      "version": "1.6.0",
       "versionDate": "2026-10-30",
-      "versionDescription": "Novedad: puedes bloquear PennyNote con Face ID desde Ajustes, con el código del iPhone como alternativa y el tiempo que tarda en volver a pedirlo a tu elección. En el selector de apps tus gastos quedan tapados.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.5.0/PennyNote.ipa",
-      "size": 1871201
+      "versionDescription": "Novedad: gastos recurrentes. Elige «Repetir» al añadir un gasto (cada semana, mes o año) y PennyNote lo apuntará solo cada vez que toque, también los atrasados. Gestiónalos, páusalos o bórralos en Ajustes → Gastos recurrentes.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.0/PennyNote.ipa",
+      "size": 1948357
     }
   ],
   "news": []
