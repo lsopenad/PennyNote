@@ -25,6 +25,10 @@ packages:
   Supabase:
     url: https://github.com/supabase/supabase-swift
     from: "2.55.0"
+  # Para generar el Excel de Ajustes → Exportar (licencia BSD-2).
+  libxlsxwriter:
+    url: https://github.com/jmcnamara/libxlsxwriter
+    from: "1.2.4"
 
 targets:
   PennyNote:
@@ -66,6 +70,7 @@ targets:
       - target: PennyNoteWidgetExtension
         embed: true
       - package: Supabase
+      - package: libxlsxwriter
 
   PennyNoteWidgetExtension:
     type: app-extension

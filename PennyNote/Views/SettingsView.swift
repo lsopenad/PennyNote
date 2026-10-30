@@ -15,6 +15,17 @@ struct SettingsView: View {
             }
 
             Section {
+                NavigationLink("Exportar") {
+                    ExportView()
+                }
+                .disabled(isReadOnly)
+            } footer: {
+                if isReadOnly {
+                    Text("No disponible en la demo.")
+                }
+            }
+
+            Section {
                 // El idioma se elige en los Ajustes de iOS (PennyNote → Idioma): así cambian también los
                 // widgets, Siri y Atajos, que no comparten un ajuste propio de la app.
                 Button {
