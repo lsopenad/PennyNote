@@ -28,12 +28,14 @@ enum DisplayFormat {
         return formatter
     }()
 
-    // Igual que percentFormatter pero siempre con signo, para variaciones.
+    // Igual que percentFormatter pero siempre con signo, para variaciones. Redondea como rounded() en
+    // comparison: con el redondeo al par por defecto, un 0,5 % saldría como "+0 %".
     private static let signedPercentFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .percent
         formatter.locale = locale
         formatter.maximumFractionDigits = 0
+        formatter.roundingMode = .halfUp
         formatter.positivePrefix = "+"
         formatter.negativePrefix = "−"
         return formatter
