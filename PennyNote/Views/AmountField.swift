@@ -9,8 +9,13 @@ struct AmountInput {
         text = amount.map { "\($0)" } ?? ""
     }
 
+    // Solo dígitos con un separador decimal como mucho. Decimal(string:) se queda sin avisar con lo
+    // que entiende del principio: un "1.234,56" pegado se guardaría como 1,234. Los espacios de los
+    // extremos, habituales al copiar, sí se aceptan.
     var value: Decimal? {
-        Decimal(string: text.replacingOccurrences(of: ",", with: "."))
+        let normalized = text.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: ",", with: ".")
+        guard normalized.wholeMatch(of: #/[0-9]*\.?[0-9]*/#) != nil else { return nil }
+        return Decimal(string: normalized)
     }
 
     func isValid(for currency: AppCurrency) -> Bool {
