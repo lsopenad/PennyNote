@@ -7,9 +7,6 @@ struct RecurringExpenseListView: View {
     @Query(filter: #Predicate<RecurringExpense> { !$0.isSoftDeleted }, sort: \RecurringExpense.nextDate)
     private var recurringExpenses: [RecurringExpense]
 
-    @State private var pendingDeletion: RecurringExpense?
-    @State private var isDeleteConfirmationPresented = false
-
     var body: some View {
         List {
             ForEach(recurringExpenses) { recurringExpense in
@@ -18,10 +15,12 @@ struct RecurringExpenseListView: View {
                 } label: {
                     RecurringExpenseRow(recurringExpense: recurringExpense)
                 }
-            }
-            .onDelete { offsets in
-                pendingDeletion = offsets.first.map { recurringExpenses[$0] }
-                isDeleteConfirmationPresented = pendingDeletion != nil
+                .swipeToDelete(
+                    name: recurringExpense.title.isEmpty ? recurringExpense.category.displayName : recurringExpense.title,
+                    message: "No se crearán más gastos. Los que ya ha creado se conservan."
+                ) {
+                    ExpenseRepository.deleteRecurringExpense(recurringExpense, context: modelContext)
+                }
             }
         }
         .overlay {
@@ -34,18 +33,5 @@ struct RecurringExpenseListView: View {
             }
         }
         .navigationTitle("Gastos recurrentes")
-        .confirmationDialog(
-            "¿Eliminar gasto recurrente?",
-            isPresented: $isDeleteConfirmationPresented,
-            titleVisibility: .visible,
-            presenting: pendingDeletion
-        ) { recurringExpense in
-            Button("Eliminar", role: .destructive) {
-                ExpenseRepository.deleteRecurringExpense(recurringExpense, context: modelContext)
-            }
-            Button("Cancelar", role: .cancel) {}
-        } message: { _ in
-            Text("No se crearán más gastos. Los que ya ha creado se conservan.")
-        }
     }
 }

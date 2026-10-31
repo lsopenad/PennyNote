@@ -5003,28 +5003,6 @@
         }
       }
     },
-    "¿Eliminar categoría?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete category?"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Eliminar categoría?"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "删除类别？"
-          }
-        }
-      }
-    },
     "¿Eliminar gasto recurrente?": {
       "localizations": {
         "en": {
@@ -5047,24 +5025,24 @@
         }
       }
     },
-    "¿Eliminar gasto?": {
+    "¿Eliminar «%@»?": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Delete expense?"
+            "value": "Delete “%@”?"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Eliminar gasto?"
+            "value": "¿Eliminar «%@»?"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除支出？"
+            "value": "删除“%@”？"
           }
         }
       }

@@ -8,8 +8,6 @@ struct CategoryManagementView: View {
 
     @State private var newCategoryName = ""
     @State private var errorMessage: String?
-    @State private var pendingDeleteOffsets: IndexSet?
-    @State private var isDeleteConfirmationPresented = false
 
     var body: some View {
         List {
@@ -23,12 +21,14 @@ struct CategoryManagementView: View {
                         } label: {
                             categoryLabel(category)
                         }
+                        .swipeToDelete(
+                            name: category.name,
+                            message: "Los gastos de esta categoría pasarán a la categoría por defecto."
+                        ) {
+                            delete(category)
+                        }
                     }
                 }
-                .onDelete(perform: isReadOnly ? nil : { offsets in
-                    pendingDeleteOffsets = offsets
-                    isDeleteConfirmationPresented = true
-                })
             }
 
             if !isReadOnly {
@@ -50,16 +50,6 @@ struct CategoryManagementView: View {
             }
         }
         .navigationTitle("Categorías")
-        .confirmationDialog(
-            "¿Eliminar categoría?",
-            isPresented: $isDeleteConfirmationPresented,
-            titleVisibility: .visible
-        ) {
-            Button("Eliminar", role: .destructive) { confirmPendingDeletion() }
-            Button("Cancelar", role: .cancel) { pendingDeleteOffsets = nil }
-        } message: {
-            Text("Los gastos de esta categoría pasarán a la categoría por defecto.")
-        }
     }
 
     private func categoryLabel(_ category: ExpenseCategory) -> some View {
@@ -71,12 +61,6 @@ struct CategoryManagementView: View {
         }
     }
 
-    private func confirmPendingDeletion() {
-        guard let pendingDeleteOffsets else { return }
-        delete(at: pendingDeleteOffsets)
-        self.pendingDeleteOffsets = nil
-    }
-
     private func addCategory() {
         let trimmed = newCategoryName.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return }
@@ -85,14 +69,8 @@ struct CategoryManagementView: View {
         errorMessage = nil
     }
 
-    private func delete(at offsets: IndexSet) {
-        for index in offsets {
-            let didDelete = ExpenseRepository.deleteCategory(categories[index], context: modelContext)
-            if !didDelete {
-                errorMessage = String(localized: "Debe quedar al menos una categoría.")
-                return
-            }
-        }
-        errorMessage = nil
+    private func delete(_ category: ExpenseCategory) {
+        let didDelete = ExpenseRepository.deleteCategory(category, context: modelContext)
+        errorMessage = didDelete ? nil : String(localized: "Debe quedar al menos una categoría.")
     }
 }

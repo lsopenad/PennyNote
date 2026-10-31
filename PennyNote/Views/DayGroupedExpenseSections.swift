@@ -6,7 +6,7 @@ struct DayGroupedExpenseSections: View {
     let expenses: [Expense]
     let onSelect: (Expense) -> Void
     // nil desactiva el borrado deslizando.
-    var onDelete: ((_ dayItems: [Expense], _ offsets: IndexSet) -> Void)?
+    var onDelete: ((Expense) -> Void)?
 
     private var groups: [(day: Date, items: [Expense])] {
         let calendar = Calendar.current
@@ -19,12 +19,24 @@ struct DayGroupedExpenseSections: View {
         ForEach(groups, id: \.day) { group in
             Section(header: Text(group.day, style: .date)) {
                 ForEach(group.items) { expense in
-                    ExpenseRowView(expense: expense)
-                        .contentShape(Rectangle())
-                        .onTapGesture { onSelect(expense) }
+                    row(for: expense)
                 }
-                .onDelete(perform: onDelete.map { handler in { offsets in handler(group.items, offsets) } })
             }
+        }
+    }
+
+    @ViewBuilder
+    private func row(for expense: Expense) -> some View {
+        let row = ExpenseRowView(expense: expense)
+            .contentShape(Rectangle())
+            .onTapGesture { onSelect(expense) }
+        if let onDelete {
+            // El nombre que se ve en la fila: el título o, sin él, la categoría.
+            row.swipeToDelete(name: expense.title.isEmpty ? expense.category.displayName : expense.title) {
+                onDelete(expense)
+            }
+        } else {
+            row
         }
     }
 }
