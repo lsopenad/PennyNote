@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.6.3",
+          "buildVersion": "12",
+          "date": "2026-10-31",
+          "localizedDescription": "Corrección: al borrar deslizando, la confirmación sale junto al gasto, la categoría o el gasto recurrente, con su nombre, en vez de arriba del todo.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.3/PennyNote.ipa",
+          "size": 1949200,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.6.2",
           "buildVersion": "11",
           "date": "2026-10-31",
@@ -125,11 +134,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.6.2",
+      "version": "1.6.3",
       "versionDate": "2026-10-31",
-      "versionDescription": "Corrección: la app ya no se cierra al abrirla cuando se instala con AltStore.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.2/PennyNote.ipa",
-      "size": 1950992
+      "versionDescription": "Corrección: al borrar deslizando, la confirmación sale junto al gasto, la categoría o el gasto recurrente, con su nombre, en vez de arriba del todo.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.3/PennyNote.ipa",
+      "size": 1949200
     }
   ],
   "news": []
