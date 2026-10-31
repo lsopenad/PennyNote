@@ -33,7 +33,7 @@ struct ExpenseSearchOverlay: View {
                 .background(.fill.tertiary, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .matchedGeometryEffect(id: "searchAnchor", in: namespace)
 
-                Button("Cancelar", action: onCancel)
+                Button("Cancelar") { close(then: onCancel) }
             }
             .padding(.horizontal)
             .padding(.top, 8)
@@ -41,7 +41,9 @@ struct ExpenseSearchOverlay: View {
 
             if !filteredExpenses.isEmpty {
                 List {
-                    DayGroupedExpenseSections(expenses: filteredExpenses, onSelect: onSelect)
+                    DayGroupedExpenseSections(expenses: filteredExpenses, onSelect: { expense in
+                        close { onSelect(expense) }
+                    })
                 }
                 .listStyle(.plain)
             } else {
@@ -51,5 +53,12 @@ struct ExpenseSearchOverlay: View {
         .background(Color(.systemBackground))
         .ignoresSafeArea(edges: .bottom)
         .onAppear { isFieldFocused = true }
+    }
+
+    // Suelta el foco antes de cerrar para que el teclado baje a la vez que se va la búsqueda. Si el
+    // campo desaparece con el foco puesto, el teclado se queda encima de la lista y luego se va de golpe.
+    private func close(then action: () -> Void) {
+        isFieldFocused = false
+        action()
     }
 }
