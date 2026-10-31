@@ -98,6 +98,13 @@ struct ExpenseListView: View {
                 .zIndex(1)
             }
         }
+        // La búsqueda solo se abre desde la lista, así que si cambia la ruta con ella abierta es por
+        // un enlace (el widget abre Estadísticas). Se cierra para que no tape la pantalla de destino.
+        .onChange(of: router.navigationPath) { _, path in
+            if !path.isEmpty, isSearchActive {
+                isSearchActive = false
+            }
+        }
     }
 
     // La cabecera ignora el filtro de la lista: siempre muestra el gasto total del mes.

@@ -9,13 +9,14 @@ struct HomeScreenWidgetView: View {
 
     var body: some View {
         content
+            // Los widgets de inicio abren Estadísticas. Añadir un gasto queda para el de la pantalla
+            // de bloqueo y el control del Centro de control.
+            .widgetURL(DeepLinkURL.statistics)
             .containerBackground(for: .widget) {
                 Color(.systemBackground)
             }
     }
 
-    // El pequeño solo admite un destino al tocarlo y abre "Añadir gasto", como antes de tener
-    // gráfica. En el mediano la gráfica abre Estadísticas y el botón "+" añade un gasto.
     @ViewBuilder
     private var content: some View {
         switch family {
@@ -24,10 +25,8 @@ struct HomeScreenWidgetView: View {
                 summary
                 topCategories
             }
-            .widgetURL(DeepLinkURL.statistics)
         default:
             summary
-                .widgetURL(DeepLinkURL.addExpense)
         }
     }
 
@@ -61,20 +60,9 @@ struct HomeScreenWidgetView: View {
 
     private var topCategories: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Más gasto")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Link(destination: DeepLinkURL.addExpense) {
-                    Image(systemName: "plus")
-                        .font(.caption.bold())
-                        .foregroundStyle(.white)
-                        .frame(width: 26, height: 26)
-                        .background(Color.brand, in: Circle())
-                }
-                .accessibilityLabel("Añadir gasto")
-            }
+            Text("Más gasto")
+                .font(.caption)
+                .foregroundStyle(.secondary)
 
             if display.topCategories.isEmpty {
                 Spacer()
