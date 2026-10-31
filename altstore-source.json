@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.6.4",
+          "buildVersion": "13",
+          "date": "2026-10-31",
+          "localizedDescription": "Corrección: al cancelar la búsqueda o tocar un resultado, el teclado baja con suavidad en vez de dar un tirón.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.4/PennyNote.ipa",
+          "size": 1949646,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.6.3",
           "buildVersion": "12",
           "date": "2026-10-31",
@@ -134,11 +143,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.6.3",
+      "version": "1.6.4",
       "versionDate": "2026-10-31",
-      "versionDescription": "Corrección: al borrar deslizando, la confirmación sale junto al gasto, la categoría o el gasto recurrente, con su nombre, en vez de arriba del todo.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.3/PennyNote.ipa",
-      "size": 1949200
+      "versionDescription": "Corrección: al cancelar la búsqueda o tocar un resultado, el teclado baja con suavidad en vez de dar un tirón.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.4/PennyNote.ipa",
+      "size": 1949646
     }
   ],
   "news": []
