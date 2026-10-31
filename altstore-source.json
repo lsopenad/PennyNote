@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.6.2",
+          "buildVersion": "11",
+          "date": "2026-10-31",
+          "localizedDescription": "Corrección: la app ya no se cierra al abrirla cuando se instala con AltStore.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.2/PennyNote.ipa",
+          "size": 1950992,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.6.1",
           "buildVersion": "10",
           "date": "2026-10-31",
@@ -116,11 +125,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.6.1",
+      "version": "1.6.2",
       "versionDate": "2026-10-31",
-      "versionDescription": "Correcciones: un importe pegado con separadores de miles (p. ej. «1.234,56») ya no se guarda con otra cantidad; ahora hay que escribirlo sin ellos. La comparación con el mes anterior ya no muestra «+0 %».",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.1/PennyNote.ipa",
-      "size": 1948403
+      "versionDescription": "Corrección: la app ya no se cierra al abrirla cuando se instala con AltStore.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.2/PennyNote.ipa",
+      "size": 1950992
     }
   ],
   "news": []
