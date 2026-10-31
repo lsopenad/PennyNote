@@ -151,6 +151,69 @@ struct SpendingStatisticsTests {
         #expect(weekOfJuly.converted(to: .month, now: now, calendar: mondayCalendar).start == (try date(2026, 7, 1)))
     }
 
+    // El 25 de octubre de 2026 se atrasa la hora en Madrid: ese domingo dura 25 horas.
+    @Test func weekWithTheDaylightSavingChangeHasSevenDays() throws {
+        let calendar = try calendar("Europe/Madrid", firstWeekday: 2)
+        let week = StatisticsPeriod(kind: .week, containing: try date(2026, 10, 22, in: calendar), calendar: calendar)
+        let expenses = [
+            Expense(amount: 1, date: try date(2026, 10, 19, in: calendar)),
+            Expense(amount: 2, date: try date(2026, 10, 25, hour: 2, minute: 30, in: calendar)),
+            Expense(amount: 3, date: try date(2026, 10, 25, hour: 23, minute: 30, in: calendar)),
+            Expense(amount: 50, date: try date(2026, 10, 26, in: calendar)),
+        ]
+
+        #expect(week.days(calendar: calendar).count == 7)
+        #expect(week.start == (try date(2026, 10, 19, in: calendar)))
+        #expect(SpendingStatistics.dailyTotals(expenses, in: week, calendar: calendar) == [1, 0, 0, 0, 0, 0, 5])
+        #expect(SpendingStatistics.elapsedDays(in: week, now: try date(2026, 10, 25, hour: 23, in: calendar), calendar: calendar) == 7)
+    }
+
+    // En Nueva York la hora cambia el domingo 1 de noviembre, que allí es el primer día de la semana.
+    @Test func sundayFirstWeeksStartOnSundayAcrossTheDaylightSavingChange() throws {
+        let calendar = try calendar("America/New_York", firstWeekday: 1)
+        let week = StatisticsPeriod(kind: .week, containing: try date(2026, 11, 4, in: calendar), calendar: calendar)
+        let expenses = [
+            Expense(amount: 4, date: try date(2026, 10, 31, hour: 23, in: calendar)),
+            Expense(amount: 6, date: try date(2026, 11, 1, hour: 1, minute: 30, in: calendar)),
+            Expense(amount: 7, date: try date(2026, 11, 7, hour: 23, minute: 59, in: calendar)),
+        ]
+
+        let totals = SpendingStatistics.periodTotals(expenses, endingIn: week, count: 2, calendar: calendar)
+
+        #expect(week.days(calendar: calendar).count == 7)
+        #expect(totals.map(\.period.start) == [try date(2026, 10, 25, in: calendar), try date(2026, 11, 1, in: calendar)])
+        #expect(totals.map(\.total) == [4, 13])
+        #expect(SpendingStatistics.dailyTotals(expenses, in: week, calendar: calendar) == [6, 0, 0, 0, 0, 0, 7])
+    }
+
+    // El 29 de marzo de 2026 se adelanta la hora en Madrid: ese día dura 23 horas.
+    @Test func monthWithTheDaylightSavingChangeKeepsEveryDay() throws {
+        let calendar = try calendar("Europe/Madrid", firstWeekday: 2)
+        let expenses = [
+            Expense(amount: 2, date: try date(2026, 3, 29, hour: 3, in: calendar)),
+            Expense(amount: 3, date: try date(2026, 3, 31, hour: 23, minute: 59, in: calendar)),
+        ]
+        let month = StatisticsPeriod(kind: .month, containing: try date(2026, 3, 15, in: calendar), calendar: calendar)
+
+        let spending = SpendingStatistics.monthSpending(expenses, monthOf: try date(2026, 3, 15, in: calendar), calendar: calendar)
+
+        #expect(spending.dailyTotals.count == 31)
+        #expect(spending.dailyTotals[28] == 2)
+        #expect(spending.dailyTotals[30] == 3)
+        #expect(SpendingStatistics.dailyTotals(expenses, in: month, calendar: calendar) == spending.dailyTotals)
+    }
+
+    private func calendar(_ timeZoneID: String, firstWeekday: Int) throws -> Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = try #require(TimeZone(identifier: timeZoneID))
+        calendar.firstWeekday = firstWeekday
+        return calendar
+    }
+
+    private func date(_ year: Int, _ month: Int, _ day: Int, hour: Int = 0, minute: Int = 0, in calendar: Calendar) throws -> Date {
+        try #require(DateComponents(calendar: calendar, year: year, month: month, day: day, hour: hour, minute: minute).date)
+    }
+
     // Semanas de lunes a domingo, como en España, sea cual sea la región del simulador.
     private var mondayCalendar: Calendar {
         var calendar = Calendar.current
