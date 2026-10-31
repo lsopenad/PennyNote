@@ -7,10 +7,16 @@ import SwiftData
 enum SharedModelContainer {
     static let container: ModelContainer = {
         let schema = Schema(versionedSchema: SchemaV3.self)
-        let configuration = ModelConfiguration(
-            schema: schema,
-            groupContainer: .identifier(AppGroupConstants.identifier)
-        )
+        let groupContainer: ModelConfiguration.GroupContainer
+        if AppGroupConstants.isAvailable {
+            groupContainer = .identifier(AppGroupConstants.identifier)
+        } else {
+            // Sin el grupo, el almacén propio de la app: el widget y Atajos no verán los gastos, pero
+            // la app abre. SwiftData no lanza un error con un grupo ajeno, la cierra.
+            Log.data.fault("La firma no incluye el App Group \(AppGroupConstants.identifier, privacy: .public), se usa el almacén propio de la app")
+            groupContainer = .none
+        }
+        let configuration = ModelConfiguration(schema: schema, groupContainer: groupContainer)
         do {
             return try ModelContainer(for: schema, migrationPlan: PennyNoteMigrationPlan.self, configurations: [configuration])
         } catch {
