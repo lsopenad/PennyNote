@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.6.5",
+          "buildVersion": "14",
+          "date": "2026-10-31",
+          "localizedDescription": "Los widgets de la pantalla de inicio abren Estadísticas; el de la pantalla de bloqueo sigue siendo para añadir un gasto.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.5/PennyNote.ipa",
+          "size": 1948420,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.6.4",
           "buildVersion": "13",
           "date": "2026-10-31",
@@ -143,11 +152,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.6.4",
+      "version": "1.6.5",
       "versionDate": "2026-10-31",
-      "versionDescription": "Corrección: al cancelar la búsqueda o tocar un resultado, el teclado baja con suavidad en vez de dar un tirón.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.4/PennyNote.ipa",
-      "size": 1949646
+      "versionDescription": "Los widgets de la pantalla de inicio abren Estadísticas; el de la pantalla de bloqueo sigue siendo para añadir un gasto.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.5/PennyNote.ipa",
+      "size": 1948420
     }
   ],
   "news": []
