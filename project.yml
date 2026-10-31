@@ -12,8 +12,8 @@ options:
 # TARGETED_DEVICE_FAMILY va en cada target: XcodeGen pone "1,2" por defecto a nivel de target y taparía este.
 settings:
   base:
-    MARKETING_VERSION: "1.6.0"
-    CURRENT_PROJECT_VERSION: "9"
+    MARKETING_VERSION: "1.6.1"
+    CURRENT_PROJECT_VERSION: "10"
     SWIFT_VERSION: "5.0"
     # Para que el compilador saque los textos traducibles al compilar (los .stringsdata con los que
     # se comprueba que el catálogo los tiene todos).

@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.6.1",
+          "buildVersion": "10",
+          "date": "2026-10-31",
+          "localizedDescription": "Correcciones: un importe pegado con separadores de miles (p. ej. «1.234,56») ya no se guarda con otra cantidad; ahora hay que escribirlo sin ellos. La comparación con el mes anterior ya no muestra «+0 %».",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.1/PennyNote.ipa",
+          "size": 1948403,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.6.0",
           "buildVersion": "9",
           "date": "2026-10-30",
@@ -107,11 +116,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.6.0",
-      "versionDate": "2026-10-30",
-      "versionDescription": "Novedad: gastos recurrentes. Elige «Repetir» al añadir un gasto (cada semana, mes o año) y PennyNote lo apuntará solo cada vez que toque, también los atrasados. Gestiónalos, páusalos o bórralos en Ajustes → Gastos recurrentes.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.0/PennyNote.ipa",
-      "size": 1948357
+      "version": "1.6.1",
+      "versionDate": "2026-10-31",
+      "versionDescription": "Correcciones: un importe pegado con separadores de miles (p. ej. «1.234,56») ya no se guarda con otra cantidad; ahora hay que escribirlo sin ellos. La comparación con el mes anterior ya no muestra «+0 %».",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.1/PennyNote.ipa",
+      "size": 1948403
     }
   ],
   "news": []
