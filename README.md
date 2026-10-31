@@ -4,15 +4,9 @@ A fast expense tracker for iPhone. Sign in with email and password and your expe
 
 <p align="center">
   <img src="docs/screenshots/main.png" width="200" alt="Main screen with the month's total, the comparison with the previous month and a daily spending chart">
-  <img src="docs/screenshots/add.png" width="200" alt="Add expense sheet with title, amount, category, payment method and date">
+  <img src="docs/screenshots/add.png" width="200" alt="Add expense sheet with title, amount, category, payment method, date and repeat">
   <img src="docs/screenshots/statistics.png" width="200" alt="Statistics screen with the month's total, daily spending chart and spending per category">
-  <img src="docs/screenshots/statistics-more.png" width="200" alt="Statistics screen with spending per payment method and the last six months">
-</p>
-<p align="center">
-  <img src="docs/screenshots/filters.png" width="200" alt="Filter menu with categories and payment methods">
-  <img src="docs/screenshots/search.png" width="200" alt="Search results for expenses matching a title">
-  <img src="docs/screenshots/widget.jpg" width="200" alt="Medium Home Screen widget with the month's chart and top categories">
-  <img src="docs/screenshots/signin.png" width="200" alt="Sign-in screen with email and password and a Demo button">
+  <img src="docs/screenshots/widget.png" width="200" alt="Medium Home Screen widget with the month's total, a daily chart and top categories">
 </p>
 
 ## Features
