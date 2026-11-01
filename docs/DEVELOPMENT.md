@@ -94,6 +94,16 @@ Los tests (Swift Testing, target `PennyNoteTests`) cubren la lógica pura: cálc
 xcodebuild test -project PennyNote.xcodeproj -scheme PennyNote -destination 'platform=iOS Simulator,name=iPhone 17'
 ```
 
+### Mediciones de rendimiento
+
+`PennyNoteTests/PerformanceBenchmarks.swift` mide las rutas calientes (lista, Estadísticas, widget, sincronización y exportación) con 1k, 10k y 50k gastos de `DebugSeed`. No se ejecuta con el resto de tests: solo con la variable `PENNYNOTE_BENCHMARKS=1`, y tarda unos dos minutos.
+
+```bash
+TEST_RUNNER_PENNYNOTE_BENCHMARKS=1 xcodebuild test -project PennyNote.xcodeproj -scheme PennyNote -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:PennyNoteTests/PerformanceBenchmarks | grep BENCH
+```
+
+Las cifras de la auditoría de noviembre de 2026 están en `docs/AUDIT-2026-11.md`.
+
 ## Generar un .ipa
 
 ```bash
