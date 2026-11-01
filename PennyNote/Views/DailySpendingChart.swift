@@ -21,8 +21,7 @@ struct DailySpendingChart: View {
     }
 
     private var average: Double? {
-        guard elapsedDays > 0 else { return nil }
-        return dailyTotals.prefix(elapsedDays).sum(of: { $0 }).doubleValue / Double(elapsedDays)
+        SpendingStatistics.dailyAverage(dailyTotals, elapsedDays: elapsedDays)?.doubleValue
     }
 
     // Una semana cabe con el nombre de cada día; un mes, con el número cada 7 días.

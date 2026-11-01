@@ -31,6 +31,13 @@ enum SpendingStatistics {
         period.days(calendar: calendar).filter { $0 <= now }.count
     }
 
+    // Media de los días ya empezados, sin contar gastos con fecha futura: la línea de la gráfica y el
+    // resumen de Estadísticas. nil si el periodo aún no ha empezado.
+    static func dailyAverage(_ dailyTotals: [Decimal], elapsedDays: Int) -> Decimal? {
+        guard elapsedDays > 0 else { return nil }
+        return dailyTotals.prefix(elapsedDays).sum(of: { $0 }) / Decimal(elapsedDays)
+    }
+
     static func expenses(_ expenses: [Expense], in period: StatisticsPeriod, calendar: Calendar = .current) -> [Expense] {
         let interval = period.interval(calendar: calendar)
         return expenses.filter { !$0.isSoftDeleted && $0.date >= interval.start && $0.date < interval.end }

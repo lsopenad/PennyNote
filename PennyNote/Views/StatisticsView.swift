@@ -142,10 +142,11 @@ struct StatisticsView: View {
                 Text("\(periodExpenses.count) gastos")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-            } else if elapsedDays > 0 {
-                // Igual que la línea de media de la gráfica: sin contar gastos con fecha futura.
-                let elapsedTotal = SpendingStatistics.dailyTotals(periodExpenses, in: period).prefix(elapsedDays).sum(of: { $0 })
-                Text("Media diaria: \(DisplayFormat.currency(elapsedTotal / Decimal(elapsedDays), in: currency))")
+            } else if let average = SpendingStatistics.dailyAverage(
+                SpendingStatistics.dailyTotals(periodExpenses, in: period),
+                elapsedDays: elapsedDays
+            ) {
+                Text("Media diaria: \(DisplayFormat.currency(average, in: currency))")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }

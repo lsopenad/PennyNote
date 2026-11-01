@@ -12,7 +12,7 @@ struct SupabaseSyncRemote: SyncRemote {
     private static let expenseColumns = "id,amount::text,date,title,payment_method,category_id,recurring_expense_id,is_deleted,created_at,updated_at,server_updated_at"
     private static let recurringExpenseColumns = "id,amount::text,title,payment_method,category_id,frequency,start_date,next_date,is_paused,is_deleted,created_at,updated_at,server_updated_at"
 
-    private static let userSettingsColumns = "currency,updated_at,server_updated_at"
+    private static let userSettingsColumns = "currency,updated_at"
 
     let client: SupabaseClient
 
