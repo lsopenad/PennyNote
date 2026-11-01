@@ -432,14 +432,12 @@ private final class FakeSyncRemote: SyncRemote {
 
     func upsertUserSettings(_ settings: RemoteUserSettings) async throws {
         guard (userSettings?.updatedAt ?? .distantPast) <= settings.updatedAt else { return }
-        var stored = settings
-        stored.serverUpdatedAt = tick()
-        userSettings = stored
+        userSettings = settings
     }
 
     // Simula la moneda elegida desde otro dispositivo.
     func setUserSettings(currency: String, updatedAt: Date) {
-        userSettings = RemoteUserSettings(currency: currency, updatedAt: updatedAt, serverUpdatedAt: tick())
+        userSettings = RemoteUserSettings(currency: currency, updatedAt: updatedAt)
     }
 
     func add(expense amount: Decimal) {
