@@ -73,6 +73,19 @@ Selecciona el esquema `PennyNote` y un simulador de iPhone, y ejecuta con Cmd+R.
 
 Vuelve a ejecutar `xcodegen generate` cada vez que `project.yml` cambie (por ejemplo, tras un `git pull`).
 
+### Datos de prueba (solo Debug)
+
+Para capturas y mediciones, la app puede abrir con datos inventados sin tocar los de verdad. Con el argumento de lanzamiento `-DebugSeed YES` (en el esquema, *Run → Arguments*, o con `simctl`):
+
+```bash
+xcrun simctl launch --terminate-running-process booted com.pennynote.app -DebugSeed YES
+```
+
+- Usa un almacén propio en el App Group (`DebugSeed.store`), que se borra y se vuelve a rellenar en cada arranque: unos seis meses de gastos, siempre los mismos salvo por la fecha de hoy.
+- `-DebugSeedExpenses 10000` cambia eso por ese número de gastos del día a día repartidos en dos años, más los fijos de cada mes.
+- Entra con una sesión ficticia, sin cliente de Supabase: no sincroniza y Ajustes no muestra las secciones de bloqueo ni de cuenta. La moneda se guarda aparte y vuelve a la de la región en cada arranque; el widget sigue mostrando la de la instalación real, pero sí pinta los gastos de prueba hasta que la app vuelve a abrirse sin el argumento.
+- En Release no existe: `DebugSeed.isActive` es siempre falso.
+
 ## Tests
 
 Los tests (Swift Testing, target `PennyNoteTests`) cubren la lógica pura: cálculo del total mensual, estadísticas de gasto, datos del widget y la sincronización (contra un servidor falso en memoria). Se ejecutan con Cmd+U en Xcode o desde terminal:

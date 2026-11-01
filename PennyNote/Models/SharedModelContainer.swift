@@ -16,6 +16,11 @@ enum SharedModelContainer {
             Log.data.fault("La firma no incluye el App Group \(AppGroupConstants.identifier, privacy: .public), se usa el almacén propio de la app")
             groupContainer = .none
         }
+        #if DEBUG
+        if DebugSeed.isActive {
+            return DebugSeed.makeContainer(schema: schema, groupContainer: groupContainer)
+        }
+        #endif
         let configuration = ModelConfiguration(schema: schema, groupContainer: groupContainer)
         do {
             return try ModelContainer(for: schema, migrationPlan: PennyNoteMigrationPlan.self, configurations: [configuration])

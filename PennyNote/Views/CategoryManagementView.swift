@@ -3,7 +3,6 @@ import SwiftData
 
 struct CategoryManagementView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.isReadOnly) private var isReadOnly
     @Query(sort: \ExpenseCategory.sortOrder) private var categories: [ExpenseCategory]
 
     @State private var newCategoryName = ""
@@ -13,31 +12,25 @@ struct CategoryManagementView: View {
         List {
             Section {
                 ForEach(categories) { category in
-                    if isReadOnly {
+                    NavigationLink {
+                        CategoryColorPickerView(category: category)
+                    } label: {
                         categoryLabel(category)
-                    } else {
-                        NavigationLink {
-                            CategoryColorPickerView(category: category)
-                        } label: {
-                            categoryLabel(category)
-                        }
-                        .swipeToDelete(
-                            name: category.name,
-                            message: "Los gastos de esta categoría pasarán a la categoría por defecto."
-                        ) {
-                            delete(category)
-                        }
+                    }
+                    .swipeToDelete(
+                        name: category.name,
+                        message: "Los gastos de esta categoría pasarán a la categoría por defecto."
+                    ) {
+                        delete(category)
                     }
                 }
             }
 
-            if !isReadOnly {
-                Section {
-                    HStack {
-                        TextField("Nueva categoría", text: $newCategoryName)
-                        Button("Añadir", action: addCategory)
-                            .disabled(newCategoryName.trimmingCharacters(in: .whitespaces).isEmpty)
-                    }
+            Section {
+                HStack {
+                    TextField("Nueva categoría", text: $newCategoryName)
+                    Button("Añadir", action: addCategory)
+                        .disabled(newCategoryName.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
 
