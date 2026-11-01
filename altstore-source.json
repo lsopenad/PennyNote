@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.7.0",
+          "buildVersion": "15",
+          "date": "2026-11-01",
+          "localizedDescription": "La lista de gastos va fluida aunque tengas miles: muestra los más recientes y «Mostrar más» carga el resto. Al borrar deslizando en la lista principal, la confirmación sale arriba. Se quita el modo demo de la pantalla de inicio de sesión.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.7.0/PennyNote.ipa",
+          "size": 1940429,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.6.5",
           "buildVersion": "14",
           "date": "2026-10-31",
@@ -152,11 +161,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.6.5",
-      "versionDate": "2026-10-31",
-      "versionDescription": "Los widgets de la pantalla de inicio abren Estadísticas; el de la pantalla de bloqueo sigue siendo para añadir un gasto.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.6.5/PennyNote.ipa",
-      "size": 1948420
+      "version": "1.7.0",
+      "versionDate": "2026-11-01",
+      "versionDescription": "La lista de gastos va fluida aunque tengas miles: muestra los más recientes y «Mostrar más» carga el resto. Al borrar deslizando en la lista principal, la confirmación sale arriba. Se quita el modo demo de la pantalla de inicio de sesión.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.7.0/PennyNote.ipa",
+      "size": 1940429
     }
   ],
   "news": []
