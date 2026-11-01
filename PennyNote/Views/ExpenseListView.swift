@@ -1,51 +1,19 @@
 import SwiftUI
-import SwiftData
 
 struct ExpenseListView: View {
-    @Environment(\.modelContext) private var modelContext
     @Environment(AppRouter.self) private var router
-    @Environment(SyncCoordinator.self) private var sync
-
-    @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date, order: .reverse)
-    private var activeExpenses: [Expense]
 
     @Namespace private var searchAnimation
     @State private var isSearchActive = false
 
     @State private var filter = ExpenseFilter()
 
-    private var filteredExpenses: [Expense] {
-        activeExpenses.filter(filter.matches)
-    }
-
     var body: some View {
         @Bindable var router = router
         ZStack {
             NavigationStack(path: $router.navigationPath) {
                 ZStack(alignment: .bottomTrailing) {
-                    List {
-                        Section {
-                            Button(action: router.presentStatistics) {
-                                monthHeader
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityHint("Abre las estadísticas")
-                            .listRowInsets(EdgeInsets())
-                            .listRowSeparator(.hidden)
-                        }
-
-                        DayGroupedExpenseSections(
-                            expenses: filteredExpenses,
-                            onSelect: router.presentEdit,
-                            onDelete: { expense in
-                                ExpenseRepository.deleteExpense(expense, context: modelContext)
-                            }
-                        )
-                    }
-                    .listStyle(.plain)
-                    .refreshable {
-                        await sync.syncNow()
-                    }
+                    ExpenseDayList(filter: filter)
 
                     addButton
                 }
@@ -79,7 +47,6 @@ struct ExpenseListView: View {
 
             if isSearchActive {
                 ExpenseSearchOverlay(
-                    expenses: activeExpenses,
                     namespace: searchAnimation,
                     onSelect: { expense in
                         withAnimation(.snappy) { isSearchActive = false }
@@ -99,17 +66,6 @@ struct ExpenseListView: View {
                 isSearchActive = false
             }
         }
-    }
-
-    // La cabecera ignora el filtro de la lista: siempre muestra el gasto total del mes.
-    private var monthHeader: some View {
-        let now = Date.now
-        let previousMonth = Calendar.current.startOfPreviousMonth(for: now) ?? now
-        return MonthHeaderView(
-            current: SpendingStatistics.monthSpending(activeExpenses, monthOf: now),
-            previous: SpendingStatistics.monthSpending(activeExpenses, monthOf: previousMonth),
-            today: Calendar.current.component(.day, from: now)
-        )
     }
 
     private var addButton: some View {

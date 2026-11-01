@@ -1,7 +1,11 @@
 import SwiftUI
+import SwiftData
 
 struct ExpenseSearchOverlay: View {
-    let expenses: [Expense]
+    // Propio y no recibido de la lista: así solo se cargan los gastos mientras la búsqueda está abierta.
+    @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date, order: .reverse)
+    private var expenses: [Expense]
+
     let namespace: Namespace.ID
     let onSelect: (Expense) -> Void
     let onCancel: () -> Void

@@ -2,7 +2,7 @@ import Foundation
 
 // Filtro de la lista de gastos. Dentro de cada grupo (categoría, método de pago) las opciones
 // marcadas se combinan con "o"; entre grupos, con "y". Un grupo sin nada marcado no filtra.
-struct ExpenseFilter {
+struct ExpenseFilter: Equatable {
     var categoryIDs: Set<UUID> = []
     var includesUncategorized = false
     var paymentMethods: Set<PaymentMethod> = []

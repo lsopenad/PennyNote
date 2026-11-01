@@ -5,8 +5,8 @@ import SwiftUI
 struct DayGroupedExpenseSections: View {
     let expenses: [Expense]
     let onSelect: (Expense) -> Void
-    // nil desactiva el borrado deslizando.
-    var onDelete: ((Expense) -> Void)?
+    // Al deslizar para borrar; quien la usa pide la confirmación. nil desactiva el borrado deslizando.
+    var onDeleteRequest: ((Expense) -> Void)?
 
     private var groups: [(day: Date, items: [Expense])] {
         let calendar = Calendar.current
@@ -18,25 +18,17 @@ struct DayGroupedExpenseSections: View {
     var body: some View {
         ForEach(groups, id: \.day) { group in
             Section(header: Text(group.day, style: .date)) {
+                // onDelete del ForEach y no swipeActions en cada fila: con miles de filas, el modificador
+                // por fila hacía que cada actualización de la lista tardara segundos.
                 ForEach(group.items) { expense in
-                    row(for: expense)
+                    ExpenseRowView(expense: expense)
+                        .contentShape(Rectangle())
+                        .onTapGesture { onSelect(expense) }
                 }
+                .onDelete(perform: onDeleteRequest.map { request in
+                    { offsets in offsets.map { group.items[$0] }.forEach(request) }
+                })
             }
-        }
-    }
-
-    @ViewBuilder
-    private func row(for expense: Expense) -> some View {
-        let row = ExpenseRowView(expense: expense)
-            .contentShape(Rectangle())
-            .onTapGesture { onSelect(expense) }
-        if let onDelete {
-            // El nombre que se ve en la fila: el título o, sin él, la categoría.
-            row.swipeToDelete(name: expense.title.isEmpty ? expense.category.displayName : expense.title) {
-                onDelete(expense)
-            }
-        } else {
-            row
         }
     }
 }
