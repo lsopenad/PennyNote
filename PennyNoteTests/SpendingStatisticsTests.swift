@@ -111,6 +111,11 @@ struct SpendingStatisticsTests {
         #expect(elapsed(.day, try date(2026, 3, 15)) == 1)
     }
 
+    @Test func dailyAverageCountsOnlyElapsedDays() {
+        #expect(SpendingStatistics.dailyAverage([10, 20, 30, 99], elapsedDays: 3) == 20)
+        #expect(SpendingStatistics.dailyAverage([10, 20], elapsedDays: 0) == nil)
+    }
+
     @Test func dailyTotalsFollowTheDaysOfTheWeek() throws {
         let week = StatisticsPeriod(kind: .week, containing: try date(2026, 10, 29), calendar: mondayCalendar)
         let expenses = [
