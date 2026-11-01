@@ -3111,6 +3111,22 @@
         }
       }
     },
+    "Mostrar más": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show more"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示更多"
+          }
+        }
+      }
+    },
     "Muestra el gasto del mes y cómo va respecto al anterior.": {
       "localizations": {
         "en": {

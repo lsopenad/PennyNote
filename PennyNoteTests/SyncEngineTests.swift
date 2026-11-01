@@ -380,7 +380,7 @@ struct SyncEngineTests {
 // Servidor en memoria con las mismas reglas que el esquema SQL: last-write-wins por updated_at y
 // server_updated_at creciente en cada escritura.
 @MainActor
-private final class FakeSyncRemote: SyncRemote {
+final class FakeSyncRemote: SyncRemote {
     private(set) var categories: [UUID: RemoteCategory] = [:]
     private(set) var expenses: [UUID: RemoteExpense] = [:]
     private(set) var recurringExpenses: [UUID: RemoteRecurringExpense] = [:]
