@@ -10,10 +10,17 @@ import WidgetKit
 final class CurrencySettings {
     // Una instalación de la 1.0.x con datos (ownerUserID guardado) veía euros: los sigue viendo hasta
     // que la primera sincronización traiga la moneda de la cuenta o pida elegirla.
-    static let shared = CurrencySettings(
-        defaults: AppGroupConstants.sharedDefaults,
-        fallback: SyncStateStore.standard.ownerUserID == nil ? .regionDefault() : .eur
-    )
+    static let shared: CurrencySettings = {
+        #if DEBUG
+        if DebugSeed.isActive {
+            return CurrencySettings(defaults: DebugSeed.defaults)
+        }
+        #endif
+        return CurrencySettings(
+            defaults: AppGroupConstants.sharedDefaults,
+            fallback: SyncStateStore.standard.ownerUserID == nil ? .regionDefault() : .eur
+        )
+    }()
 
     private(set) var currency: AppCurrency
     // La cuenta aún no tiene moneda en el servidor y hay que preguntarla. Solo se sabe tras bajar los

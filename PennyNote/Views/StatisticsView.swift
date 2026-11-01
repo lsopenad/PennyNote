@@ -3,7 +3,6 @@ import SwiftData
 
 struct StatisticsView: View {
     @Environment(AppRouter.self) private var router
-    @Environment(\.isReadOnly) private var isReadOnly
     @Environment(\.currency) private var currency
 
     @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date)
@@ -159,7 +158,6 @@ struct StatisticsView: View {
             ExpenseRowView(expense: expense)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    guard !isReadOnly else { return }
                     router.presentEdit(expense)
                 }
         }

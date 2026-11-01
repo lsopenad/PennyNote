@@ -5,7 +5,6 @@ struct ExpenseListView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AppRouter.self) private var router
     @Environment(SyncCoordinator.self) private var sync
-    @Environment(\.isReadOnly) private var isReadOnly
 
     @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date, order: .reverse)
     private var activeExpenses: [Expense]
@@ -37,21 +36,18 @@ struct ExpenseListView: View {
 
                         DayGroupedExpenseSections(
                             expenses: filteredExpenses,
-                            onSelect: isReadOnly ? { _ in } : router.presentEdit,
-                            onDelete: isReadOnly ? nil : { expense in
+                            onSelect: router.presentEdit,
+                            onDelete: { expense in
                                 ExpenseRepository.deleteExpense(expense, context: modelContext)
                             }
                         )
                     }
                     .listStyle(.plain)
                     .refreshable {
-                        guard !isReadOnly else { return }
                         await sync.syncNow()
                     }
 
-                    if !isReadOnly {
-                        addButton
-                    }
+                    addButton
                 }
                 .navigationTitle("PennyNote")
                 .navigationDestination(for: AppRoute.self) { route in
@@ -87,9 +83,7 @@ struct ExpenseListView: View {
                     namespace: searchAnimation,
                     onSelect: { expense in
                         withAnimation(.snappy) { isSearchActive = false }
-                        if !isReadOnly {
-                            router.presentEdit(expense)
-                        }
+                        router.presentEdit(expense)
                     },
                     onCancel: {
                         withAnimation(.snappy) { isSearchActive = false }

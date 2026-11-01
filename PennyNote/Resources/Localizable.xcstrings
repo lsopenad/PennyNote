@@ -1373,28 +1373,6 @@
         }
       }
     },
-    "Demo": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Demo"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Demo"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "演示"
-          }
-        }
-      }
-    },
     "Desbloquea PennyNote para ver tus gastos.": {
       "localizations": {
         "en": {
@@ -1897,28 +1875,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "本月"
-          }
-        }
-      }
-    },
-    "Estás viendo datos de ejemplo. No se pueden modificar y no se guardan.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You're viewing sample data. It can't be changed and isn't saved."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estás viendo datos de ejemplo. No se pueden modificar y no se guardan."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "你正在查看示例数据。无法修改，也不会保存。"
           }
         }
       }
@@ -3265,28 +3221,6 @@
         }
       }
     },
-    "No disponible en la demo.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not available in the demo."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No disponible en la demo."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "演示模式下不可用。"
-          }
-        }
-      }
-    },
     "No hay conexión a internet.": {
       "localizations": {
         "en": {
@@ -4229,28 +4163,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "粉色"
-          }
-        }
-      }
-    },
-    "Salir de la demo": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Exit Demo"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Salir de la demo"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "退出演示"
           }
         }
       }

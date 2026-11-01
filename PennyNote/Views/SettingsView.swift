@@ -1,9 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(AccountSession.self) private var session
     @Environment(CurrencySettings.self) private var currencySettings
-    @Environment(\.isReadOnly) private var isReadOnly
     @Environment(\.openURL) private var openURL
 
     var body: some View {
@@ -18,14 +16,8 @@ struct SettingsView: View {
                 NavigationLink("Gastos recurrentes") {
                     RecurringExpenseListView()
                 }
-                .disabled(isReadOnly)
                 NavigationLink("Exportar") {
                     ExportView()
-                }
-                .disabled(isReadOnly)
-            } footer: {
-                if isReadOnly {
-                    Text("No disponible en la demo.")
                 }
             }
 
@@ -44,20 +36,16 @@ struct SettingsView: View {
                 Text("Se cambia en los Ajustes de iOS. Por defecto, la app usa el idioma del iPhone.")
             }
 
-            if isReadOnly {
-                Section {
-                    Button("Salir de la demo", action: session.exitDemo)
-                } footer: {
-                    Text("Estás viendo datos de ejemplo. No se pueden modificar y no se guardan.")
+            Section {
+                NavigationLink {
+                    CurrencySettingsView(currency: currencySettings.currency)
+                } label: {
+                    LabeledContent("Moneda", value: currencySettings.currency.displayName)
                 }
-            } else {
-                Section {
-                    NavigationLink {
-                        CurrencySettingsView(currency: currencySettings.currency)
-                    } label: {
-                        LabeledContent("Moneda", value: currencySettings.currency.displayName)
-                    }
-                }
+            }
+            // Con DebugSeed no hay cuenta real, y el bloqueo y cerrar sesión cambiarían el estado de la
+            // instalación de verdad.
+            if !DebugSeed.isActive {
                 AppLockSettingsSection()
                 AccountSettingsSections()
             }

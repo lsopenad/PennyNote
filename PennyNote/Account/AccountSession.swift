@@ -7,7 +7,14 @@ import Supabase
 @MainActor
 @Observable
 final class AccountSession {
-    static let shared = AccountSession()
+    static let shared: AccountSession = {
+        #if DEBUG
+        if DebugSeed.isActive {
+            return AccountSession(debugSeedUserID: DebugSeed.userID, email: DebugSeed.email)
+        }
+        #endif
+        return AccountSession()
+    }()
 
     enum State: Equatable {
         // Falta Config/Supabase.xcconfig al compilar.
@@ -15,8 +22,6 @@ final class AccountSession {
         case loading
         case signedOut
         case signedIn(userID: UUID, email: String)
-        // Sin sesión, con datos de ejemplo en memoria y en solo lectura (DemoData).
-        case demo
     }
 
     enum SignOutOutcome: Equatable {
@@ -40,19 +45,18 @@ final class AccountSession {
         }
     }
 
+    #if DEBUG
+    // Sesión ficticia de DebugSeed: sin cliente, para no tocar la cuenta guardada, y sin activar la
+    // sincronización.
+    private init(debugSeedUserID userID: UUID, email: String) {
+        client = nil
+        sync = .shared
+        state = .signedIn(userID: userID, email: email)
+    }
+    #endif
+
     var userEmail: String? {
         if case .signedIn(_, let email) = state { email } else { nil }
-    }
-
-    // Solo desde la pantalla de inicio de sesión: la demo no toca la cuenta ni el almacén compartido.
-    func enterDemo() {
-        guard state == .signedOut else { return }
-        state = .demo
-    }
-
-    func exitDemo() {
-        guard state == .demo else { return }
-        state = .signedOut
     }
 
     func signIn(email: String, password: String) async throws {
@@ -128,8 +132,7 @@ final class AccountSession {
         let previousUserID = signedInUserID
         if let session {
             state = .signedIn(userID: session.user.id, email: session.user.email ?? "")
-        } else if state != .demo {
-            // Un aviso sin sesión (p. ej. al caducar el token guardado) no saca de la demo.
+        } else {
             state = .signedOut
         }
 

@@ -4,7 +4,6 @@ import SwiftData
 // Gastos de un periodo que cumplen un filtro; se abre al tocar una fila de Estadísticas.
 struct FilteredExpensesView: View {
     @Environment(AppRouter.self) private var router
-    @Environment(\.isReadOnly) private var isReadOnly
     @Environment(\.currency) private var currency
 
     let title: String
@@ -22,7 +21,7 @@ struct FilteredExpensesView: View {
     var body: some View {
         let expenses = self.expenses
         List {
-            DayGroupedExpenseSections(expenses: expenses, onSelect: isReadOnly ? { _ in } : router.presentEdit)
+            DayGroupedExpenseSections(expenses: expenses, onSelect: router.presentEdit)
         }
         .listStyle(.plain)
         .overlay {

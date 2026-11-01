@@ -18,7 +18,6 @@ A fast expense tracker for iPhone. Sign in with email and password and your expe
 - Home Screen widgets (small and medium) with the month's chart and top categories, and Lock Screen widgets with the total.
 - Control Center button and Siri/Shortcuts action to add an expense.
 - Works offline: changes are saved on the device and synced to your account ([Supabase](https://supabase.com)) when there is a connection.
-- Demo mode: tap **Demo** on the sign-in screen to browse the app with sample data, without an account. It is read-only and nothing is saved.
 
 ## Requirements
 
