@@ -5,6 +5,9 @@ import Foundation
 struct LogExpenseIntent: AppIntent {
     static var title: LocalizedStringResource = "Registrar gasto"
     static var description = IntentDescription("Añade un gasto a PennyNote.")
+    // Desde la pantalla de bloqueo pide desbloquear antes: nadie puede meter gastos ni ver las
+    // categorías con el móvil ajeno.
+    static var authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
 
     @Parameter(title: "Cantidad")
     var amount: Double
