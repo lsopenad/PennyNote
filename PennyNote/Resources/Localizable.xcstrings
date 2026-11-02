@@ -273,6 +273,50 @@
         }
       }
     },
+    "Abre PennyNote en la pantalla de registrar gasto.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens PennyNote on the add expense screen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre PennyNote en la pantalla de registrar gasto."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开 PennyNote 的记一笔支出界面。"
+          }
+        }
+      }
+    },
+    "Abre PennyNote para registrar un gasto nuevo.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens PennyNote to log a new expense."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre PennyNote para registrar un gasto nuevo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开 PennyNote 记录一笔新支出。"
+          }
+        }
+      }
+    },
     "Abre las estadísticas": {
       "localizations": {
         "en": {
@@ -3479,28 +3523,6 @@
         }
       }
     },
-    "No se ha podido guardar el gasto.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't save the expense."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se ha podido guardar el gasto."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "无法保存支出。"
-          }
-        }
-      }
-    },
     "No se han podido borrar los datos de este iPhone. Inténtalo de nuevo.": {
       "localizations": {
         "en": {
@@ -4091,28 +4113,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "只记录金额，稍后可在 PennyNote 中补充详情。"
-          }
-        }
-      }
-    },
-    "Registra un gasto sin abrir PennyNote. Los detalles se completan luego.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Log an expense without opening PennyNote. Add the details later."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Registra un gasto sin abrir PennyNote. Los detalles se completan luego."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "无需打开 PennyNote 即可记录支出，稍后再补充详情。"
           }
         }
       }

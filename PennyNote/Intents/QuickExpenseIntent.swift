@@ -1,22 +1,18 @@
 import AppIntents
-import Foundation
-#if !WIDGET_EXTENSION
 import SwiftData
-#endif
+import Foundation
 
 // Gasto rápido: pide solo la cantidad y lo guarda sin abrir la app, sin categoría ni título (queda
-// pendiente de completar, ver Expense.needsDetails). Lo usan el control de la pantalla de bloqueo y Siri.
-//
-// Está en los dos targets porque el control necesita el tipo, pero el widget no puede guardar: no ve la
-// sesión ni la sincronización. LiveActivityIntent hace que el sistema lo ejecute en el proceso de la
-// app aunque lo lance el control; con AppIntent a secas se ejecutaría en la extensión.
-struct QuickExpenseIntent: LiveActivityIntent {
+// pendiente de completar, ver Expense.needsDetails). Pensado para Siri, el botón de acción y el control
+// «Ejecutar atajo» de Atajos: desde un control propio de la app el sistema no deja pedir la cantidad
+// (cancela la petición), por eso AddExpenseControl sigue abriendo la app.
+struct QuickExpenseIntent: AppIntent {
     static var title: LocalizedStringResource = "Gasto rápido"
     static var description = IntentDescription("Registra solo la cantidad. Los detalles se completan luego en PennyNote.")
     // Desde la pantalla de bloqueo pide desbloquear antes: nadie puede meter gastos con el móvil ajeno.
     static var authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
 
-    // Opcional para pedirla siempre en perform(): el control no rellena los parámetros que faltan.
+    // Opcional para que Atajos la deje vacía y se pida al ejecutar, con el banner del sistema.
     @Parameter(title: "Cantidad")
     var amount: Double?
 
@@ -26,15 +22,6 @@ struct QuickExpenseIntent: LiveActivityIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        .result(dialog: try await logExpense())
-    }
-
-    @MainActor
-    private func logExpense() async throws -> IntentDialog {
-        #if WIDGET_EXTENSION
-        Log.widget.fault("QuickExpenseIntent se ha ejecutado en la extensión del widget en vez de en la app")
-        return IntentDialog("No se ha podido guardar el gasto.")
-        #else
         try ExpenseIntentValidation.requireActiveSession()
 
         let requestedAmount: Double
@@ -53,7 +40,6 @@ struct QuickExpenseIntent: LiveActivityIntent {
         )
 
         let formattedAmount = DisplayFormat.currency(validAmount, in: CurrencySettings.shared.currency)
-        return IntentDialog("Gasto de \(formattedAmount) guardado")
-        #endif
+        return .result(dialog: "Gasto de \(formattedAmount) guardado")
     }
 }
