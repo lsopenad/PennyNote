@@ -11,9 +11,11 @@ struct ExpenseSearchOverlay: View {
     let onCancel: () -> Void
 
     @State private var searchText = ""
+    @State private var limit = ExpenseDayList.pageSize
     @FocusState private var isFieldFocused: Bool
 
-    private var filteredExpenses: [Expense] {
+    // Gastos cuyo título o categoría contienen el texto, en el orden en que llegan. Sin texto, ninguno.
+    static func results(_ expenses: [Expense], matching searchText: String) -> [Expense] {
         let trimmed = searchText.trimmingCharacters(in: .whitespaces)
         guard !trimmed.isEmpty else { return [] }
         return expenses.filter {
@@ -23,6 +25,8 @@ struct ExpenseSearchOverlay: View {
     }
 
     var body: some View {
+        let results = Self.results(expenses, matching: searchText)
+        let visible = ExpenseDayList.visibleExpenses(results, limit: limit)
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 HStack(spacing: 8) {
@@ -43,11 +47,19 @@ struct ExpenseSearchOverlay: View {
             .padding(.top, 8)
             .padding(.bottom, 12)
 
-            if !filteredExpenses.isEmpty {
+            if !results.isEmpty {
                 List {
-                    DayGroupedExpenseSections(expenses: filteredExpenses, onSelect: { expense in
+                    DayGroupedExpenseSections(expenses: visible, onSelect: { expense in
                         close { onSelect(expense) }
                     })
+                    if visible.count < results.count {
+                        Section {
+                            Button("Mostrar más") { limit += ExpenseDayList.pageSize }
+                                .foregroundStyle(.tint)
+                                .frame(maxWidth: .infinity)
+                        }
+                        .listRowSeparator(.hidden)
+                    }
                 }
                 .listStyle(.plain)
             } else {
@@ -57,6 +69,9 @@ struct ExpenseSearchOverlay: View {
         .background(Color(.systemBackground))
         .ignoresSafeArea(edges: .bottom)
         .onAppear { isFieldFocused = true }
+        .onChange(of: searchText) {
+            limit = ExpenseDayList.pageSize
+        }
     }
 
     // Suelta el foco antes de cerrar para que el teclado baje a la vez que se va la búsqueda. Si el

@@ -32,6 +32,13 @@ struct PerformanceBenchmarks {
             let calendar = Calendar.current
             _ = Dictionary(grouping: visible) { calendar.startOfDay(for: $0.date) }.sorted { $0.key > $1.key }
         }
+        // ExpenseSearchOverlay con una letra: casi todos los gastos coinciden.
+        Self.measure("search.filterAndPage", expenseCount) {
+            let results = ExpenseSearchOverlay.results(expenses, matching: "a")
+            let visible = ExpenseDayList.visibleExpenses(results, limit: ExpenseDayList.pageSize)
+            let calendar = Calendar.current
+            _ = Dictionary(grouping: visible) { calendar.startOfDay(for: $0.date) }.sorted { $0.key > $1.key }
+        }
         Self.measure("list.monthHeader", expenseCount) {
             let now = Date.now
             let previous = Calendar.current.startOfPreviousMonth(for: now) ?? now
