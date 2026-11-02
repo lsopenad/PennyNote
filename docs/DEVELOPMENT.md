@@ -102,8 +102,6 @@ xcodebuild test -project PennyNote.xcodeproj -scheme PennyNote -destination 'pla
 TEST_RUNNER_PENNYNOTE_BENCHMARKS=1 xcodebuild test -project PennyNote.xcodeproj -scheme PennyNote -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:PennyNoteTests/PerformanceBenchmarks | grep BENCH
 ```
 
-Las cifras de la auditoría de noviembre de 2026 están en `docs/AUDIT-2026-11.md`.
-
 ## Generar un .ipa
 
 ```bash
