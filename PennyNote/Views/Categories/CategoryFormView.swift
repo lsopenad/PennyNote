@@ -92,9 +92,10 @@ struct CategoryFormView: View {
                 .padding(.horizontal)
                 .background(Color(.secondarySystemGroupedBackground), in: Capsule())
                 .onChange(of: name) { _, newValue in
-                    // El servidor no admite nombres más largos.
-                    if newValue.count > ExpenseLimits.categoryNameMaxLength {
-                        name = ExpenseLimits.clampedCategoryName(newValue)
+                    // El servidor no admite nombres más largos (en code points, ver ExpenseLimits).
+                    let clamped = ExpenseLimits.clampedCategoryName(newValue)
+                    if clamped != newValue {
+                        name = clamped
                     }
                 }
 
