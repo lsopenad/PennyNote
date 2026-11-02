@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.13.1",
+          "buildVersion": "26",
+          "date": "2026-11-03",
+          "localizedDescription": "Sugerencias más claras: la parte del título que coincide sale en negrita, las filas aparecen sin que el formulario dé saltos y un ✨ junto a la categoría o el método de pago indica que se han rellenado solos. El importe de una sugerencia o de un gasto que editas sale con coma decimal en español.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.13.1/PennyNote.ipa",
+          "size": 2117470,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.13.0",
           "buildVersion": "25",
           "date": "2026-11-02",
@@ -251,11 +260,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.13.0",
-      "versionDate": "2026-11-02",
-      "versionDescription": "Sugerencias inteligentes: al escribir el título de un gasto nuevo o por completar, PennyNote te propone gastos anteriores parecidos y, al tocar uno, rellena el importe, la categoría y el método de pago. Si no hay ninguno, sugiere la categoría y el método de pago según las palabras del título. Se puede desactivar en Ajustes.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.13.0/PennyNote.ipa",
-      "size": 2115682
+      "version": "1.13.1",
+      "versionDate": "2026-11-03",
+      "versionDescription": "Sugerencias más claras: la parte del título que coincide sale en negrita, las filas aparecen sin que el formulario dé saltos y un ✨ junto a la categoría o el método de pago indica que se han rellenado solos. El importe de una sugerencia o de un gasto que editas sale con coma decimal en español.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.13.1/PennyNote.ipa",
+      "size": 2117470
     }
   ],
   "news": []
