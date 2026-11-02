@@ -13,13 +13,10 @@ struct CurrencyChoiceView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    CurrencyPicker(selection: $selection)
-                } footer: {
-                    Text("Tus gastos se mostrarán en esta moneda. Puedes cambiarla en Ajustes.")
-                }
-            }
+            CurrencyPicker(
+                selection: $selection,
+                footer: Text("Tus gastos se mostrarán en esta moneda. Puedes cambiarla en Ajustes.")
+            )
             .navigationTitle("Elige tu moneda")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {

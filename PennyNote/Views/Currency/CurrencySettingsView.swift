@@ -12,13 +12,10 @@ struct CurrencySettingsView: View {
     }
 
     var body: some View {
-        List {
-            Section {
-                CurrencyPicker(selection: $selection)
-            } footer: {
-                Text("Los importes no se convierten: solo cambia cómo se muestran.")
-            }
-        }
+        CurrencyPicker(
+            selection: $selection,
+            footer: Text("Los importes no se convierten: solo cambia cómo se muestran.")
+        )
         .navigationTitle("Moneda")
         .onChange(of: selection) { _, newValue in
             guard newValue != currencySettings.currency else { return }
