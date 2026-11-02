@@ -118,6 +118,19 @@ struct ExpenseSuggestionIndex {
         return result
     }
 
+    // La parte de un título que coincide con lo escrito, para resaltarla: la primera palabra que empieza
+    // por ello, con las mismas reglas que `suggestions(matching:)`.
+    static func matchedRange(of text: String, in title: String) -> Range<String.Index>? {
+        let query = normalized(text)
+        guard query.count >= minimumQueryLength else { return nil }
+        for start in wordStarts(in: title) {
+            if let range = title.range(of: query, options: [.anchored, .caseInsensitive, .diacriticInsensitive, .widthInsensitive], range: start..<title.endIndex) {
+                return range
+            }
+        }
+        return nil
+    }
+
     // Categoría y método de pago para un título. Si ya hay gastos con ese mismo título se usan los del más
     // reciente; si no, los que deducen sus palabras, sumando los votos de cada una. Un empate no deduce nada.
     func prediction(for title: String) -> ExpenseFieldPrediction {

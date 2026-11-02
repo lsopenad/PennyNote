@@ -1263,50 +1263,6 @@
         }
       }
     },
-    "Categoría sugerida según tus gastos anteriores.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Category suggested from your past expenses."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Categoría sugerida según tus gastos anteriores."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "已根据你的过往支出推荐类别。"
-          }
-        }
-      }
-    },
-    "Categoría y método de pago sugeridos según tus gastos anteriores.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Category and payment method suggested from your past expenses."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Categoría y método de pago sugeridos según tus gastos anteriores."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "已根据你的过往支出推荐类别和支付方式。"
-          }
-        }
-      }
-    },
     "Categorías": {
       "localizations": {
         "en": {
@@ -4337,28 +4293,6 @@
         }
       }
     },
-    "Método de pago sugerido según tus gastos anteriores.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Payment method suggested from your past expenses."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Método de pago sugerido según tus gastos anteriores."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "已根据你的过往支出推荐支付方式。"
-          }
-        }
-      }
-    },
     "Móvil": {
       "localizations": {
         "en": {
@@ -6131,6 +6065,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sugeridas"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "推荐"
+          }
+        }
+      }
+    },
+    "Sugerido": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggested"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugerido"
           }
         },
         "zh-Hans": {
