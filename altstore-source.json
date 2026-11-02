@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.13.0",
+          "buildVersion": "25",
+          "date": "2026-11-02",
+          "localizedDescription": "Sugerencias inteligentes: al escribir el título de un gasto nuevo o por completar, PennyNote te propone gastos anteriores parecidos y, al tocar uno, rellena el importe, la categoría y el método de pago. Si no hay ninguno, sugiere la categoría y el método de pago según las palabras del título. Se puede desactivar en Ajustes.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.13.0/PennyNote.ipa",
+          "size": 2115682,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.12.1",
           "buildVersion": "24",
           "date": "2026-11-02",
@@ -242,11 +251,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.12.1",
+      "version": "1.13.0",
       "versionDate": "2026-11-02",
-      "versionDescription": "«Registrar gasto» por Siri pide desbloquear el iPhone, como ya hacía «Gasto rápido». Pausar y reanudar un gasto recurrente, o reiniciarlo en el día de su primer gasto, ya no lo duplica. La búsqueda va más fluida con muchos gastos: muestra los resultados por páginas, con «Mostrar más». Los títulos y nombres de categoría muy largos con emojis ya no atascan la sincronización.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.12.1/PennyNote.ipa",
-      "size": 2075413
+      "versionDescription": "Sugerencias inteligentes: al escribir el título de un gasto nuevo o por completar, PennyNote te propone gastos anteriores parecidos y, al tocar uno, rellena el importe, la categoría y el método de pago. Si no hay ninguno, sugiere la categoría y el método de pago según las palabras del título. Se puede desactivar en Ajustes.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.13.0/PennyNote.ipa",
+      "size": 2115682
     }
   ],
   "news": []
