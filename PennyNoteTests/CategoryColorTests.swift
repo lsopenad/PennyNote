@@ -7,11 +7,13 @@ import Testing
 @MainActor
 struct CategoryColorTests {
     private let context: ModelContext
+    private let recorder: RecordingRepositoryEffects
 
     init() throws {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Expense.self, ExpenseCategory.self, RecurringExpense.self, configurations: configuration)
         context = ModelContext(container)
+        recorder = try RecordingRepositoryEffects()
     }
 
     @Test(arguments: CategoryPaletteColor.allCases)
@@ -58,7 +60,7 @@ struct CategoryColorTests {
     }
 
     @Test func addCategoryKeepsTheColor() {
-        let category = ExpenseRepository.addCategory(name: "Viajes", icon: .fallback, color: .custom(rgb: 0x336699), context: context)
+        let category = ExpenseRepository.addCategory(name: "Viajes", icon: .fallback, color: .custom(rgb: 0x336699), context: context, effects: recorder.effects)
 
         #expect(category.color == .custom(rgb: 0x336699))
     }
@@ -66,7 +68,7 @@ struct CategoryColorTests {
     @Test func changingOnlyTheColorMarksTheCategoryPending() {
         let category = insertSyncedCategory(color: .palette(.red))
 
-        ExpenseRepository.updateCategory(category, name: category.name, icon: category.icon, color: .palette(.blue), context: context)
+        ExpenseRepository.updateCategory(category, name: category.name, icon: category.icon, color: .palette(.blue), context: context, effects: recorder.effects)
 
         #expect(category.color == .palette(.blue))
         #expect(category.syncStatus == .pending)
@@ -75,7 +77,7 @@ struct CategoryColorTests {
     @Test func removingTheColorMarksTheCategoryPending() {
         let category = insertSyncedCategory(color: .palette(.red))
 
-        ExpenseRepository.updateCategory(category, name: category.name, icon: category.icon, color: nil, context: context)
+        ExpenseRepository.updateCategory(category, name: category.name, icon: category.icon, color: nil, context: context, effects: recorder.effects)
 
         #expect(category.color == nil)
         #expect(category.syncStatus == .pending)
