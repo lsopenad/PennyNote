@@ -106,6 +106,9 @@ Los tests (Swift Testing, target `PennyNoteTests`) cubren la lógica pura: cálc
 xcodebuild test -project PennyNote.xcodeproj -scheme PennyNote -destination 'platform=iOS Simulator,name=iPhone 17'
 ```
 
+O con `./scripts/test.sh`, que antes regenera el proyecto con `xcodegen generate`. Para otro simulador:
+`PENNYNOTE_TEST_DESTINATION='platform=iOS Simulator,name=iPhone 17 Pro' ./scripts/test.sh`.
+
 ### Mediciones de rendimiento
 
 `PennyNoteTests/PerformanceBenchmarks.swift` mide las rutas calientes (lista, Estadísticas, widget, sincronización y exportación) con 1k, 10k y 50k gastos de `DebugSeed`. No se ejecuta con el resto de tests: solo con la variable `PENNYNOTE_BENCHMARKS=1`, y tarda unos dos minutos.
@@ -138,12 +141,13 @@ Con el iPhone conectado (USB o misma Wi-Fi que el Mac), arrastra `PennyNote.ipa`
 
 El script:
 
-1. Sube `MARKETING_VERSION`/`CURRENT_PROJECT_VERSION` en `project.yml`.
-2. Genera el `.ipa` y comprueba que lleva esa versión.
-3. Añade la versión a `altstore-source.json`.
-4. Hace commit y tag `v1.2.0`, sube el tag, crea la Release de GitHub con el `.ipa` y, al final, sube `main`, para que la source nunca apunte a un `.ipa` que aún no existe.
+1. Pasa los tests con `scripts/test.sh`; si alguno falla, se para sin tocar nada.
+2. Sube `MARKETING_VERSION`/`CURRENT_PROJECT_VERSION` en `project.yml`.
+3. Genera el `.ipa` y comprueba que lleva esa versión.
+4. Añade la versión a `altstore-source.json`.
+5. Hace commit y tag `v1.2.0`, sube el tag, crea la Release de GitHub con el `.ipa` y, al final, sube `main`, para que la source nunca apunte a un `.ipa` que aún no existe.
 
-Hay que lanzarlo desde `main` sin cambios pendientes. Con `--dry-run` hace los tres primeros pasos sin commit, push ni Release, para revisar el resultado antes. Si falla antes del commit, restaura `project.yml` y la source.
+Hay que lanzarlo desde `main` sin cambios pendientes. Con `--dry-run` hace los cuatro primeros pasos sin commit, push ni Release, para revisar el resultado antes. Si falla antes del commit, restaura `project.yml` y la source.
 
 La versión debe seguir el formato `X.Y.Z` y ser mayor que la anterior: AltStore solo ofrece la actualización si la versión sube.
 

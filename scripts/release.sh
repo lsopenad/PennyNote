@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # Publica una versión nueva de PennyNote para la source de AltStore:
-#   1. Sube MARKETING_VERSION y CURRENT_PROJECT_VERSION en project.yml.
-#   2. Genera el .ipa con scripts/build-ipa.sh.
-#   3. Añade la versión a altstore-source.json.
-#   4. Hace commit y tag vX.Y.Z, sube el tag, crea la Release de GitHub con el .ipa y
+#   1. Pasa los tests con scripts/test.sh; si alguno falla, no publica.
+#   2. Sube MARKETING_VERSION y CURRENT_PROJECT_VERSION en project.yml.
+#   3. Genera el .ipa con scripts/build-ipa.sh.
+#   4. Añade la versión a altstore-source.json.
+#   5. Hace commit y tag vX.Y.Z, sube el tag, crea la Release de GitHub con el .ipa y
 #      solo entonces sube main, para que la source nunca apunte a un .ipa que aún no existe.
 #
 # Uso: ./scripts/release.sh <versión> ["notas de la versión"] [--dry-run]
-#   --dry-run  hace los pasos 1-3 sin commit, push ni Release, para revisar el resultado.
+#   --dry-run  hace los pasos 1-4 sin commit, push ni Release, para revisar el resultado.
 set -euo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -54,6 +55,10 @@ if [ "$DRY_RUN" = false ]; then
     exit 1
   fi
 fi
+
+# Antes de tocar project.yml: si un test falla, no se publica y no hay nada que restaurar.
+echo "==> Pasando los tests"
+./scripts/test.sh
 
 # Si algo falla antes del commit se restauran project.yml y la source, para poder relanzar
 # el script sin tener que deshacer cambios a mano. En dry-run se conservan a propósito.
