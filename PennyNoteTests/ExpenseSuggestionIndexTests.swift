@@ -29,6 +29,18 @@ struct ExpenseSuggestionIndexTests {
         #expect(index.suggestions(matching: "dona").isEmpty)
     }
 
+    // Se resalta la primera palabra que empieza por lo escrito, con el texto original del título.
+    @Test func matchedRangeIsTheStartOfTheMatchingWord() throws {
+        let title = "Mercadona  Gran Vía"
+        let word = try #require(ExpenseSuggestionIndex.matchedRange(of: "VIA", in: title))
+        let words = try #require(ExpenseSuggestionIndex.matchedRange(of: "gran v", in: "Mercadona Gran Vía"))
+
+        #expect(title[word] == "Vía")
+        #expect("Mercadona Gran Vía"[words] == "Gran V")
+        #expect(ExpenseSuggestionIndex.matchedRange(of: "dona", in: title) == nil)
+        #expect(ExpenseSuggestionIndex.matchedRange(of: "m", in: title) == nil)
+    }
+
     @Test func suggestionsNeedAtLeastTwoLetters() {
         let index = makeIndex([insertExpense("Mercadona")])
 

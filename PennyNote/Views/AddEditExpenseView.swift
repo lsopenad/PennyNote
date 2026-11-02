@@ -22,6 +22,7 @@ struct AddEditExpenseView: View {
     @State private var suggestionIndex: ExpenseSuggestionIndex?
     @State private var autofill: ExpenseAutofill
     @FocusState private var isTitleFocused: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     // El gasto recurrente que creó este gasto, si sigue existiendo: como mucho uno.
     @Query private var sourceRecurringExpenses: [RecurringExpense]
@@ -58,16 +59,13 @@ struct AddEditExpenseView: View {
         return suggestionIndex.suggestions(matching: title)
     }
 
-    private var predictedFieldsNote: LocalizedStringKey? {
-        switch (autofill.isPredicted(category), autofill.isPredicted(paymentMethod)) {
-        case (true, true): "Categoría y método de pago sugeridos según tus gastos anteriores."
-        case (true, false): "Categoría sugerida según tus gastos anteriores."
-        case (false, true): "Método de pago sugerido según tus gastos anteriores."
-        case (false, false): nil
-        }
+    // Con «Reducir movimiento», las filas y el ✨ aparecen sin animar: el formulario no se desliza.
+    private var suggestionAnimation: Animation? {
+        reduceMotion ? nil : .default
     }
 
     var body: some View {
+        let suggestions = visibleSuggestions
         NavigationStack {
             Form {
                 Section {
@@ -76,26 +74,24 @@ struct AddEditExpenseView: View {
                         TextField("", text: $title)
                             .focused($isTitleFocused)
                     }
-                    ForEach(visibleSuggestions) { suggestion in
-                        ExpenseSuggestionRow(suggestion: suggestion) {
+                    ForEach(suggestions) { suggestion in
+                        ExpenseSuggestionRow(suggestion: suggestion, query: title) {
                             applySuggestion(suggestion)
                         }
+                        .transition(.opacity)
                     }
                     AmountField(input: $amount)
-                    CategoryPickerView(selection: $category)
-                    Picker("Método de pago", selection: $paymentMethod) {
+                    CategoryPickerView(selection: $category, isSuggested: autofill.isPredicted(category))
+                    Picker(selection: $paymentMethod) {
                         ForEach(PaymentMethod.allCases) { method in
                             Text(method.title).tag(method)
                         }
+                    } label: {
+                        SuggestedFieldLabel(title: "Método de pago", isSuggested: autofill.isPredicted(paymentMethod))
                     }
                     DatePicker("Fecha", selection: $date, displayedComponents: .date)
                 } footer: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        AmountDecimalsWarning(input: amount)
-                        if let predictedFieldsNote {
-                            Label(predictedFieldsNote, systemImage: "sparkles")
-                        }
-                    }
+                    AmountDecimalsWarning(input: amount)
                 }
 
                 Section {
@@ -127,6 +123,7 @@ struct AddEditExpenseView: View {
                     }
                 }
             }
+            .animation(suggestionAnimation, value: suggestions.map(\.id))
             .navigationTitle(expenseToEdit == nil ? Text("Añadir gasto") : Text("Editar gasto"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -151,7 +148,9 @@ struct AddEditExpenseView: View {
                 } catch {
                     return
                 }
-                autofill.apply(suggestionIndex.prediction(for: title), forTitle: title, category: &category, paymentMethod: &paymentMethod)
+                withAnimation(suggestionAnimation) {
+                    autofill.apply(suggestionIndex.prediction(for: title), forTitle: title, category: &category, paymentMethod: &paymentMethod)
+                }
             }
         }
     }
