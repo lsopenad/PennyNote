@@ -34,19 +34,51 @@ struct CategoryIconImage: View {
     }
 }
 
-// El icono sobre un círculo gris, como en las filas de gastos. Es decorativo: junto a él siempre va el
-// nombre de la categoría.
+// El icono sobre un círculo, como en las filas de gastos: del color de la categoría con el símbolo en
+// blanco o negro, o gris con el símbolo en el color del texto si no tiene color. Es decorativo: junto a
+// él siempre va el nombre de la categoría.
 struct CategoryIconBadge: View {
     let icon: CategoryIcon
+    var color: CategoryColor?
     var diameter: CGFloat = 32
     var font: Font = .title3
 
     var body: some View {
-        CategoryIconImage(icon: icon)
+        symbol
             .font(font)
             .frame(width: diameter, height: diameter)
-            .background(Color(.tertiarySystemFill), in: Circle())
+            .background(color?.color ?? Color(.tertiarySystemFill), in: Circle())
             .accessibilityHidden(true)
+    }
+
+    @ViewBuilder
+    private var symbol: some View {
+        if let color {
+            CategoryColoredIcon(icon: icon, color: color)
+        } else {
+            CategoryIconImage(icon: icon)
+        }
+    }
+}
+
+// El símbolo en blanco o negro según lo claro que sea el color de fondo. Solo lee del entorno el modo
+// claro u oscuro, que es lo que cambia los colores de la paleta, para no volver a dibujarse con
+// cualquier otro cambio.
+private struct CategoryColoredIcon: View {
+    @Environment(\.colorScheme) private var colorScheme
+
+    let icon: CategoryIcon
+    let color: CategoryColor
+
+    private var symbolColor: Color {
+        var environment = EnvironmentValues()
+        environment.colorScheme = colorScheme
+        return color.symbolColor(in: environment)
+    }
+
+    var body: some View {
+        Image(systemName: icon.symbolName)
+            .foregroundStyle(symbolColor)
     }
 }
 

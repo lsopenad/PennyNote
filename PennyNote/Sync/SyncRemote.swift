@@ -27,6 +27,8 @@ struct RemoteCategory: Codable, Equatable, SyncRow {
     var name: String
     // CategoryIcon.storedValue.
     var icon: String
+    // CategoryColor.storedValue, o nil sin color.
+    var color: String?
     var sortOrder: Int
     var isDeleted: Bool
     var updatedAt: Date
@@ -34,7 +36,7 @@ struct RemoteCategory: Codable, Equatable, SyncRow {
     var serverUpdatedAt: Date?
 
     private enum CodingKeys: String, CodingKey {
-        case id, name, icon
+        case id, name, icon, color
         case sortOrder = "sort_order"
         case isDeleted = "is_deleted"
         case updatedAt = "updated_at"
@@ -47,6 +49,7 @@ struct RemoteCategory: Codable, Equatable, SyncRow {
         id: UUID,
         name: String,
         icon: String,
+        color: String? = nil,
         sortOrder: Int,
         isDeleted: Bool,
         updatedAt: Date,
@@ -55,6 +58,7 @@ struct RemoteCategory: Codable, Equatable, SyncRow {
         self.id = id
         self.name = name
         self.icon = icon
+        self.color = color
         self.sortOrder = sortOrder
         self.isDeleted = isDeleted
         self.updatedAt = updatedAt
@@ -67,6 +71,8 @@ struct RemoteCategory: Codable, Equatable, SyncRow {
         name = try container.decode(String.self, forKey: .name)
         icon = try container.decodeIfPresent(String.self, forKey: .icon)
             ?? container.decode(String.self, forKey: .legacySymbolName)
+        // No viene en los borrados pendientes guardados por la 1.11.0 y anteriores.
+        color = try container.decodeIfPresent(String.self, forKey: .color)
         sortOrder = try container.decode(Int.self, forKey: .sortOrder)
         isDeleted = try container.decode(Bool.self, forKey: .isDeleted)
         updatedAt = try container.decode(Date.self, forKey: .updatedAt)
@@ -78,6 +84,8 @@ struct RemoteCategory: Codable, Equatable, SyncRow {
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
         try container.encode(icon, forKey: .icon)
+        // Siempre, también como null: quitar el color tiene que borrarlo en el servidor.
+        try container.encode(color, forKey: .color)
         try container.encode(sortOrder, forKey: .sortOrder)
         try container.encode(isDeleted, forKey: .isDeleted)
         try container.encode(updatedAt, forKey: .updatedAt)
@@ -280,6 +288,7 @@ extension RemoteCategory {
             id: category.id,
             name: category.name,
             icon: category.icon.storedValue,
+            color: category.color?.storedValue,
             sortOrder: category.sortOrder,
             isDeleted: isDeleted,
             updatedAt: category.localLastModified

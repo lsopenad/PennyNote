@@ -26,6 +26,7 @@ enum WidgetSnapshotRefresher {
                 WidgetSnapshot.CategoryTotal(
                     name: item.category.displayName,
                     icon: item.category.displayIcon,
+                    color: item.category.displayColor,
                     total: item.total
                 )
             }

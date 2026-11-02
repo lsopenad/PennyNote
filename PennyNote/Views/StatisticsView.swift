@@ -175,6 +175,7 @@ struct StatisticsView: View {
                 SpendingShareRow(
                     title: name,
                     icon: item.category.displayIcon,
+                    color: item.category.displayColor,
                     total: item.total,
                     fraction: fraction(of: item.total, in: periodTotal)
                 )
@@ -197,6 +198,7 @@ struct StatisticsView: View {
                     title: String(localized: item.paymentMethod.title),
                     // Los métodos de pago se pintan como las categorías.
                     icon: .init(symbolName: item.paymentMethod.symbolName),
+                    color: nil,
                     total: item.total,
                     fraction: fraction(of: item.total, in: periodTotal)
                 )

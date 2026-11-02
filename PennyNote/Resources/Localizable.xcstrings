@@ -449,6 +449,28 @@
         }
       }
     },
+    "Amarillo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yellow"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amarillo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "黄色"
+          }
+        }
+      }
+    },
     "Amazon": {
       "localizations": {
         "en": {
@@ -555,6 +577,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "飞机"
+          }
+        }
+      }
+    },
+    "Azul": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blue"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azul"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "蓝色"
           }
         }
       }
@@ -1303,6 +1347,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "购物篮"
+          }
+        }
+      }
+    },
+    "Cian": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cyan"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cian"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "青色"
           }
         }
       }
@@ -3837,6 +3903,28 @@
         }
       }
     },
+    "Marrón": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brown"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marrón"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "棕色"
+          }
+        }
+      }
+    },
     "Mascota": {
       "localizations": {
         "en": {
@@ -3899,6 +3987,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "日均：%@"
+          }
+        }
+      }
+    },
+    "Menta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mint"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menta"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "薄荷绿"
           }
         }
       }
@@ -4031,6 +4141,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "货币"
+          }
+        }
+      }
+    },
+    "Morado": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purple"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Morado"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "紫色"
           }
         }
       }
@@ -4179,6 +4311,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "音乐"
+          }
+        }
+      }
+    },
+    "Naranja": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orange"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naranja"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "橙色"
           }
         }
       }
@@ -5415,6 +5569,28 @@
         }
       }
     },
+    "Rojo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Red"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rojo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "红色"
+          }
+        }
+      }
+    },
     "Ropa": {
       "localizations": {
         "en": {
@@ -5433,6 +5609,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "服装"
+          }
+        }
+      }
+    },
+    "Rosa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pink"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rosa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "粉色"
           }
         }
       }
@@ -5631,6 +5829,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "未分类"
+          }
+        }
+      }
+    },
+    "Sin color": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Color"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin color"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无颜色"
           }
         }
       }
@@ -6303,6 +6523,28 @@
         }
       }
     },
+    "Turquesa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teal"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turquesa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "蓝绿色"
+          }
+        }
+      }
+    },
     "Tus gastos se mostrarán en esta moneda. Puedes cambiarla en Ajustes.": {
       "localizations": {
         "en": {
@@ -6387,6 +6629,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "一个工作表列出支出，另一个按类别、支付方式和月份汇总，并附有图表。"
+          }
+        }
+      }
+    },
+    "Verde": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Green"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verde"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "绿色"
           }
         }
       }
@@ -6673,6 +6937,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "忘记密码了？请向 PennyNote 的管理员索取临时密码，之后在设置中更改。"
+          }
+        }
+      }
+    },
+    "Índigo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indigo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Índigo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "靛蓝色"
           }
         }
       }

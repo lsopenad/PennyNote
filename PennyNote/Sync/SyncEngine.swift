@@ -138,6 +138,7 @@ final class SyncEngine {
                     id: remoteCategory.id,
                     name: remoteCategory.name,
                     icon: CategoryIcon(storedValue: remoteCategory.icon),
+                    color: CategoryColor(storedValue: remoteCategory.color),
                     sortOrder: remoteCategory.sortOrder
                 )
                 category.update(from: remoteCategory)
@@ -356,6 +357,9 @@ extension ExpenseCategory {
     fileprivate func update(from remote: RemoteCategory) {
         name = remote.name
         icon = CategoryIcon(storedValue: remote.icon)
+        // Un color que no se reconoce (de una versión futura) se muestra como sin color, pero no se
+        // vuelve a subir: el servidor lo conserva hasta que se edite la categoría aquí.
+        color = CategoryColor(storedValue: remote.color)
         sortOrder = remote.sortOrder
         localLastModified = remote.updatedAt
         syncStatus = .synced

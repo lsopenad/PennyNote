@@ -1,19 +1,20 @@
 import SwiftUI
 
 // Fila de reparto (categoría o método de pago): icono, nombre, importe, porcentaje y una barra
-// proporcional a su parte del total.
+// proporcional a su parte del total, del color de la categoría o, sin él, del de la app.
 struct SpendingShareRow: View {
     @Environment(\.currency) private var currency
 
     let title: String
     let icon: CategoryIcon
+    let color: CategoryColor?
     let total: Decimal
     // Parte del total del mes, de 0 a 1.
     let fraction: Double
 
     var body: some View {
         HStack(spacing: 12) {
-            CategoryIconBadge(icon: icon, diameter: 30, font: .subheadline)
+            CategoryIconBadge(icon: icon, color: color, diameter: 30, font: .subheadline)
 
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .firstTextBaseline) {
@@ -32,7 +33,7 @@ struct SpendingShareRow: View {
                     ZStack(alignment: .leading) {
                         Capsule().fill(.fill.tertiary)
                         Capsule()
-                            .fill(.tint)
+                            .fill(color.map { AnyShapeStyle($0.color) } ?? AnyShapeStyle(.tint))
                             .frame(width: geometry.size.width * min(max(fraction, 0), 1))
                     }
                 }
@@ -46,7 +47,7 @@ struct SpendingShareRow: View {
 
 #Preview {
     List {
-        SpendingShareRow(title: "Comida", icon: .init(symbolName: "fork.knife"), total: 182.4, fraction: 0.42)
-        SpendingShareRow(title: "Transporte", icon: .init(symbolName: "car.fill"), total: 60, fraction: 0.14)
+        SpendingShareRow(title: "Comida", icon: .init(symbolName: "fork.knife"), color: .palette(.orange), total: 182.4, fraction: 0.42)
+        SpendingShareRow(title: "Transporte", icon: .init(symbolName: "car.fill"), color: nil, total: 60, fraction: 0.14)
     }
 }

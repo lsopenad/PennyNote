@@ -1,8 +1,8 @@
 import SwiftUI
 import SwiftData
 
-// Ficha para crear una categoría o editar una existente: vista previa del icono, nombre y la cuadrícula
-// de símbolos. Nada se guarda hasta pulsar Guardar; con cambios, cerrarla pide confirmación para
+// Ficha para crear una categoría o editar una existente: vista previa del icono, nombre y las
+// cuadrículas de colores y de símbolos. Nada se guarda hasta pulsar Guardar; con cambios, cerrarla pide confirmación para
 // descartarlos.
 struct CategoryFormView: View {
     @Environment(\.modelContext) private var modelContext
@@ -14,6 +14,7 @@ struct CategoryFormView: View {
 
     @State private var name: String
     @State private var icon: CategoryIcon
+    @State private var color: CategoryColor?
     @State private var isConfirmingDiscard = false
 
     @ScaledMetric(relativeTo: .largeTitle) private var previewSize: CGFloat = 112
@@ -22,6 +23,7 @@ struct CategoryFormView: View {
         self.category = category
         _name = State(initialValue: category?.name ?? "")
         _icon = State(initialValue: category?.icon ?? .fallback)
+        _color = State(initialValue: category?.color)
     }
 
     private var trimmedName: String {
@@ -29,8 +31,8 @@ struct CategoryFormView: View {
     }
 
     private var hasChanges: Bool {
-        guard let category else { return !trimmedName.isEmpty || icon != .fallback }
-        return trimmedName != category.name || icon != category.icon
+        guard let category else { return !trimmedName.isEmpty || icon != .fallback || color != nil }
+        return trimmedName != category.name || icon != category.icon || color != category.color
     }
 
     private var isDuplicateName: Bool {
@@ -46,16 +48,13 @@ struct CategoryFormView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    CategoryIconImage(icon: icon)
-                        .font(.system(size: previewSize * 0.45))
-                        .frame(width: previewSize, height: previewSize)
-                        .background(
-                            Color(.secondarySystemGroupedBackground),
-                            in: RoundedRectangle(cornerRadius: previewSize * 0.25, style: .continuous)
-                        )
-                        .accessibilityHidden(true)
+                    CategoryIconBadge(icon: icon, color: color, diameter: previewSize, font: .system(size: previewSize * 0.45))
 
                     nameField
+
+                    CategoryColorGrid(selection: $color)
+                        .padding()
+                        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
 
                     CategorySymbolGrid(selection: $icon)
                         .padding()
@@ -136,9 +135,9 @@ struct CategoryFormView: View {
 
     private func save() {
         if let category {
-            ExpenseRepository.updateCategory(category, name: trimmedName, icon: icon, context: modelContext)
+            ExpenseRepository.updateCategory(category, name: trimmedName, icon: icon, color: color, context: modelContext)
         } else {
-            ExpenseRepository.addCategory(name: trimmedName, icon: icon, context: modelContext)
+            ExpenseRepository.addCategory(name: trimmedName, icon: icon, color: color, context: modelContext)
         }
         dismiss()
     }

@@ -32,7 +32,7 @@ struct WidgetSnapshotTests {
         let snapshot = WidgetSnapshot(
             current: try month(2026, 3, totals: [Decimal(string: "0.1")!, Decimal(string: "1234.56")!]),
             previous: try month(2026, 2, totals: [Decimal(string: "0.3")!]),
-            topCategories: [.init(name: "Comida", icon: .init(symbolName: "fork.knife"), total: Decimal(string: "0.1")!)]
+            topCategories: [.init(name: "Comida", icon: .init(symbolName: "fork.knife"), color: nil, total: Decimal(string: "0.1")!)]
         )
 
         let decoded = try JSONDecoder().decode(WidgetSnapshot.self, from: JSONEncoder().encode(snapshot))
@@ -78,7 +78,7 @@ struct WidgetSnapshotTests {
 
         let category = try JSONDecoder().decode(WidgetSnapshot.CategoryTotal.self, from: Data(json.utf8))
 
-        #expect(category == .init(name: "Comida", icon: .init(symbolName: "fork.knife"), total: 62))
+        #expect(category == .init(name: "Comida", icon: .init(symbolName: "fork.knife"), color: nil, total: 62))
     }
 
     // Un snapshot de la 1.10.0 puede traer un emoji hasta que la app se abre.
@@ -93,18 +93,37 @@ struct WidgetSnapshotTests {
     }
 
     @Test func uncategorizedIconSurvivesTheRoundTrip() throws {
-        let category = WidgetSnapshot.CategoryTotal(name: "Sin categoría", icon: .uncategorized, total: 5)
+        let category = WidgetSnapshot.CategoryTotal(name: "Sin categoría", icon: .uncategorized, color: nil, total: 5)
 
         let decoded = try JSONDecoder().decode(WidgetSnapshot.CategoryTotal.self, from: JSONEncoder().encode(category))
 
         #expect(decoded.icon == .uncategorized)
     }
 
+    @Test func categoryColorSurvivesTheRoundTrip() throws {
+        let category = WidgetSnapshot.CategoryTotal(name: "Ocio", icon: .fallback, color: .custom(rgb: 0x12AB9F), total: 5)
+
+        let decoded = try JSONDecoder().decode(WidgetSnapshot.CategoryTotal.self, from: JSONEncoder().encode(category))
+
+        #expect(decoded.color == .custom(rgb: 0x12AB9F))
+    }
+
+    // Lo que escribía la 1.11.0, sin color.
+    @Test func snapshotWithoutColorReadsAsNoColor() throws {
+        let json = """
+        {"name":"Comida","icon":"fork.knife","total":"12"}
+        """
+
+        let category = try JSONDecoder().decode(WidgetSnapshot.CategoryTotal.self, from: Data(json.utf8))
+
+        #expect(category.color == nil)
+    }
+
     private func makeSnapshot() throws -> WidgetSnapshot {
         WidgetSnapshot(
             current: try month(2026, 3, totals: Array(repeating: 2, count: 31)),
             previous: try month(2026, 2, totals: Array(repeating: 1, count: 28)),
-            topCategories: [.init(name: "Comida", icon: .init(symbolName: "fork.knife"), total: 62)]
+            topCategories: [.init(name: "Comida", icon: .init(symbolName: "fork.knife"), color: .palette(.orange), total: 62)]
         )
     }
 

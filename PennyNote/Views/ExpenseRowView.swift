@@ -16,7 +16,7 @@ struct ExpenseRowView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            CategoryIconBadge(icon: expense.category.displayIcon)
+            CategoryIconBadge(icon: expense.category.displayIcon, color: expense.category.displayColor)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(hasTitle ? expense.title : categoryName)

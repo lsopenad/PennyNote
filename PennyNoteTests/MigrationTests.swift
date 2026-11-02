@@ -26,7 +26,7 @@ struct MigrationTests {
             try context.save()
         }
 
-        let schema = Schema(versionedSchema: SchemaV4.self)
+        let schema = Schema(versionedSchema: SchemaV5.self)
         let container = try ModelContainer(
             for: schema,
             migrationPlan: PennyNoteMigrationPlan.self,
@@ -61,7 +61,7 @@ struct MigrationTests {
             try context.save()
         }
 
-        let schema = Schema(versionedSchema: SchemaV4.self)
+        let schema = Schema(versionedSchema: SchemaV5.self)
         let container = try ModelContainer(
             for: schema,
             migrationPlan: PennyNoteMigrationPlan.self,
@@ -103,7 +103,7 @@ struct MigrationTests {
             try context.save()
         }
 
-        let schema = Schema(versionedSchema: SchemaV4.self)
+        let schema = Schema(versionedSchema: SchemaV5.self)
         let container = try ModelContainer(
             for: schema,
             migrationPlan: PennyNoteMigrationPlan.self,
@@ -118,6 +118,46 @@ struct MigrationTests {
         #expect(migrated.sortOrder == 2)
         #expect(migrated.expenses.count == 1)
         #expect(migrated.recurringExpenses.count == 1)
+    }
+
+    // 1.12.0: las categorías de la 1.11.0 llegan sin color.
+    @Test func v4CategoryKeepsItsDataWithoutColor() throws {
+        let directory = FileManager.default.temporaryDirectory.appending(path: "MigrationTests-\(UUID())")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let url = directory.appending(path: "default.store")
+
+        // Almacén creado por la 1.11.0.
+        let categoryID = UUID()
+        do {
+            let schema = Schema(versionedSchema: SchemaV4.self)
+            let container = try ModelContainer(for: schema, configurations: [ModelConfiguration(schema: schema, url: url)])
+            let context = ModelContext(container)
+            let category = SchemaV4.ExpenseCategory(id: categoryID, name: "Casa", storedIcon: "house.fill", sortOrder: 1)
+            context.insert(category)
+            let expense = SchemaV4.Expense(amount: 40, paymentMethod: .card)
+            expense.category = category
+            context.insert(expense)
+            try context.save()
+        }
+
+        let schema = Schema(versionedSchema: SchemaV5.self)
+        let container = try ModelContainer(
+            for: schema,
+            migrationPlan: PennyNoteMigrationPlan.self,
+            configurations: [ModelConfiguration(schema: schema, url: url)]
+        )
+        let context = ModelContext(container)
+        let migrated = try #require(try context.fetch(FetchDescriptor<ExpenseCategory>()).first)
+
+        #expect(migrated.id == categoryID)
+        #expect(migrated.icon == .init(symbolName: "house.fill"))
+        #expect(migrated.sortOrder == 1)
+        #expect(migrated.color == nil)
+        #expect(migrated.expenses.count == 1)
+        migrated.color = .palette(.teal)
+        try context.save()
+        #expect(try context.fetch(FetchDescriptor<ExpenseCategory>()).first?.color == .palette(.teal))
     }
 
     @Test func unknownStoredPaymentMethodReadsAsOther() {
