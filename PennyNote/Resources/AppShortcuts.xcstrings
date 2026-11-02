@@ -1,6 +1,28 @@
 {
   "sourceLanguage": "es",
   "strings": {
+    "Apunta un gasto rápido en ${applicationName}": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log a quick expense in ${applicationName}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apunta un gasto rápido en ${applicationName}"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在${applicationName}中快速记一笔支出"
+          }
+        }
+      }
+    },
     "Añade un gasto en ${applicationName}": {
       "localizations": {
         "en": {
@@ -19,6 +41,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "在${applicationName}中添加支出"
+          }
+        }
+      }
+    },
+    "Gasto rápido en ${applicationName}": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick expense in ${applicationName}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasto rápido en ${applicationName}"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在${applicationName}中快速记账"
           }
         }
       }

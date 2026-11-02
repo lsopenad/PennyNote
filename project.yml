@@ -82,10 +82,11 @@ targets:
       - path: PennyNoteWidget
       - path: PennyNote/AppGroup
       - path: PennyNote/Logging.swift
-      - path: PennyNote/Intents/OpenAddExpenseIntent.swift
+      # El control lanza este intent; se ejecuta en la app (ver el propio fichero).
+      - path: PennyNote/Intents/QuickExpenseIntent.swift
       # Solo por AccentColor: así las gráficas del widget usan el mismo verde que la app.
       - path: PennyNote/Resources/Assets.xcassets
-      # Los textos del widget y de lo que comparte con la app (AppGroup, OpenAddExpenseIntent).
+      # Los textos del widget y de lo que comparte con la app (AppGroup, QuickExpenseIntent).
       - path: PennyNote/Resources/Localizable.xcstrings
     info:
       path: Generated/PennyNoteWidgetExtension-Info.plist
@@ -102,6 +103,8 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pennynote.app.widget
+        # QuickExpenseIntent lo usa para no compilar en el widget la parte que guarda el gasto.
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) WIDGET_EXTENSION
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         TARGETED_DEVICE_FAMILY: "1"
         SKIP_INSTALL: "YES"

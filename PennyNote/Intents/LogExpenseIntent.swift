@@ -22,11 +22,7 @@ struct LogExpenseIntent: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        // Sin sesión (o con la sesión caducada) el gasto no tendría cuenta segura a la que subirse: si
-        // luego entrara otra cuenta, se borraría con el resto de datos locales.
-        guard SyncStateStore.standard.hasActiveSession else {
-            throw LogExpenseError.signedOut
-        }
+        try ExpenseIntentValidation.requireActiveSession()
 
         let context = ModelContext(SharedModelContainer.container)
         let matchedCategory = context.category(
@@ -34,17 +30,10 @@ struct LogExpenseIntent: AppIntent {
             failureMessage: "Fallo al buscar la categoría al registrar gasto desde Atajos"
         )
 
-        // Nunca Decimal(double) directo: se convierte vía texto para evitar artefactos binarios.
-        let amountDecimal = Decimal(string: String(amount)) ?? Decimal(amount)
-        guard ExpenseLimits.isValidAmount(amountDecimal) else {
-            throw LogExpenseError.invalidAmount
-        }
-        guard ExpenseLimits.hasValidFractionDigits(amountDecimal, for: CurrencySettings.shared.currency) else {
-            throw LogExpenseError.tooManyDecimals
-        }
+        let validAmount = try ExpenseIntentValidation.amount(from: amount)
 
         ExpenseRepository.addExpense(
-            amount: amountDecimal,
+            amount: validAmount,
             date: .now,
             title: expenseTitle,
             category: matchedCategory,

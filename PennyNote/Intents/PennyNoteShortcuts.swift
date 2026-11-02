@@ -11,5 +11,14 @@ struct PennyNoteShortcuts: AppShortcutsProvider {
             shortTitle: "Registrar gasto",
             systemImageName: "creditcard"
         )
+        AppShortcut(
+            intent: QuickExpenseIntent(),
+            phrases: [
+                "Gasto rápido en \(.applicationName)",
+                "Apunta un gasto rápido en \(.applicationName)",
+            ],
+            shortTitle: "Gasto rápido",
+            systemImageName: "bolt.circle"
+        )
     }
 }

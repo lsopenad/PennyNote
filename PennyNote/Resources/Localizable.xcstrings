@@ -273,50 +273,6 @@
         }
       }
     },
-    "Abre PennyNote en la pantalla de registrar gasto.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opens PennyNote on the add expense screen."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre PennyNote en la pantalla de registrar gasto."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "打开 PennyNote 的记一笔支出界面。"
-          }
-        }
-      }
-    },
-    "Abre PennyNote para registrar un gasto nuevo.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Opens PennyNote to log a new expense."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abre PennyNote para registrar un gasto nuevo."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "打开 PennyNote 记录一笔新支出。"
-          }
-        }
-      }
-    },
     "Abre las estadísticas": {
       "localizations": {
         "en": {
@@ -2099,6 +2055,28 @@
         }
       }
     },
+    "Gasto de %@ guardado": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expense of %@ saved"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasto de %@ guardado"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已保存 %@ 的支出"
+          }
+        }
+      }
+    },
     "Gasto del mes": {
       "localizations": {
         "en": {
@@ -2183,6 +2161,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "定期支出"
+          }
+        }
+      }
+    },
+    "Gasto rápido": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick Expense"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasto rápido"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快速记账"
+          }
+        }
+      }
+    },
+    "Gasto rápido de ${amount}": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick expense of ${amount}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasto rápido de ${amount}"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快速记录 ${amount} 的支出"
           }
         }
       }
@@ -3149,6 +3171,28 @@
         }
       }
     },
+    "Muestra solo los gastos por completar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows only the expenses that need details"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muestra solo los gastos por completar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅显示待完善的支出"
+          }
+        }
+      }
+    },
     "Más gasto": {
       "localizations": {
         "en": {
@@ -3431,6 +3475,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法连接到服务器。"
+          }
+        }
+      }
+    },
+    "No se ha podido guardar el gasto.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't save the expense."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido guardar el gasto."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法保存支出。"
           }
         }
       }
@@ -3875,6 +3941,28 @@
         }
       }
     },
+    "Por completar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs Details"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por completar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "待完善"
+          }
+        }
+      }
+    },
     "Por mes": {
       "localizations": {
         "en": {
@@ -3981,6 +4069,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "定期"
+          }
+        }
+      }
+    },
+    "Registra solo la cantidad. Los detalles se completan luego en PennyNote.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logs just the amount. You can add the details later in PennyNote."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra solo la cantidad. Los detalles se completan luego en PennyNote."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "只记录金额，稍后可在 PennyNote 中补充详情。"
+          }
+        }
+      }
+    },
+    "Registra un gasto sin abrir PennyNote. Los detalles se completan luego.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log an expense without opening PennyNote. Add the details later."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra un gasto sin abrir PennyNote. Los detalles se completan luego."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无需打开 PennyNote 即可记录支出，稍后再补充详情。"
           }
         }
       }
@@ -4513,6 +4645,58 @@
         }
       }
     },
+    "Tienes %lld gastos por completar": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld expense needs details"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld expenses need details"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Tienes %lld gasto por completar"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Tienes %lld gastos por completar"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans": {
+          "variations": {
+            "plural": {
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "有 %lld 笔支出待完善"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Todo": {
       "localizations": {
         "en": {
@@ -4927,6 +5111,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "退出登录？"
+          }
+        }
+      }
+    },
+    "¿Cuánto has gastado?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How much did you spend?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cuánto has gastado?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你花了多少钱？"
           }
         }
       }

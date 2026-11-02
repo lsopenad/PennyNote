@@ -37,9 +37,6 @@ struct RootView: View {
             .onOpenURL { url in
                 DeepLinkHandler.handle(url, router: router)
             }
-            .onReceive(NotificationCenter.default.publisher(for: .pennyNoteOpenAddExpense)) { _ in
-                router.presentAdd()
-            }
             // Al final para que también llegue a las hojas.
             .environment(\.currency, currencySettings.currency)
     }
