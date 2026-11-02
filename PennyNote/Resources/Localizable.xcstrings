@@ -427,6 +427,28 @@
         }
       }
     },
+    "Al escribir el título de un gasto nuevo o por completar, PennyNote te propone gastos anteriores parecidos para rellenar el importe, la categoría y el método de pago. Si no hay ninguno, sugiere la categoría y el método de pago según las palabras del título. Aprende de tus gastos de los últimos 12 meses.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When you type the title of a new or unfinished expense, PennyNote suggests similar past expenses to fill in the amount, category and payment method. If there are none, it suggests a category and payment method from the words in the title. It learns from your expenses over the last 12 months."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al escribir el título de un gasto nuevo o por completar, PennyNote te propone gastos anteriores parecidos para rellenar el importe, la categoría y el método de pago. Si no hay ninguno, sugiere la categoría y el método de pago según las palabras del título. Aprende de tus gastos de los últimos 12 meses."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入新支出或待完善支出的标题时，PennyNote 会推荐相似的过往支出，用来填写金额、类别和支付方式。如果没有相似的支出，会根据标题中的词语推荐类别和支付方式。它会从你最近 12 个月的支出中学习。"
+          }
+        }
+      }
+    },
     "Al menos %lld caracteres.": {
       "localizations": {
         "en": {
@@ -1237,6 +1259,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "类别"
+          }
+        }
+      }
+    },
+    "Categoría sugerida según tus gastos anteriores.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Category suggested from your past expenses."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Categoría sugerida según tus gastos anteriores."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已根据你的过往支出推荐类别。"
+          }
+        }
+      }
+    },
+    "Categoría y método de pago sugeridos según tus gastos anteriores.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Category and payment method suggested from your past expenses."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Categoría y método de pago sugeridos según tus gastos anteriores."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已根据你的过往支出推荐类别和支付方式。"
           }
         }
       }
@@ -4271,6 +4337,28 @@
         }
       }
     },
+    "Método de pago sugerido según tus gastos anteriores.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Payment method suggested from your past expenses."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Método de pago sugerido según tus gastos anteriores."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已根据你的过往支出推荐支付方式。"
+          }
+        }
+      }
+    },
     "Móvil": {
       "localizations": {
         "en": {
@@ -5459,6 +5547,28 @@
         }
       }
     },
+    "Rellena el gasto con estos datos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fills in the expense with these details"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rellena el gasto con estos datos"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用这些信息填写支出"
+          }
+        }
+      }
+    },
     "Repetir": {
       "localizations": {
         "en": {
@@ -5983,6 +6093,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "沙发"
+          }
+        }
+      }
+    },
+    "Sugerencias inteligentes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart Suggestions"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugerencias inteligentes"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "智能建议"
           }
         }
       }
