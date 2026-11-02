@@ -43,6 +43,7 @@ struct SettingsView: View {
                     LabeledContent("Moneda", value: currencySettings.currency.displayName)
                 }
             }
+            SmartSuggestionsSettingsSection()
             // Con DebugSeed no hay cuenta real, y el bloqueo y cerrar sesión cambiarían el estado de la
             // instalación de verdad.
             if !DebugSeed.isActive {
