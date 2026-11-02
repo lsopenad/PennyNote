@@ -169,6 +169,45 @@ struct RecurringExpenseTests {
         #expect(try fetchExpenses().count == 2)
     }
 
+    // Reanudar antes de la próxima fecha no vuelve a un día ya creado: si su gasto se borró y la
+    // sincronización ya lo quitó del móvil, recrearlo dejaría un gasto que el servidor no acepta.
+    @Test func resumingBeforeTheNextDateKeepsIt() throws {
+        let template = insertTemplate(start: date(2026, 10, 5), next: date(2026, 11, 5))
+        template.isPaused = true
+        let now = date(2026, 10, 5, hour: 18)
+
+        let proposed = ExpenseRepository.resumedNextDate(of: template, now: now, calendar: calendar)
+        update(template, nextDate: proposed, isPaused: false, now: now)
+
+        #expect(dayString(proposed) == "2026-11-05")
+        #expect(try fetchExpenses().isEmpty)
+        #expect(dayString(template.nextDate) == "2026-11-05")
+    }
+
+    // La serie empezó hoy con un gasto que ya existía (id aleatorio): pausar y reanudar no lo duplica.
+    @Test func pausingAndResumingOnTheStartDayKeepsTheOriginalExpenseAlone() throws {
+        let template = insertTemplate(start: date(2026, 10, 5), next: date(2026, 11, 5))
+        context.insert(Expense(amount: 12.99, date: date(2026, 10, 5, hour: 9), recurringExpenseID: template.id))
+        template.isPaused = true
+        let now = date(2026, 10, 5, hour: 18)
+
+        update(template, nextDate: ExpenseRepository.resumedNextDate(of: template, now: now, calendar: calendar), isPaused: false, now: now)
+
+        #expect(try fetchExpenses().count == 1)
+    }
+
+    // Poner como próximo gasto el día del original reinicia la serie, pero no crea otra copia de ese día.
+    @Test func restartingOnTheDayOfAnExistingExpenseDoesNotDuplicateIt() throws {
+        let template = insertTemplate(start: date(2026, 10, 5), next: date(2026, 11, 5))
+        context.insert(Expense(amount: 12.99, date: date(2026, 10, 5, hour: 9), recurringExpenseID: template.id))
+
+        update(template, nextDate: date(2026, 10, 5), isPaused: false, now: date(2026, 10, 20))
+
+        #expect(try fetchExpenses().count == 1)
+        #expect(dayString(template.startDate) == "2026-10-05")
+        #expect(dayString(template.nextDate) == "2026-11-05")
+    }
+
     // MARK: - Utilidades
 
     @discardableResult

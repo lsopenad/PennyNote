@@ -208,14 +208,17 @@ enum ExpenseRepository {
         afterMutation(context: context, effects: effects)
     }
 
-    // Próxima repetición al reanudar una serie en pausa: la de hoy o la siguiente.
+    // Próxima repetición al reanudar una serie en pausa: la de hoy o la siguiente, pero nunca anterior a
+    // la próxima pendiente. Las anteriores ya se crearon (o se saltaron en la pausa): volver a ellas
+    // duplicaría el gasto, o lo resucitaría en este móvil si se borró y el servidor guarda el borrado.
     static func resumedNextDate(of recurringExpense: RecurringExpense, now: Date = .now, calendar: Calendar = .current) -> Date {
         let schedule = RecurrenceSchedule(
             frequency: recurringExpense.frequency,
             startDate: recurringExpense.startDate,
             calendar: calendar
         )
-        return schedule.firstOccurrence(onOrAfterDayOf: now) ?? recurringExpense.nextDate
+        guard let firstFromToday = schedule.firstOccurrence(onOrAfterDayOf: now) else { return recurringExpense.nextDate }
+        return max(firstFromToday, recurringExpense.nextDate)
     }
 
     // Los gastos que ya creó se quedan como están.

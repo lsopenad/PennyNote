@@ -21,13 +21,17 @@ enum RecurringExpenseGenerator {
         var createdCount = 0
         for template in templates where template.nextDate < endOfToday {
             let schedule = RecurrenceSchedule(frequency: template.frequency, startDate: template.startDate, calendar: calendar)
-            let existingIDs = expenseIDs(of: template, context: context)
+            let existing = expenses(of: template, context: context)
+            let existingIDs = Set(existing.map(\.id))
+            // También por día: el gasto que se convirtió en recurrente (la repetición 0) conserva su id
+            // aleatorio, y una serie reiniciada en su día no debe crear otra copia.
+            let existingDays = Set(existing.map { calendar.startOfDay(for: $0.date) })
             var generated = 0
             while template.nextDate < endOfToday, generated < maxExpensesPerTemplate {
                 let date = template.nextDate
                 let id = expenseID(for: template, on: date, calendar: calendar)
                 // Ya creado por otro móvil (y bajado) o en una pasada anterior que no llegó a avanzar la fecha.
-                if !existingIDs.contains(id) {
+                if !existingIDs.contains(id), !existingDays.contains(calendar.startOfDay(for: date)) {
                     let expense = Expense(
                         id: id,
                         amount: template.amount,
@@ -64,12 +68,11 @@ enum RecurringExpenseGenerator {
         return UUID(nameBased: name, namespace: template.id)
     }
 
-    private static func expenseIDs(of template: RecurringExpense, context: ModelContext) -> Set<UUID> {
+    private static func expenses(of template: RecurringExpense, context: ModelContext) -> [Expense] {
         let templateID: UUID? = template.id
-        let expenses = context.fetchOrEmpty(
+        return context.fetchOrEmpty(
             FetchDescriptor<Expense>(predicate: #Predicate { $0.recurringExpenseID == templateID }),
             failureMessage: "Fallo al leer los gastos de un gasto recurrente"
         )
-        return Set(expenses.map(\.id))
     }
 }
