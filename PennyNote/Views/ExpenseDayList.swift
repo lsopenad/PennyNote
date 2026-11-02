@@ -12,6 +12,7 @@ struct ExpenseDayList: View, Equatable {
     @Environment(SyncCoordinator.self) private var sync
 
     let filter: ExpenseFilter
+    let onShowNeedsDetails: () -> Void
 
     @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date, order: .reverse)
     private var activeExpenses: [Expense]
@@ -33,6 +34,8 @@ struct ExpenseDayList: View, Equatable {
                 .listRowInsets(EdgeInsets())
                 .listRowSeparator(.hidden)
             }
+
+            needsDetailsNotice
 
             DayGroupedExpenseSections(
                 expenses: visible,
@@ -70,6 +73,27 @@ struct ExpenseDayList: View, Equatable {
         }
         .onChange(of: filter) {
             limit = Self.pageSize
+        }
+    }
+
+    // Aviso de gastos rápidos sin completar. Cuenta todos, no solo los del filtro, y se oculta
+    // cuando ya se están mostrando solo esos.
+    @ViewBuilder
+    private var needsDetailsNotice: some View {
+        let count = filter.onlyNeedsDetails ? 0 : activeExpenses.count(where: \.needsDetails)
+        if count > 0 {
+            Section {
+                Button(action: onShowNeedsDetails) {
+                    Label {
+                        Text("Tienes \(count) gastos por completar")
+                    } icon: {
+                        Image(systemName: Expense.needsDetailsSymbolName)
+                    }
+                    .foregroundStyle(.orange)
+                }
+                .accessibilityHint("Muestra solo los gastos por completar")
+            }
+            .listRowSeparator(.hidden)
         }
     }
 

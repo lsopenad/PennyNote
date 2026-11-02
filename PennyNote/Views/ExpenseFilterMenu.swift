@@ -7,6 +7,9 @@ struct ExpenseFilterMenu: View {
 
     var body: some View {
         Menu {
+            Toggle(isOn: $filter.onlyNeedsDetails) {
+                Label("Por completar", systemImage: Expense.needsDetailsSymbolName)
+            }
             Section("Categoría") {
                 ForEach(categories) { category in
                     Toggle(isOn: $filter.categoryIDs.containing(category.id)) {

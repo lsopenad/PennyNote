@@ -13,7 +13,9 @@ struct ExpenseListView: View {
         ZStack {
             NavigationStack(path: $router.navigationPath) {
                 ZStack(alignment: .bottomTrailing) {
-                    ExpenseDayList(filter: filter)
+                    ExpenseDayList(filter: filter) {
+                        filter = ExpenseFilter(onlyNeedsDetails: true)
+                    }
 
                     addButton
                 }

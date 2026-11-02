@@ -55,3 +55,14 @@ final class Expense {
         self.isSoftDeleted = false
     }
 }
+
+extension Expense {
+    // Gasto pendiente de completar: sin categoría ni título, como los que crea el gasto rápido
+    // (QuickExpenseIntent). Se deduce en vez de guardarse para no cambiar el esquema ni el servidor.
+    // El título va primero: casi todos lo tienen y así no se toca la relación.
+    var needsDetails: Bool {
+        title.isEmpty && category == nil
+    }
+
+    static let needsDetailsSymbolName = "square.and.pencil"
+}

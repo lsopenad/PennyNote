@@ -30,6 +30,10 @@ struct ExpenseRowView: View {
                     Text(categoryName)
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                } else if expense.needsDetails {
+                    Label("Por completar", systemImage: Expense.needsDetailsSymbolName)
+                        .font(.caption)
+                        .foregroundStyle(.orange)
                 }
             }
 
