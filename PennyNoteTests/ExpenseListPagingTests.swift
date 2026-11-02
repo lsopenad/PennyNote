@@ -35,6 +35,34 @@ struct ExpenseListPagingTests {
         #expect(visible.map(\.amount) == [1, 2, 3, 4])
     }
 
+    @Test func searchMatchesTitleOrCategoryIgnoringCase() throws {
+        let food = ExpenseCategory(name: "Comida", icon: .init(symbolName: "fork.knife"), sortOrder: 0)
+        context.insert(food)
+        let expenses = [
+            Expense(amount: 1, date: try date(2026, 3, 3), title: "Mercadona"),
+            Expense(amount: 2, date: try date(2026, 3, 2), title: "Cine", category: food),
+            Expense(amount: 3, date: try date(2026, 3, 1), title: "Gasolina"),
+        ]
+        expenses.forEach(context.insert)
+
+        #expect(ExpenseSearchOverlay.results(expenses, matching: "MERCA").map(\.amount) == [1])
+        #expect(ExpenseSearchOverlay.results(expenses, matching: "comida").map(\.amount) == [2])
+        #expect(ExpenseSearchOverlay.results(expenses, matching: "  ").isEmpty)
+    }
+
+    // Con una sola letra coinciden casi todos los gastos: la búsqueda muestra una página, como la lista.
+    @Test func searchResultsAreShownOnePageAtATime() throws {
+        let expenses = try (0..<(ExpenseDayList.pageSize * 2)).map { index in
+            Expense(amount: 1, date: try date(2026, 1, 1).addingTimeInterval(Double(-index) * 86_400), title: "Café")
+        }
+
+        let results = ExpenseSearchOverlay.results(expenses, matching: "a")
+        let visible = ExpenseDayList.visibleExpenses(results, limit: ExpenseDayList.pageSize)
+
+        #expect(results.count == ExpenseDayList.pageSize * 2)
+        #expect(visible.count == ExpenseDayList.pageSize)
+    }
+
     private func date(_ year: Int, _ month: Int, _ day: Int, hour: Int = 0) throws -> Date {
         try #require(DateComponents(calendar: .current, year: year, month: month, day: day, hour: hour).date)
     }
