@@ -27,10 +27,13 @@ xcodegen generate
 echo "==> Limpiando builds anteriores"
 rm -rf "$BUILD_DIR"
 
+# -onlyUsePackageVersionsFromResolvedFile: si Package.resolved no cuadra con project.yml, falla en vez
+# de resolver otras versiones sin avisar.
 echo "==> Creando el archive (Release, sin firma)"
 xcodebuild archive \
   -project PennyNote.xcodeproj \
   -scheme "$SCHEME" \
+  -onlyUsePackageVersionsFromResolvedFile \
   -configuration Release \
   -archivePath "$ARCHIVE_PATH" \
   -destination "generic/platform=iOS" \

@@ -2,7 +2,16 @@
 # más las propias del proyecto.
 
 # Generado por xcodegen a partir de project.yml — no se versiona, se regenera con `xcodegen generate`.
-/PennyNote.xcodeproj/
+# Salvo Package.resolved, que fija las versiones de los paquetes SPM (xcodegen no lo pisa).
+# Git no puede volver a incluir un fichero dentro de una carpeta ignorada: hay que bajar nivel a nivel.
+/PennyNote.xcodeproj/*
+!/PennyNote.xcodeproj/project.xcworkspace/
+/PennyNote.xcodeproj/project.xcworkspace/*
+!/PennyNote.xcodeproj/project.xcworkspace/xcshareddata/
+/PennyNote.xcodeproj/project.xcworkspace/xcshareddata/*
+!/PennyNote.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
+/PennyNote.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/*
+!/PennyNote.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 /Generated/
 
 # Artefactos de release (.xcarchive / .ipa generados por scripts/build-ipa.sh)
