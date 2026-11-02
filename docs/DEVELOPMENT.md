@@ -7,7 +7,7 @@
 - Para publicar versiones: [GitHub CLI](https://cli.github.com) (`gh`) autenticado y `jq`.
 - Para ejecutar en un dispositivo desde Xcode: un Apple ID añadido en Xcode → Settings → Accounts. Generar el `.ipa` no lo necesita (ver más abajo).
 
-El proyecto `.xcodeproj` **no se versiona**: se genera a partir de `project.yml`. Cualquier cambio de targets, capacidades o ajustes de build se hace editando `project.yml`, nunca a mano en Xcode.
+El proyecto `.xcodeproj` **no se versiona**: se genera a partir de `project.yml`. Cualquier cambio de targets, capacidades o ajustes de build se hace editando `project.yml`, nunca a mano en Xcode. La única excepción es su `Package.resolved` (ver [Dependencias](#dependencias)).
 
 ## Supabase
 
@@ -72,6 +72,18 @@ open PennyNote.xcodeproj
 Selecciona el esquema `PennyNote` y un simulador de iPhone, y ejecuta con Cmd+R. Para ejecutar en un dispositivo, elige tu equipo de firma en los targets `PennyNote` y `PennyNoteWidgetExtension`.
 
 Vuelve a ejecutar `xcodegen generate` cada vez que `project.yml` cambie (por ejemplo, tras un `git pull`).
+
+### Dependencias
+
+Los paquetes de Swift Package Manager se declaran en `project.yml` con un rango (`from:`), pero las versiones exactas, también las de sus dependencias, las fija `PennyNote.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved`, que sí se versiona: `xcodegen generate` no lo toca y Xcode usa esas versiones aunque haya otras más nuevas dentro del rango. Así todos los clones y el `.ipa` compilan con lo mismo.
+
+Para actualizar una dependencia o cambiar su rango en `project.yml`:
+
+1. `xcodegen generate` y, en Xcode, **File → Packages → Update to Latest Package Versions** (o **Resolve Package Versions** si solo has cambiado el rango).
+2. Compila y pasa los tests.
+3. Haz commit del `Package.resolved` junto con el cambio de `project.yml`.
+
+`scripts/build-ipa.sh` compila con `-onlyUsePackageVersionsFromResolvedFile`: si el `Package.resolved` no cuadra con `project.yml`, falla en vez de resolver otras versiones.
 
 ### Datos de prueba (solo Debug)
 
