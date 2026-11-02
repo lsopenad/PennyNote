@@ -7,9 +7,6 @@
     "%@": {
       "shouldTranslate": false
     },
-    "%@ %@": {
-      "shouldTranslate": false
-    },
     "%@ vs %@": {
       "localizations": {
         "en": {
@@ -364,24 +361,24 @@
         }
       }
     },
-    "Actividades": {
+    "Agua": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Activities"
+            "value": "Water"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Actividades"
+            "value": "Agua"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "活动"
+            "value": "水"
           }
         }
       }
@@ -474,28 +471,6 @@
         }
       }
     },
-    "Animales y naturaleza": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Animals & Nature"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Animales y naturaleza"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "动物与自然"
-          }
-        }
-      }
-    },
     "Anterior": {
       "localizations": {
         "en": {
@@ -514,6 +489,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "上一个"
+          }
+        }
+      }
+    },
+    "Aparcamiento": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parking"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aparcamiento"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停车"
+          }
+        }
+      }
+    },
+    "Autobús": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autobús"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "公交车"
+          }
+        }
+      }
+    },
+    "Avión": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Airplane"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avión"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "飞机"
           }
         }
       }
@@ -562,24 +603,112 @@
         }
       }
     },
-    "Banderas": {
+    "Balón": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Flags"
+            "value": "Ball"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Banderas"
+            "value": "Balón"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "旗帜"
+            "value": "足球"
+          }
+        }
+      }
+    },
+    "Banco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bank"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Banco"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "银行"
+          }
+        }
+      }
+    },
+    "Barco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barco"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "船"
+          }
+        }
+      }
+    },
+    "Bicicleta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bicycle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bicicleta"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自行车"
+          }
+        }
+      }
+    },
+    "Billete": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Banknote"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Billete"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "钞票"
           }
         }
       }
@@ -650,6 +779,50 @@
         }
       }
     },
+    "Bolsa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bag"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bolsa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "购物袋"
+          }
+        }
+      }
+    },
+    "Bombilla": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light Bulb"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bombilla"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "灯泡"
+          }
+        }
+      }
+    },
     "Borra la cuenta y todos sus gastos y categorías, del servidor y de este iPhone. No se puede deshacer.": {
       "localizations": {
         "en": {
@@ -716,24 +889,24 @@
         }
       }
     },
-    "Buscar emoji": {
+    "Botiquín": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Search emoji"
+            "value": "First Aid Kit"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Buscar emoji"
+            "value": "Botiquín"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "搜索表情"
+            "value": "急救箱"
           }
         }
       }
@@ -848,6 +1021,28 @@
         }
       }
     },
+    "Cama": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cama"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "床"
+          }
+        }
+      }
+    },
     "Cambiar contraseña": {
       "localizations": {
         "en": {
@@ -866,6 +1061,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "更改密码"
+          }
+        }
+      }
+    },
+    "Camiseta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "T-Shirt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camiseta"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "T恤"
           }
         }
       }
@@ -914,24 +1131,46 @@
         }
       }
     },
-    "Caras y emociones": {
+    "Carrito": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Smileys & Emotion"
+            "value": "Shopping Cart"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Caras y emociones"
+            "value": "Carrito"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "笑脸与情感"
+            "value": "购物车"
+          }
+        }
+      }
+    },
+    "Casa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "House"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Casa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "房子"
           }
         }
       }
@@ -1046,6 +1285,28 @@
         }
       }
     },
+    "Cesta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Basket"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cesta"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "购物篮"
+          }
+        }
+      }
+    },
     "Cine": {
       "localizations": {
         "en": {
@@ -1064,6 +1325,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "电影"
+          }
+        }
+      }
+    },
+    "Coche": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Car"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coche"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "汽车"
           }
         }
       }
@@ -1090,24 +1373,24 @@
         }
       }
     },
-    "Comida y bebida": {
+    "Comida para llevar": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Food & Drink"
+            "value": "Takeaway"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Comida y bebida"
+            "value": "Comida para llevar"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "食物与饮料"
+            "value": "外卖"
           }
         }
       }
@@ -1288,6 +1571,72 @@
         }
       }
     },
+    "Copa de vino": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wine Glass"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copa de vino"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "酒杯"
+          }
+        }
+      }
+    },
+    "Corazón": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heart"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corazón"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "爱心"
+          }
+        }
+      }
+    },
+    "Correr": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correr"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跑步"
+          }
+        }
+      }
+    },
     "Crear cuenta": {
       "localizations": {
         "en": {
@@ -1372,6 +1721,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "账户已创建，但服务器要求确认邮箱且不会发送邮件。请联系 PennyNote 的管理员。"
+          }
+        }
+      }
+    },
+    "Cámara": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cámara"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相机"
           }
         }
       }
@@ -1530,24 +1901,24 @@
         }
       }
     },
-    "Dinero": {
+    "Documento": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Money"
+            "value": "Document"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dinero"
+            "value": "Documento"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "钱"
+            "value": "文件"
           }
         }
       }
@@ -1860,28 +2231,6 @@
         }
       }
     },
-    "Emoji": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Emoji"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Emoji"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "表情"
-          }
-        }
-      }
-    },
     "En pausa": {
       "localizations": {
         "en": {
@@ -1922,6 +2271,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "暂停期间不会创建支出。恢复后将从下一个日期继续，不会补上暂停期间的支出。"
+          }
+        }
+      }
+    },
+    "Enchufe": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plug"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enchufe"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "插头"
+          }
+        }
+      }
+    },
+    "Entrada": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ticket"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrada"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "门票"
           }
         }
       }
@@ -2036,6 +2429,94 @@
         }
       }
     },
+    "Estetoscopio": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stethoscope"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estetoscopio"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "听诊器"
+          }
+        }
+      }
+    },
+    "Estrella": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Star"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estrella"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "星星"
+          }
+        }
+      }
+    },
+    "Estudios": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Education"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estudios"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "教育"
+          }
+        }
+      }
+    },
+    "Etiqueta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tag"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etiqueta"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "标签"
+          }
+        }
+      }
+    },
     "Evolución": {
       "localizations": {
         "en": {
@@ -2146,6 +2627,28 @@
         }
       }
     },
+    "Familia": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Family"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familia"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "家庭"
+          }
+        }
+      }
+    },
     "Farmacia": {
       "localizations": {
         "en": {
@@ -2212,6 +2715,28 @@
         }
       }
     },
+    "Fiesta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Party"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fiesta"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "派对"
+          }
+        }
+      }
+    },
     "Formato": {
       "localizations": {
         "en": {
@@ -2234,6 +2759,28 @@
         }
       }
     },
+    "Gas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gas"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "燃气"
+          }
+        }
+      }
+    },
     "Gasolina": {
       "localizations": {
         "en": {
@@ -2246,6 +2793,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gasolina"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加油"
+          }
+        }
+      }
+    },
+    "Gasolinera": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gasolinera"
           }
         },
         "zh-Hans": {
@@ -2542,6 +3111,28 @@
         }
       }
     },
+    "Herramientas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tools"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herramientas"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "工具"
+          }
+        }
+      }
+    },
     "Hogar": {
       "localizations": {
         "en": {
@@ -2560,28 +3151,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "家居"
-          }
-        }
-      }
-    },
-    "Icono": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Icon"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Icono"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "图标"
           }
         }
       }
@@ -2806,6 +3375,28 @@
         }
       }
     },
+    "Inversión": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Investment"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inversión"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "投资"
+          }
+        }
+      }
+    },
     "La cantidad tiene más decimales de los que usa la moneda de tu cuenta.": {
       "localizations": {
         "en": {
@@ -2960,6 +3551,50 @@
         }
       }
     },
+    "Lavadora": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Washing Machine"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lavadora"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "洗衣机"
+          }
+        }
+      }
+    },
+    "Libro": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Book"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Libro"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "书"
+          }
+        }
+      }
+    },
     "Libros": {
       "localizations": {
         "en": {
@@ -3000,6 +3635,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "清除筛选"
+          }
+        }
+      }
+    },
+    "Llave": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Llave"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "钥匙"
           }
         }
       }
@@ -3132,6 +3789,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "电费"
+          }
+        }
+      }
+    },
+    "Maleta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suitcase"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maleta"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "行李箱"
+          }
+        }
+      }
+    },
+    "Mando de videojuegos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Game Controller"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mando de videojuegos"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "游戏手柄"
+          }
+        }
+      }
+    },
+    "Mascota": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pet"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mascota"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "宠物"
           }
         }
       }
@@ -3416,6 +4139,50 @@
         }
       }
     },
+    "Móvil": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phone"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Móvil"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手机"
+          }
+        }
+      }
+    },
+    "Música": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Music"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Música"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音乐"
+          }
+        }
+      }
+    },
     "Netflix": {
       "localizations": {
         "en": {
@@ -3434,6 +4201,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Netflix"
+          }
+        }
+      }
+    },
+    "Nevera": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fridge"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nevera"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "冰箱"
           }
         }
       }
@@ -3834,28 +4623,6 @@
         }
       }
     },
-    "Objetos": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Objects"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Objetos"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "物品"
-          }
-        }
-      }
-    },
     "Ocio": {
       "localizations": {
         "en": {
@@ -3874,6 +4641,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "娱乐"
+          }
+        }
+      }
+    },
+    "Ordenador": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Computer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordenador"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "电脑"
           }
         }
       }
@@ -3944,6 +4733,72 @@
         }
       }
     },
+    "Pareja": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couple"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pareja"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "伴侣"
+          }
+        }
+      }
+    },
+    "Pastillas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pills"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pastillas"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "药片"
+          }
+        }
+      }
+    },
+    "Patinete": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scooter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patinete"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "滑板车"
+          }
+        }
+      }
+    },
     "Pedir desbloqueo": {
       "localizations": {
         "en": {
@@ -3984,6 +4839,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "理发"
+          }
+        }
+      }
+    },
+    "Película": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Movie"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Película"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "电影"
           }
         }
       }
@@ -4076,6 +4953,28 @@
         }
       }
     },
+    "Persona": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Person"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Persona"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "个人"
+          }
+        }
+      }
+    },
     "Personalizado": {
       "localizations": {
         "en": {
@@ -4098,46 +4997,24 @@
         }
       }
     },
-    "Personas": {
+    "Pesa": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "People & Body"
+            "value": "Dumbbell"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Personas"
+            "value": "Pesa"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "人物与身体"
-          }
-        }
-      }
-    },
-    "Personas y mascotas": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "People & Pets"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Personas y mascotas"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "人物与宠物"
+            "value": "哑铃"
           }
         }
       }
@@ -4160,6 +5037,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "打开 PennyNote 时需要解锁。你随时可以使用 iPhone 密码。"
+          }
+        }
+      }
+    },
+    "Playa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beach"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Playa"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "海滩"
           }
         }
       }
@@ -4318,6 +5217,28 @@
         }
       }
     },
+    "Regalo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gift"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regalo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "礼物"
+          }
+        }
+      }
+    },
     "Registra solo la cantidad. Los detalles se completan luego en PennyNote.": {
       "localizations": {
         "en": {
@@ -4424,6 +5345,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "再次输入密码"
+          }
+        }
+      }
+    },
+    "Restaurante": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurant"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurante"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "餐厅"
           }
         }
       }
@@ -4604,6 +5547,28 @@
         }
       }
     },
+    "Seguro": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insurance"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguro"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保险"
+          }
+        }
+      }
+    },
     "Semana": {
       "localizations": {
         "en": {
@@ -4780,6 +5745,28 @@
         }
       }
     },
+    "Sofá": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sofa"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sofá"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "沙发"
+          }
+        }
+      }
+    },
     "Sugeridas": {
       "localizations": {
         "en": {
@@ -4798,50 +5785,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "推荐"
-          }
-        }
-      }
-    },
-    "Símbolo": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Symbol"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Símbolo"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "符号"
-          }
-        }
-      }
-    },
-    "Símbolos": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Symbols"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Símbolos"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "符号"
           }
         }
       }
@@ -4868,6 +5811,28 @@
         }
       }
     },
+    "Tarta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cake"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarta"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "蛋糕"
+          }
+        }
+      }
+    },
     "Taxi": {
       "localizations": {
         "en": {
@@ -4886,6 +5851,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "出租车"
+          }
+        }
+      }
+    },
+    "Taza": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mug"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taza"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "杯子"
+          }
+        }
+      }
+    },
+    "Teatro": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theater"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teatro"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剧院"
+          }
+        }
+      }
+    },
+    "Televisión": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Television"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Televisión"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "电视"
           }
         }
       }
@@ -4964,24 +5995,24 @@
         }
       }
     },
-    "Tipo de icono": {
+    "Tijeras": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Icon Type"
+            "value": "Scissors"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tipo de icono"
+            "value": "Tijeras"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "图标类型"
+            "value": "剪刀"
           }
         }
       }
@@ -5074,6 +6105,28 @@
         }
       }
     },
+    "Trabajo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Work"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabajo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "工作"
+          }
+        }
+      }
+    },
     "Transferencia": {
       "localizations": {
         "en": {
@@ -5114,6 +6167,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "交通"
+          }
+        }
+      }
+    },
+    "Tranvía": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tram"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tranvía"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有轨电车"
           }
         }
       }
@@ -5316,24 +6391,24 @@
         }
       }
     },
-    "Viajes y lugares": {
+    "Wifi": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Travel & Places"
+            "value": "Wi-Fi"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Viajes y lugares"
+            "value": "Wifi"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "旅行与地点"
+            "value": "无线网络"
           }
         }
       }
@@ -5378,6 +6453,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "该邮箱已有账户。请登录。"
+          }
+        }
+      }
+    },
+    "Zanahoria": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carrot"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zanahoria"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "胡萝卜"
+          }
+        }
+      }
+    },
+    "Zapato": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoe"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zapato"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "鞋子"
           }
         }
       }

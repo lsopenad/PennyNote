@@ -32,7 +32,7 @@ struct WidgetSnapshotTests {
         let snapshot = WidgetSnapshot(
             current: try month(2026, 3, totals: [Decimal(string: "0.1")!, Decimal(string: "1234.56")!]),
             previous: try month(2026, 2, totals: [Decimal(string: "0.3")!]),
-            topCategories: [.init(name: "Comida", icon: .emoji("🍕"), total: Decimal(string: "0.1")!)]
+            topCategories: [.init(name: "Comida", icon: .init(symbolName: "fork.knife"), total: Decimal(string: "0.1")!)]
         )
 
         let decoded = try JSONDecoder().decode(WidgetSnapshot.self, from: JSONEncoder().encode(snapshot))
@@ -78,14 +78,33 @@ struct WidgetSnapshotTests {
 
         let category = try JSONDecoder().decode(WidgetSnapshot.CategoryTotal.self, from: Data(json.utf8))
 
-        #expect(category == .init(name: "Comida", icon: .symbol("fork.knife"), total: 62))
+        #expect(category == .init(name: "Comida", icon: .init(symbolName: "fork.knife"), total: 62))
+    }
+
+    // Un snapshot de la 1.10.0 puede traer un emoji hasta que la app se abre.
+    @Test func snapshotEmojiIconReadsAsTheFallback() throws {
+        let json = """
+        {"name":"Pizza","icon":"🍕","total":"12"}
+        """
+
+        let category = try JSONDecoder().decode(WidgetSnapshot.CategoryTotal.self, from: Data(json.utf8))
+
+        #expect(category.icon == .fallback)
+    }
+
+    @Test func uncategorizedIconSurvivesTheRoundTrip() throws {
+        let category = WidgetSnapshot.CategoryTotal(name: "Sin categoría", icon: .uncategorized, total: 5)
+
+        let decoded = try JSONDecoder().decode(WidgetSnapshot.CategoryTotal.self, from: JSONEncoder().encode(category))
+
+        #expect(decoded.icon == .uncategorized)
     }
 
     private func makeSnapshot() throws -> WidgetSnapshot {
         WidgetSnapshot(
             current: try month(2026, 3, totals: Array(repeating: 2, count: 31)),
             previous: try month(2026, 2, totals: Array(repeating: 1, count: 28)),
-            topCategories: [.init(name: "Comida", icon: .symbol("fork.knife"), total: 62)]
+            topCategories: [.init(name: "Comida", icon: .init(symbolName: "fork.knife"), total: 62)]
         )
     }
 

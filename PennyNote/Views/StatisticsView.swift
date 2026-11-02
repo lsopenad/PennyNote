@@ -196,7 +196,7 @@ struct StatisticsView: View {
                 SpendingShareRow(
                     title: String(localized: item.paymentMethod.title),
                     // Los métodos de pago se pintan como las categorías.
-                    icon: .symbol(item.paymentMethod.symbolName),
+                    icon: .init(symbolName: item.paymentMethod.symbolName),
                     total: item.total,
                     fraction: fraction(of: item.total, in: periodTotal)
                 )

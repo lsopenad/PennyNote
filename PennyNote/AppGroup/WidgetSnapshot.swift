@@ -26,7 +26,8 @@ struct WidgetSnapshot: Codable, Equatable {
             name = try container.decode(String.self, forKey: .name)
             let storedIcon = try container.decodeIfPresent(String.self, forKey: .icon)
                 ?? container.decode(String.self, forKey: .legacySymbolName)
-            icon = CategoryIcon(storedValue: storedIcon)
+            // El de «Sin categoría» no está en el catálogo: sin este caso se leería como fallback.
+            icon = storedIcon == CategoryIcon.uncategorized.storedValue ? .uncategorized : CategoryIcon(storedValue: storedIcon)
             total = try container.decode(DecimalText.self, forKey: .total).value
         }
 

@@ -46,7 +46,7 @@ struct SpendingShareRow: View {
 
 #Preview {
     List {
-        SpendingShareRow(title: "Comida", icon: .emoji("🍕"), total: 182.4, fraction: 0.42)
-        SpendingShareRow(title: "Transporte", icon: .symbol("car.fill"), total: 60, fraction: 0.14)
+        SpendingShareRow(title: "Comida", icon: .init(symbolName: "fork.knife"), total: 182.4, fraction: 0.42)
+        SpendingShareRow(title: "Transporte", icon: .init(symbolName: "car.fill"), total: 60, fraction: 0.14)
     }
 }

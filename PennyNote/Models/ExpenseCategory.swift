@@ -5,14 +5,19 @@ import SwiftData
 final class ExpenseCategory {
     var id: UUID
     var name: String
-    // CategoryIcon.storedValue: el nombre del símbolo o el emoji. Hasta la 1.9.1 solo podía ser un
-    // símbolo y se llamaba symbolName (ver PennyNoteMigrationPlan).
+    // CategoryIcon.storedValue: el nombre del símbolo. Se llamaba symbolName hasta la 1.9.1 (ver
+    // PennyNoteMigrationPlan) y en la 1.10.0 también podía ser un emoji.
     @Attribute(originalName: "symbolName") private(set) var storedIcon: String
     var sortOrder: Int
 
     var icon: CategoryIcon {
         get { CategoryIcon(storedValue: storedIcon) }
         set { storedIcon = newValue.storedValue }
+    }
+
+    // Lo guardado no está en el catálogo y se muestra CategoryIcon.fallback en su lugar.
+    var hasUnknownStoredIcon: Bool {
+        icon.storedValue != storedIcon
     }
 
     // Contabilidad de la sincronización, como en Expense.
@@ -43,9 +48,7 @@ final class ExpenseCategory {
 extension ExpenseCategory {
     // Etiqueta que se muestra para los gastos sin categoría asignada.
     static var uncategorizedLabel: String { String(localized: "Sin categoría") }
-    static let uncategorizedIcon = CategoryIcon.symbol("questionmark.circle")
-    // Icono con el que empieza la ficha de una categoría nueva.
-    static let defaultIcon = CategoryIcon.symbol("tag.fill")
+    static let uncategorizedIcon = CategoryIcon.uncategorized
 
     // Dos nombres son el mismo si solo cambian las mayúsculas, los acentos o los espacios: «Ocio» y
     // « ocio » no pueden ser dos categorías. La ñ no es una n con acento: «Año» y «Ano» son distintas.

@@ -114,7 +114,7 @@ struct MigrationTests {
 
         #expect(migrated.id == categoryID)
         #expect(migrated.name == "Ocio")
-        #expect(migrated.icon == .symbol("gamecontroller.fill"))
+        #expect(migrated.icon == .init(symbolName: "gamecontroller.fill"))
         #expect(migrated.sortOrder == 2)
         #expect(migrated.expenses.count == 1)
         #expect(migrated.recurringExpenses.count == 1)

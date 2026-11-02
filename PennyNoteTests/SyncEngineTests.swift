@@ -145,9 +145,54 @@ struct SyncEngineTests {
         #expect(try fetchCategories().contains { $0.id == categoryID } == false)
     }
 
+    // MARK: - Iconos fuera del catálogo
+
+    // Un móvil con la 1.10.0 aún puede subir un emoji: se baja cambiado y se vuelve a subir así.
+    @Test func pulledEmojiIconIsReplacedAndUploaded() async throws {
+        let remoteCategory = remote.add(category: "Pizza")
+        remote.edit(category: remoteCategory.id) { $0.icon = "🍕" }
+        try engine.prepareLocalData(for: userID)
+
+        try await engine.sync()
+
+        let category = try #require(try fetchCategories().first)
+        #expect(category.icon == .fallback)
+        #expect(!category.hasUnknownStoredIcon)
+        #expect(category.syncStatus == .synced)
+        #expect(remote.categories[remoteCategory.id]?.icon == "tag.fill")
+    }
+
+    // El emoji lo subió un móvil con el reloj adelantado: el cambio debe ganarle igualmente.
+    @Test func pulledEmojiFromAClockAheadIsStillReplaced() async throws {
+        let remoteCategory = remote.add(category: "Pizza")
+        remote.edit(category: remoteCategory.id, at: .now.addingTimeInterval(3600)) { $0.icon = "🍕" }
+        try engine.prepareLocalData(for: userID)
+
+        try await engine.sync()
+
+        #expect(remote.categories[remoteCategory.id]?.icon == "tag.fill")
+    }
+
+    // Lo guardado en el móvil por la 1.10.0, ya subido, también se cambia y se sube.
+    @Test func storedUnknownIconIsReplacedAndUploaded() async throws {
+        try engine.prepareLocalData(for: userID)
+        try await engine.sync()
+        // Sin nada nuevo que bajar: queda lo que hay en el móvil.
+        state.categoriesCursor = .distantFuture
+        let category = try #require(try fetchCategories().first)
+        category.icon = CategoryIcon(symbolName: "tram")
+        try context.save()
+
+        try await engine.sync()
+
+        #expect(!category.hasUnknownStoredIcon)
+        #expect(category.syncStatus == .synced)
+        #expect(remote.categories[category.id]?.icon == "tag.fill")
+    }
+
     @Test func wipeRemovesAllLocalDataAndSyncState() throws {
         context.insert(Expense(amount: 1))
-        context.insert(ExpenseCategory(name: "Comida", icon: .symbol("fork.knife"), sortOrder: 0))
+        context.insert(ExpenseCategory(name: "Comida", icon: .init(symbolName: "fork.knife"), sortOrder: 0))
         state.ownerUserID = userID
         state.expensesCursor = .now
         state.hasActiveSession = true
@@ -501,10 +546,10 @@ final class FakeSyncRemote: SyncRemote {
         expenses[id] = expense
     }
 
-    func edit(category id: UUID, _ change: (inout RemoteCategory) -> Void) {
+    func edit(category id: UUID, at updatedAt: Date = .now, _ change: (inout RemoteCategory) -> Void) {
         guard var category = categories[id] else { return }
         change(&category)
-        category.updatedAt = .now
+        category.updatedAt = updatedAt
         category.serverUpdatedAt = tick()
         categories[id] = category
     }

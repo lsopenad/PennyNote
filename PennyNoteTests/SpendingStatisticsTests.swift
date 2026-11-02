@@ -36,8 +36,8 @@ struct SpendingStatisticsTests {
     }
 
     @Test func categoryTotalsAreSortedAndGroupUncategorized() {
-        let food = ExpenseCategory(name: "Comida", icon: .symbol("fork.knife"), sortOrder: 0)
-        let transport = ExpenseCategory(name: "Transporte", icon: .symbol("car.fill"), sortOrder: 1)
+        let food = ExpenseCategory(name: "Comida", icon: .init(symbolName: "fork.knife"), sortOrder: 0)
+        let transport = ExpenseCategory(name: "Transporte", icon: .init(symbolName: "car.fill"), sortOrder: 1)
         context.insert(food)
         context.insert(transport)
         let expenses = [
