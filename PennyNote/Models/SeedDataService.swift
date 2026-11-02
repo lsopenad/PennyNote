@@ -9,14 +9,14 @@ enum SeedDataService {
 
     // Set clásico de 7 categorías que cubre la mayoría de gastos diarios sin abrumar el picker. Se
     // crean en el idioma del móvil; después son datos del usuario y no se traducen.
-    static let defaultCategories: [(name: LocalizedStringResource, symbolName: String)] = [
-        ("Comida", "fork.knife"),
-        ("Transporte", "car.fill"),
-        ("Ocio", "gamecontroller.fill"),
-        ("Hogar", "house.fill"),
-        ("Salud", "cross.case.fill"),
-        ("Compras", "bag.fill"),
-        (fallbackCategory, "ellipsis.circle.fill"),
+    static let defaultCategories: [(name: LocalizedStringResource, icon: CategoryIcon)] = [
+        ("Comida", .symbol("fork.knife")),
+        ("Transporte", .symbol("car.fill")),
+        ("Ocio", .symbol("gamecontroller.fill")),
+        ("Hogar", .symbol("house.fill")),
+        ("Salud", .symbol("cross.case.fill")),
+        ("Compras", .symbol("bag.fill")),
+        (fallbackCategory, .symbol("ellipsis.circle.fill")),
     ]
 
     // Lo llama SyncEngine tras bajar los datos de la cuenta: sin categorías es una cuenta nueva.
@@ -34,9 +34,8 @@ enum SeedDataService {
         for (index, seed) in defaultCategories.enumerated() {
             let category = ExpenseCategory(
                 name: String(localized: seed.name),
-                symbolName: seed.symbolName,
-                sortOrder: index,
-                color: CategoryColor.allCases[index % CategoryColor.allCases.count]
+                icon: seed.icon,
+                sortOrder: index
             )
             context.insert(category)
         }

@@ -5,32 +5,31 @@ struct CategoryManagementView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \ExpenseCategory.sortOrder) private var categories: [ExpenseCategory]
 
-    @State private var newCategoryName = ""
+    // La ficha abierta: una categoría nueva o la que se edita.
+    @State private var form: FormTarget?
     @State private var errorMessage: String?
 
     var body: some View {
         List {
             Section {
                 ForEach(categories) { category in
-                    NavigationLink {
-                        CategoryColorPickerView(category: category)
+                    Button {
+                        form = .edit(category)
                     } label: {
-                        categoryLabel(category)
+                        Label {
+                            Text(category.name)
+                        } icon: {
+                            CategoryIconImage(icon: category.icon)
+                                .accessibilityHidden(true)
+                        }
                     }
+                    .foregroundStyle(.primary)
                     .swipeToDelete(
                         name: category.name,
                         message: "Los gastos de esta categoría pasarán a la categoría por defecto."
                     ) {
                         delete(category)
                     }
-                }
-            }
-
-            Section {
-                HStack {
-                    TextField("Nueva categoría", text: $newCategoryName)
-                    Button("Añadir", action: addCategory)
-                        .disabled(newCategoryName.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
 
@@ -43,27 +42,36 @@ struct CategoryManagementView: View {
             }
         }
         .navigationTitle("Categorías")
-    }
-
-    private func categoryLabel(_ category: ExpenseCategory) -> some View {
-        Label {
-            Text(category.name)
-        } icon: {
-            Image(systemName: category.symbolName)
-                .foregroundStyle(category.displayColor)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Nueva categoría", systemImage: "plus") {
+                    form = .new
+                }
+            }
         }
-    }
-
-    private func addCategory() {
-        let trimmed = newCategoryName.trimmingCharacters(in: .whitespaces)
-        guard !trimmed.isEmpty else { return }
-        ExpenseRepository.addCategory(name: trimmed, symbolName: ExpenseCategory.defaultSymbolName, context: modelContext)
-        newCategoryName = ""
-        errorMessage = nil
+        .sheet(item: $form) { target in
+            CategoryFormView(category: target.category)
+        }
     }
 
     private func delete(_ category: ExpenseCategory) {
         let didDelete = ExpenseRepository.deleteCategory(category, context: modelContext)
         errorMessage = didDelete ? nil : String(localized: "Debe quedar al menos una categoría.")
+    }
+
+    private enum FormTarget: Identifiable {
+        case new
+        case edit(ExpenseCategory)
+
+        var id: PersistentIdentifier? {
+            category?.persistentModelID
+        }
+
+        var category: ExpenseCategory? {
+            switch self {
+            case .new: nil
+            case .edit(let category): category
+            }
+        }
     }
 }

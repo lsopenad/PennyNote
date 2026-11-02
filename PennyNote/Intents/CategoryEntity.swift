@@ -5,13 +5,19 @@ import Foundation
 struct CategoryEntity: AppEntity {
     let id: UUID
     let name: String
-    let symbolName: String
+    let icon: CategoryIcon
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Categoría"
     static var defaultQuery = CategoryEntityQuery()
 
+    // La imagen de Atajos solo admite símbolos: el emoji va delante del nombre.
     var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(title: "\(name)", image: .init(systemName: symbolName))
+        switch icon {
+        case .symbol(let symbolName):
+            DisplayRepresentation(title: "\(name)", image: .init(systemName: symbolName))
+        case .emoji(let emoji):
+            DisplayRepresentation(title: "\(emoji) \(name)")
+        }
     }
 }
 
@@ -19,6 +25,6 @@ extension CategoryEntity {
     init(_ category: ExpenseCategory) {
         self.id = category.id
         self.name = category.name
-        self.symbolName = category.symbolName
+        self.icon = category.icon
     }
 }

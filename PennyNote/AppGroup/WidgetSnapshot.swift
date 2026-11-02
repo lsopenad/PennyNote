@@ -6,35 +6,34 @@ import WidgetKit
 struct WidgetSnapshot: Codable, Equatable {
     struct CategoryTotal: Codable, Equatable {
         let name: String
-        let symbolName: String
-        // rawValue de CategoryColor; nil para "Sin categoría".
-        let colorName: String?
+        let icon: CategoryIcon
         let total: Decimal
 
         private enum CodingKeys: String, CodingKey {
-            case name, symbolName, colorName, total
+            case name, icon, total
+            // Lo que escribía la 1.9.1, que el widget puede leer hasta que la app se abra de nuevo.
+            case legacySymbolName = "symbolName"
         }
 
-        init(name: String, symbolName: String, colorName: String?, total: Decimal) {
+        init(name: String, icon: CategoryIcon, total: Decimal) {
             self.name = name
-            self.symbolName = symbolName
-            self.colorName = colorName
+            self.icon = icon
             self.total = total
         }
 
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             name = try container.decode(String.self, forKey: .name)
-            symbolName = try container.decode(String.self, forKey: .symbolName)
-            colorName = try container.decodeIfPresent(String.self, forKey: .colorName)
+            let storedIcon = try container.decodeIfPresent(String.self, forKey: .icon)
+                ?? container.decode(String.self, forKey: .legacySymbolName)
+            icon = CategoryIcon(storedValue: storedIcon)
             total = try container.decode(DecimalText.self, forKey: .total).value
         }
 
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(name, forKey: .name)
-            try container.encode(symbolName, forKey: .symbolName)
-            try container.encodeIfPresent(colorName, forKey: .colorName)
+            try container.encode(icon.storedValue, forKey: .icon)
             try container.encode(DecimalText(total), forKey: .total)
         }
     }

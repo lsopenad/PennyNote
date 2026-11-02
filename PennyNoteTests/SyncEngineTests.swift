@@ -132,7 +132,7 @@ struct SyncEngineTests {
         try await engine.sync()
         let category = try #require(try fetchCategories().first)
         let categoryID = category.id
-        remote.edit(category: categoryID) { $0.colorName = CategoryColor.red.rawValue }
+        remote.edit(category: categoryID) { $0.icon = "🍕" }
 
         // Como ExpenseRepository.deleteCategory: el borrado es posterior al cambio remoto.
         category.localLastModified = .now
@@ -147,7 +147,7 @@ struct SyncEngineTests {
 
     @Test func wipeRemovesAllLocalDataAndSyncState() throws {
         context.insert(Expense(amount: 1))
-        context.insert(ExpenseCategory(name: "Comida", symbolName: "fork.knife", sortOrder: 0))
+        context.insert(ExpenseCategory(name: "Comida", icon: .symbol("fork.knife"), sortOrder: 0))
         state.ownerUserID = userID
         state.expensesCursor = .now
         state.hasActiveSession = true
@@ -461,9 +461,8 @@ final class FakeSyncRemote: SyncRemote {
         let category = RemoteCategory(
             id: UUID(),
             name: name,
-            symbolName: "tag.fill",
+            icon: "tag.fill",
             sortOrder: categories.count,
-            colorName: nil,
             isDeleted: false,
             updatedAt: .now,
             serverUpdatedAt: tick()

@@ -16,12 +16,7 @@ struct ExpenseRowView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            // El color de la categoría, el mismo que en Categorías y Estadísticas.
-            Image(systemName: expense.category.displaySymbolName)
-                .font(.title3)
-                .foregroundStyle(expense.category.displayColor)
-                .frame(width: 32, height: 32)
-                .background(expense.category.displayColor.opacity(0.12), in: Circle())
+            CategoryIconBadge(icon: expense.category.displayIcon)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(hasTitle ? expense.title : categoryName)

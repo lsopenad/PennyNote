@@ -32,7 +32,7 @@ struct WidgetSnapshotTests {
         let snapshot = WidgetSnapshot(
             current: try month(2026, 3, totals: [Decimal(string: "0.1")!, Decimal(string: "1234.56")!]),
             previous: try month(2026, 2, totals: [Decimal(string: "0.3")!]),
-            topCategories: [.init(name: "Comida", symbolName: "fork.knife", colorName: "blue", total: Decimal(string: "0.1")!)]
+            topCategories: [.init(name: "Comida", icon: .emoji("🍕"), total: Decimal(string: "0.1")!)]
         )
 
         let decoded = try JSONDecoder().decode(WidgetSnapshot.self, from: JSONEncoder().encode(snapshot))
@@ -70,16 +70,22 @@ struct WidgetSnapshotTests {
         #expect(display.previous == nil)
     }
 
-    @Test func nextAvailableColorSkipsUsedOnesAndCyclesWhenFull() {
-        #expect(CategoryColor.nextAvailable(excluding: [.blue, .green]) == .orange)
-        #expect(CategoryColor.nextAvailable(excluding: CategoryColor.allCases) == .blue)
+    // La 1.9.1 guardaba el icono como symbolName y con color: el widget lo lee hasta que la app se abre.
+    @Test func snapshotFromTheOldVersionStillDecodes() throws {
+        let json = """
+        {"name":"Comida","symbolName":"fork.knife","colorName":"blue","total":"62"}
+        """
+
+        let category = try JSONDecoder().decode(WidgetSnapshot.CategoryTotal.self, from: Data(json.utf8))
+
+        #expect(category == .init(name: "Comida", icon: .symbol("fork.knife"), total: 62))
     }
 
     private func makeSnapshot() throws -> WidgetSnapshot {
         WidgetSnapshot(
             current: try month(2026, 3, totals: Array(repeating: 2, count: 31)),
             previous: try month(2026, 2, totals: Array(repeating: 1, count: 28)),
-            topCategories: [.init(name: "Comida", symbolName: "fork.knife", colorName: nil, total: 62)]
+            topCategories: [.init(name: "Comida", icon: .symbol("fork.knife"), total: 62)]
         )
     }
 

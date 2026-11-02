@@ -25,53 +25,60 @@ protocol SyncRow {
 struct RemoteCategory: Codable, Equatable, SyncRow {
     let id: UUID
     var name: String
-    var symbolName: String
+    // CategoryIcon.storedValue.
+    var icon: String
     var sortOrder: Int
-    var colorName: String?
     var isDeleted: Bool
     var updatedAt: Date
     // Solo viene del servidor; no se envía porque lo pone un trigger.
     var serverUpdatedAt: Date?
 
     private enum CodingKeys: String, CodingKey {
-        case id, name
-        case symbolName = "symbol_name"
+        case id, name, icon
         case sortOrder = "sort_order"
-        case colorName = "color_name"
         case isDeleted = "is_deleted"
         case updatedAt = "updated_at"
         case serverUpdatedAt = "server_updated_at"
+        // Nombre de icon hasta la 1.9.1, con el que se guardaron los borrados pendientes de subir.
+        case legacySymbolName = "symbol_name"
     }
 
     init(
         id: UUID,
         name: String,
-        symbolName: String,
+        icon: String,
         sortOrder: Int,
-        colorName: String?,
         isDeleted: Bool,
         updatedAt: Date,
         serverUpdatedAt: Date? = nil
     ) {
         self.id = id
         self.name = name
-        self.symbolName = symbolName
+        self.icon = icon
         self.sortOrder = sortOrder
-        self.colorName = colorName
         self.isDeleted = isDeleted
         self.updatedAt = updatedAt
         self.serverUpdatedAt = serverUpdatedAt
     }
 
-    // Siempre las mismas claves, nulos incluidos: PostgREST toma las columnas de un upsert múltiple
-    // de la primera fila, y un color_name ausente no lo pondría a NULL.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        icon = try container.decodeIfPresent(String.self, forKey: .icon)
+            ?? container.decode(String.self, forKey: .legacySymbolName)
+        sortOrder = try container.decode(Int.self, forKey: .sortOrder)
+        isDeleted = try container.decode(Bool.self, forKey: .isDeleted)
+        updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+        serverUpdatedAt = try container.decodeIfPresent(Date.self, forKey: .serverUpdatedAt)
+    }
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
-        try container.encode(symbolName, forKey: .symbolName)
+        try container.encode(icon, forKey: .icon)
         try container.encode(sortOrder, forKey: .sortOrder)
-        try container.encode(colorName, forKey: .colorName)
         try container.encode(isDeleted, forKey: .isDeleted)
         try container.encode(updatedAt, forKey: .updatedAt)
     }
@@ -272,9 +279,8 @@ extension RemoteCategory {
         self.init(
             id: category.id,
             name: category.name,
-            symbolName: category.symbolName,
+            icon: category.icon.storedValue,
             sortOrder: category.sortOrder,
-            colorName: category.color?.rawValue,
             isDeleted: isDeleted,
             updatedAt: category.localLastModified
         )

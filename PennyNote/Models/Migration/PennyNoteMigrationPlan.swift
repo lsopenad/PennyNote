@@ -2,8 +2,8 @@ import Foundation
 import SwiftData
 
 // Esquema actual: los modelos de la app.
-enum SchemaV3: VersionedSchema {
-    static let versionIdentifier = Schema.Version(3, 0, 0)
+enum SchemaV4: VersionedSchema {
+    static let versionIdentifier = Schema.Version(4, 0, 0)
 
     static var models: [any PersistentModel.Type] {
         [Expense.self, ExpenseCategory.self, RecurringExpense.self]
@@ -14,11 +14,11 @@ enum SchemaV3: VersionedSchema {
 // con valor por defecto) necesita un esquema nuevo y su etapa aquí.
 enum PennyNoteMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {
-        [SchemaV1.self, SchemaV2.self, SchemaV3.self]
+        [SchemaV1.self, SchemaV2.self, SchemaV3.self, SchemaV4.self]
     }
 
     static var stages: [MigrationStage] {
-        [migrateV1toV2, migrateV2toV3]
+        [migrateV1toV2, migrateV2toV3, migrateV3toV4]
     }
 
     // 1.3.0: el método de pago pasa de guardarse con su nombre en español ("Tarjeta", columna
@@ -49,6 +49,11 @@ enum PennyNoteMigrationPlan: SchemaMigrationPlan {
     // 1.6.0: gastos recurrentes. Solo se añaden la tabla de plantillas y el id de la plantilla en los
     // gastos, ambos opcionales, así que basta con la migración ligera.
     static let migrateV2toV3 = MigrationStage.lightweight(fromVersion: SchemaV2.self, toVersion: SchemaV3.self)
+
+    // 1.10.0: el icono de la categoría puede ser un emoji además de un símbolo, así que symbolName pasa
+    // a llamarse icon (con originalName, que la migración ligera respeta y conserva el valor), y las
+    // categorías dejan de tener color.
+    static let migrateV3toV4 = MigrationStage.lightweight(fromVersion: SchemaV3.self, toVersion: SchemaV4.self)
 
     // Lo que lee willMigrate para didMigrate. Las dos se ejecutan una tras otra, de forma síncrona,
     // dentro de la creación del ModelContainer: no hay accesos concurrentes.

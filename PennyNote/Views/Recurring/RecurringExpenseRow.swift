@@ -21,11 +21,7 @@ struct RecurringExpenseRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: recurringExpense.category.displaySymbolName)
-                .font(.title3)
-                .foregroundStyle(recurringExpense.category.displayColor)
-                .frame(width: 32, height: 32)
-                .background(recurringExpense.category.displayColor.opacity(0.12), in: Circle())
+            CategoryIconBadge(icon: recurringExpense.category.displayIcon)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(verbatim: name)
