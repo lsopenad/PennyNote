@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.10.0",
+          "buildVersion": "20",
+          "date": "2026-11-02",
+          "localizedDescription": "Al crear o editar una categoría se abre una ficha donde puedes cambiarle el nombre y elegir su icono: cualquier emoji, con buscador, o un símbolo. Las categorías ya no tienen color: todo usa el verde de la app. Actualiza en todos tus dispositivos: las versiones anteriores dejan de sincronizar las categorías.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.10.0/PennyNote.ipa",
+          "size": 2134028,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.9.1",
           "buildVersion": "19",
           "date": "2026-11-02",
@@ -197,11 +206,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.9.1",
+      "version": "1.10.0",
       "versionDate": "2026-11-02",
-      "versionDescription": "Borrar un gasto deslizando ya no pide confirmación: se borra al momento y abajo sale un aviso con «Deshacer» durante unos segundos para recuperarlo. Se acabó el aviso que aparecía arriba de la pantalla, lejos del gasto.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.9.1/PennyNote.ipa",
-      "size": 1995576
+      "versionDescription": "Al crear o editar una categoría se abre una ficha donde puedes cambiarle el nombre y elegir su icono: cualquier emoji, con buscador, o un símbolo. Las categorías ya no tienen color: todo usa el verde de la app. Actualiza en todos tus dispositivos: las versiones anteriores dejan de sincronizar las categorías.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.10.0/PennyNote.ipa",
+      "size": 2134028
     }
   ],
   "news": []
