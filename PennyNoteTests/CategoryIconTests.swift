@@ -14,63 +14,39 @@ struct CategoryIconTests {
         context = ModelContext(container)
     }
 
-    @Test(arguments: ["fork.knife", "car.fill", "tag"])
-    func symbolNamesAreSymbols(stored: String) {
-        #expect(CategoryIcon(storedValue: stored) == .symbol(stored))
+    @Test(arguments: ["fork.knife", "car.fill", "ellipsis.circle.fill"])
+    func catalogSymbolsAreKept(stored: String) {
+        #expect(CategoryIcon(storedValue: stored).symbolName == stored)
     }
 
-    // Banderas, teclas y emojis compuestos también llevan caracteres que no son ASCII.
-    @Test(arguments: ["🍕", "🇪🇸", "1️⃣", "👨‍👩‍👧", "❤️"])
-    func emojisAreEmojis(stored: String) {
-        let icon = CategoryIcon(storedValue: stored)
-
-        #expect(icon == .emoji(stored))
-        #expect(icon.storedValue == stored)
+    // Emojis de la 1.10.0 (también compuestos y banderas), símbolos retirados del catálogo y basura.
+    @Test(arguments: ["🍕", "🇪🇸", "👨‍👩‍👧", "tram", "questionmark.circle", ""])
+    func storedValuesOutsideTheCatalogBecomeTheFallback(stored: String) {
+        #expect(CategoryIcon(storedValue: stored) == .fallback)
     }
 
-    @Test func everyCatalogSymbolExists() {
-        let missing = CategorySymbolCatalog.groups.flatMap(\.symbols).filter { UIImage(systemName: $0) == nil }
+    @Test func catalogHasSeventyDistinctSymbolsThatExist() {
+        let names = CategorySymbolCatalog.symbols.map(\.name)
 
-        #expect(missing.isEmpty)
+        #expect(names.count == 70)
+        #expect(Set(names).count == names.count)
+        #expect(names.filter { UIImage(systemName: $0) == nil }.isEmpty)
     }
 
-    @Test func catalogSymbolsAreNotRepeated() {
-        let symbols = CategorySymbolCatalog.groups.flatMap(\.symbols)
+    // Si no, las de serie y las nuevas se cambiarían por otro icono nada más crearse.
+    @Test func defaultIconsAreInTheCatalog() {
+        let icons = SeedDataService.defaultCategories.map(\.icon) + [CategoryIcon.fallback]
 
-        #expect(Set(symbols).count == symbols.count)
+        #expect(icons.allSatisfy { CategorySymbolCatalog.contains($0.symbolName) })
+        #expect(!CategorySymbolCatalog.contains(ExpenseCategory.uncategorizedIcon.symbolName))
     }
 
-    @Test func emojiCatalogHasEveryGroupWithoutSkinTones() throws {
-        let catalog = EmojiCatalog(resource: "EmojiCatalog", language: "es")
-        let emojis = catalog.groups.flatMap(\.emojis)
-        let skinTones = Set((0x1F3FB...0x1F3FF).compactMap(Unicode.Scalar.init))
+    @Test func categoryWithAStoredEmojiShowsTheFallback() {
+        let category = ExpenseCategory(name: "Pizza", icon: CategoryIcon(symbolName: "🍕"), sortOrder: 0)
 
-        #expect(catalog.groups.map(\.kind) == EmojiGroup.allCases)
-        #expect(emojis.count > 1800)
-        #expect(emojis.allSatisfy { $0.value.unicodeScalars.allSatisfy { !skinTones.contains($0) } })
-        #expect(emojis.allSatisfy { CategoryIcon(storedValue: $0.value) == .emoji($0.value) })
-        let pizza = try #require(emojis.first { $0.value == "🍕" })
-        #expect(pizza.name == "pizza")
-    }
-
-    @Test func emojiSearchIgnoresCaseAndAccentsAndNeedsEveryWord() {
-        let catalog = EmojiCatalog(resource: "EmojiCatalog", language: "es")
-
-        #expect(catalog.search("PIZZA").map(\.value).contains("🍕"))
-        #expect(catalog.search("cafe").map(\.value).contains("☕"))
-        #expect(catalog.search("bandera españa").map(\.value) == ["🇪🇸"])
-        #expect(catalog.search("   ").isEmpty)
-    }
-
-    @Test func emojiSearchUsesTheAppLanguage() {
-        let catalog = EmojiCatalog(resource: "EmojiCatalog", language: "en")
-
-        #expect(catalog.search("grapes").map(\.value).contains("🍇"))
-        #expect(catalog.search("uvas").isEmpty)
-    }
-
-    @Test func missingCatalogIsEmpty() {
-        #expect(EmojiCatalog(resource: "NoExiste", language: "es").groups.isEmpty)
+        #expect(category.icon == .fallback)
+        #expect(category.hasUnknownStoredIcon)
+        #expect(RemoteCategory(category).icon == "tag.fill")
     }
 
     @Test func namesDifferingInCaseAccentsOrSpacesAreTheSame() {
@@ -83,10 +59,10 @@ struct CategoryIconTests {
     }
 
     @Test func addCategoryTrimsTheName() {
-        let category = ExpenseRepository.addCategory(name: "  Viajes ", icon: .emoji("✈️"), context: context)
+        let category = ExpenseRepository.addCategory(name: "  Viajes ", icon: .init(symbolName: "airplane"), context: context)
 
         #expect(category.name == "Viajes")
-        #expect(category.icon == .emoji("✈️"))
+        #expect(category.icon == .init(symbolName: "airplane"))
         #expect(category.syncStatus == .pending)
     }
 
@@ -94,10 +70,10 @@ struct CategoryIconTests {
         let category = insertSyncedCategory()
         let before = category.localLastModified
 
-        ExpenseRepository.updateCategory(category, name: "Restaurantes ", icon: .emoji("🍕"), context: context)
+        ExpenseRepository.updateCategory(category, name: "Restaurantes ", icon: .init(symbolName: "takeoutbag.and.cup.and.straw.fill"), context: context)
 
         #expect(category.name == "Restaurantes")
-        #expect(category.icon == .emoji("🍕"))
+        #expect(category.icon == .init(symbolName: "takeoutbag.and.cup.and.straw.fill"))
         #expect(category.syncStatus == .pending)
         #expect(category.localLastModified >= before)
     }
@@ -106,20 +82,20 @@ struct CategoryIconTests {
     @Test func updateCategoryWithoutChangesWritesNothing() {
         let category = insertSyncedCategory()
 
-        ExpenseRepository.updateCategory(category, name: "Comida", icon: .symbol("fork.knife"), context: context)
+        ExpenseRepository.updateCategory(category, name: "Comida", icon: .init(symbolName: "fork.knife"), context: context)
 
         #expect(category.syncStatus == .synced)
     }
 
     @Test func remoteCategoryRoundTripsTheIcon() throws {
         let category = insertSyncedCategory()
-        category.icon = .emoji("🍕")
+        category.icon = .init(symbolName: "birthday.cake.fill")
 
         let remote = RemoteCategory(category)
         let decoded = try JSONDecoder().decode(RemoteCategory.self, from: JSONEncoder().encode(remote))
 
         #expect(decoded == remote)
-        #expect(decoded.icon == "🍕")
+        #expect(decoded.icon == "birthday.cake.fill")
     }
 
     // Los borrados de categorías pendientes de subir se guardaron con la 1.9.1, con symbol_name y color.
@@ -138,7 +114,7 @@ struct CategoryIconTests {
     }
 
     private func insertSyncedCategory() -> ExpenseCategory {
-        let category = ExpenseCategory(name: "Comida", icon: .symbol("fork.knife"), sortOrder: 0)
+        let category = ExpenseCategory(name: "Comida", icon: .init(symbolName: "fork.knife"), sortOrder: 0)
         category.syncStatus = .synced
         context.insert(category)
         return category

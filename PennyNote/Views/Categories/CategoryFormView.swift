@@ -1,8 +1,9 @@
 import SwiftUI
 import SwiftData
 
-// Ficha para crear una categoría o editar una existente: nombre e icono. Nada se guarda hasta pulsar
-// Guardar; con cambios, cerrarla pide confirmación para descartarlos.
+// Ficha para crear una categoría o editar una existente: vista previa del icono, nombre y la cuadrícula
+// de símbolos. Nada se guarda hasta pulsar Guardar; con cambios, cerrarla pide confirmación para
+// descartarlos.
 struct CategoryFormView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -15,12 +16,12 @@ struct CategoryFormView: View {
     @State private var icon: CategoryIcon
     @State private var isConfirmingDiscard = false
 
-    @ScaledMetric(relativeTo: .largeTitle) private var previewDiameter: CGFloat = 88
+    @ScaledMetric(relativeTo: .largeTitle) private var previewSize: CGFloat = 112
 
     init(category: ExpenseCategory? = nil) {
         self.category = category
         _name = State(initialValue: category?.name ?? "")
-        _icon = State(initialValue: category?.icon ?? ExpenseCategory.defaultIcon)
+        _icon = State(initialValue: category?.icon ?? .fallback)
     }
 
     private var trimmedName: String {
@@ -28,7 +29,7 @@ struct CategoryFormView: View {
     }
 
     private var hasChanges: Bool {
-        guard let category else { return !trimmedName.isEmpty || icon != ExpenseCategory.defaultIcon }
+        guard let category else { return !trimmedName.isEmpty || icon != .fallback }
         return trimmedName != category.name || icon != category.icon
     }
 
@@ -43,58 +44,93 @@ struct CategoryFormView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section {
-                    CategoryIconBadge(icon: icon, diameter: previewDiameter, font: .system(size: previewDiameter * 0.45))
-                        .frame(maxWidth: .infinity)
-                        .listRowBackground(Color.clear)
-                }
+            ScrollView {
+                VStack(spacing: 24) {
+                    CategoryIconImage(icon: icon)
+                        .font(.system(size: previewSize * 0.45))
+                        .frame(width: previewSize, height: previewSize)
+                        .background(
+                            Color(.secondarySystemGroupedBackground),
+                            in: RoundedRectangle(cornerRadius: previewSize * 0.25, style: .continuous)
+                        )
+                        .accessibilityHidden(true)
 
-                Section {
-                    TextField("Nombre", text: $name)
-                        .onChange(of: name) { _, newValue in
-                            // El servidor no admite nombres más largos.
-                            if newValue.count > ExpenseLimits.categoryNameMaxLength {
-                                name = ExpenseLimits.clampedCategoryName(newValue)
-                            }
-                        }
-                    NavigationLink {
-                        CategoryIconPicker(selection: $icon)
-                    } label: {
-                        LabeledContent("Icono") {
-                            CategoryIconImage(icon: icon)
-                                .accessibilityHidden(true)
-                        }
-                    }
-                } footer: {
-                    if isDuplicateName {
-                        Text("Ya hay una categoría con este nombre.")
-                            .foregroundStyle(.red)
-                    }
+                    nameField
+
+                    CategorySymbolGrid(selection: $icon)
+                        .padding()
+                        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
                 }
+                .padding()
             }
+            .background(Color(.systemGroupedBackground))
+            .scrollDismissesKeyboard(.interactively)
             .navigationTitle(category == nil ? Text("Nueva categoría") : Text("Editar categoría"))
             .navigationBarTitleDisplayMode(.inline)
             .interactiveDismissDisabled(hasChanges)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancelar") {
-                        if hasChanges {
-                            isConfirmingDiscard = true
-                        } else {
-                            dismiss()
+                    cancelButton
+                        .confirmationDialog("¿Descartar los cambios?", isPresented: $isConfirmingDiscard, titleVisibility: .visible) {
+                            Button("Descartar cambios", role: .destructive) { dismiss() }
+                            Button("Seguir editando", role: .cancel) {}
                         }
-                    }
-                    .confirmationDialog("¿Descartar los cambios?", isPresented: $isConfirmingDiscard, titleVisibility: .visible) {
-                        Button("Descartar cambios", role: .destructive) { dismiss() }
-                        Button("Seguir editando", role: .cancel) {}
-                    }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Guardar", action: save)
+                    saveButton
                         .disabled(!canSave)
                 }
             }
+        }
+    }
+
+    private var nameField: some View {
+        VStack(spacing: 8) {
+            TextField("Nombre", text: $name)
+                .font(.title3.weight(.semibold))
+                .multilineTextAlignment(.center)
+                .padding(.vertical, 16)
+                .padding(.horizontal)
+                .background(Color(.secondarySystemGroupedBackground), in: Capsule())
+                .onChange(of: name) { _, newValue in
+                    // El servidor no admite nombres más largos.
+                    if newValue.count > ExpenseLimits.categoryNameMaxLength {
+                        name = ExpenseLimits.clampedCategoryName(newValue)
+                    }
+                }
+
+            if isDuplicateName {
+                Text("Ya hay una categoría con este nombre.")
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+            }
+        }
+    }
+
+    // En iOS 26 los papeles de los botones dibujan la X y la marca de la barra; antes, el texto.
+    @ViewBuilder
+    private var cancelButton: some View {
+        if #available(iOS 26, *) {
+            Button(role: .cancel, action: cancel)
+        } else {
+            Button("Cancelar", action: cancel)
+        }
+    }
+
+    @ViewBuilder
+    private var saveButton: some View {
+        if #available(iOS 26, *) {
+            Button(role: .confirm, action: save)
+        } else {
+            Button("Guardar", action: save)
+        }
+    }
+
+    private func cancel() {
+        if hasChanges {
+            isConfirmingDiscard = true
+        } else {
+            dismiss()
         }
     }
 

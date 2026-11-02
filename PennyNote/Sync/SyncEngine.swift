@@ -47,6 +47,7 @@ final class SyncEngine {
     @discardableResult
     func sync() async throws -> Int {
         try await pull()
+        normalizeCategoryIcons()
         // Tras bajar todo, una cuenta sin categorías es una cuenta nueva: se le crean las de serie.
         SeedDataService.seedIfNeeded(context: context)
         // Después de bajar, para seguir las plantillas tal como las dejaron los demás móviles; los
@@ -190,6 +191,15 @@ final class SyncEngine {
                 recurringExpense.update(from: remoteRecurringExpense, categoriesByID: categoriesByID)
                 context.insert(recurringExpense)
             }
+        }
+    }
+
+    // Un icono guardado que no está en el catálogo (un emoji de la 1.10.0, un símbolo retirado) se cambia
+    // por el de reserva y sube en esta misma pasada. Los que llegan del servidor ya los cambia update(from:).
+    private func normalizeCategoryIcons() {
+        for category in allCategories() where category.hasUnknownStoredIcon {
+            category.icon = .fallback
+            category.markPendingSync()
         }
     }
 
@@ -349,6 +359,13 @@ extension ExpenseCategory {
         sortOrder = remote.sortOrder
         localLastModified = remote.updatedAt
         syncStatus = .synced
+        // Un móvil con la 1.10.0 aún puede subir un emoji: se sube ya cambiado por el de reserva. Con una
+        // fecha posterior a la del servidor aunque este reloj vaya atrasado respecto al del que lo subió:
+        // si no, el servidor descartaría la escritura y se quedaría con el emoji.
+        if icon.storedValue != remote.icon {
+            localLastModified = max(.now, remote.updatedAt.addingTimeInterval(1))
+            syncStatus = .pending
+        }
     }
 }
 

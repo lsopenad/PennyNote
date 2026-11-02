@@ -10,14 +10,8 @@ struct CategoryEntity: AppEntity {
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Categoría"
     static var defaultQuery = CategoryEntityQuery()
 
-    // La imagen de Atajos solo admite símbolos: el emoji va delante del nombre.
     var displayRepresentation: DisplayRepresentation {
-        switch icon {
-        case .symbol(let symbolName):
-            DisplayRepresentation(title: "\(name)", image: .init(systemName: symbolName))
-        case .emoji(let emoji):
-            DisplayRepresentation(title: "\(emoji) \(name)")
-        }
+        DisplayRepresentation(title: "\(name)", image: .init(systemName: icon.symbolName))
     }
 }
 

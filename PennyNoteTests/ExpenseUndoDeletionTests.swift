@@ -73,7 +73,7 @@ struct ExpenseUndoDeletionTests {
     // MARK: - Utilidades
 
     private func insertCategory(_ name: String) -> ExpenseCategory {
-        let category = ExpenseCategory(name: name, icon: .symbol("tag"), sortOrder: 0)
+        let category = ExpenseCategory(name: name, icon: .init(symbolName: "tag"), sortOrder: 0)
         context.insert(category)
         return category
     }

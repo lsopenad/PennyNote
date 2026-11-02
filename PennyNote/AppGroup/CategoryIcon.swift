@@ -1,42 +1,41 @@
 import SwiftUI
 
-// Icono de una categoría: un símbolo SF («fork.knife») o un emoji («🍕»). Se guarda como texto, en
-// ExpenseCategory y en la columna icon del servidor: los nombres de símbolo son ASCII y los emojis no,
-// así que el texto basta para saber cuál es. Compartido con el widget, que no conoce SwiftData.
-enum CategoryIcon: Hashable {
-    case symbol(String)
-    case emoji(String)
+// Icono de una categoría: un símbolo SF del catálogo («fork.knife»). Se guarda como texto, en
+// ExpenseCategory y en la columna icon del servidor. Compartido con el widget, que no conoce SwiftData.
+struct CategoryIcon: Hashable {
+    let symbolName: String
 
+    // Con el que empieza una categoría nueva y el que sustituye a un icono guardado que no está en el
+    // catálogo.
+    static let fallback = CategoryIcon(symbolName: "tag.fill")
+    // El de los gastos sin categoría. No está en el catálogo a propósito: ninguna categoría puede tenerlo.
+    static let uncategorized = CategoryIcon(symbolName: "questionmark.circle")
+
+    init(symbolName: String) {
+        self.symbolName = symbolName
+    }
+
+    // Lo guardado puede ser un emoji de la 1.10.0 o un símbolo que ya no está en el catálogo: entonces
+    // se usa fallback.
     init(storedValue: String) {
-        self = storedValue.allSatisfy(\.isASCII) ? .symbol(storedValue) : .emoji(storedValue)
+        self = CategorySymbolCatalog.contains(storedValue) ? CategoryIcon(symbolName: storedValue) : .fallback
     }
 
-    var storedValue: String {
-        switch self {
-        case .symbol(let value), .emoji(let value): value
-        }
-    }
+    var storedValue: String { symbolName }
 }
 
-// El icono suelto: el símbolo en el color de la app o el emoji con sus colores. Toma el tamaño de la
-// fuente del entorno.
+// El icono suelto, en el color del texto. Toma el tamaño de la fuente del entorno.
 struct CategoryIconImage: View {
     let icon: CategoryIcon
 
     var body: some View {
-        switch icon {
-        case .symbol(let name):
-            // Color.brand y no .tint: dentro del widget .tint es el azul del sistema.
-            Image(systemName: name)
-                .foregroundStyle(Color.brand)
-        case .emoji(let emoji):
-            Text(verbatim: emoji)
-        }
+        Image(systemName: icon.symbolName)
+            .foregroundStyle(.primary)
     }
 }
 
-// El icono sobre un círculo del color de la app, como en las filas de gastos. Es decorativo: junto a
-// él siempre va el nombre de la categoría.
+// El icono sobre un círculo gris, como en las filas de gastos. Es decorativo: junto a él siempre va el
+// nombre de la categoría.
 struct CategoryIconBadge: View {
     let icon: CategoryIcon
     var diameter: CGFloat = 32
@@ -46,23 +45,17 @@ struct CategoryIconBadge: View {
         CategoryIconImage(icon: icon)
             .font(font)
             .frame(width: diameter, height: diameter)
-            .background(Color.brand.opacity(0.12), in: Circle())
+            .background(Color(.tertiarySystemFill), in: Circle())
             .accessibilityHidden(true)
     }
 }
 
-// Nombre e icono para los menús (selector de categoría, filtros): un menú solo dibuja iconos que sean
-// imágenes, así que el emoji va delante del nombre.
+// Nombre e icono para los menús (selector de categoría, filtros).
 struct CategoryMenuLabel: View {
     let name: String
     let icon: CategoryIcon
 
     var body: some View {
-        switch icon {
-        case .symbol(let symbolName):
-            Label(name, systemImage: symbolName)
-        case .emoji(let emoji):
-            Text(verbatim: "\(emoji) \(name)")
-        }
+        Label(name, systemImage: icon.symbolName)
     }
 }
