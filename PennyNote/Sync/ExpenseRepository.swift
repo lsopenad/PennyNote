@@ -12,7 +12,8 @@ enum ExpenseRepository {
         paymentMethod: PaymentMethod = .card,
         category: ExpenseCategory?,
         repeatFrequency: RecurrenceFrequency? = nil,
-        context: ModelContext
+        context: ModelContext,
+        effects: ExpenseRepositoryEffects = .live
     ) {
         let expense = Expense(
             amount: amount,
@@ -25,7 +26,7 @@ enum ExpenseRepository {
         if let repeatFrequency {
             makeRecurring(expense, frequency: repeatFrequency, context: context)
         }
-        afterMutation(context: context)
+        afterMutation(context: context, effects: effects)
     }
 
     static func updateExpense(
@@ -36,7 +37,8 @@ enum ExpenseRepository {
         paymentMethod: PaymentMethod,
         category: ExpenseCategory?,
         repeatFrequency: RecurrenceFrequency? = nil,
-        context: ModelContext
+        context: ModelContext,
+        effects: ExpenseRepositoryEffects = .live
     ) {
         expense.amount = amount
         expense.date = date
@@ -47,23 +49,23 @@ enum ExpenseRepository {
         if let repeatFrequency {
             makeRecurring(expense, frequency: repeatFrequency, context: context)
         }
-        afterMutation(context: context)
+        afterMutation(context: context, effects: effects)
     }
 
     // Devuelve la copia con la que restoreExpense deshace el borrado.
     @discardableResult
-    static func deleteExpense(_ expense: Expense, context: ModelContext) -> DeletedExpense {
+    static func deleteExpense(_ expense: Expense, context: ModelContext, effects: ExpenseRepositoryEffects = .live) -> DeletedExpense {
         let deleted = DeletedExpense(expense)
         expense.isSoftDeleted = true
         expense.markPendingSync()
-        afterMutation(context: context)
+        afterMutation(context: context, effects: effects)
         return deleted
     }
 
     // Deshace un borrado. Si la sincronización ya quitó el gasto del móvil, se crea de nuevo con el
     // mismo id. En los dos casos queda pendiente con fecha posterior al borrado, así que en el servidor
     // gana esta versión y el gasto vuelve también en el resto de dispositivos.
-    static func restoreExpense(_ deleted: DeletedExpense, context: ModelContext) {
+    static func restoreExpense(_ deleted: DeletedExpense, context: ModelContext, effects: ExpenseRepositoryEffects = .live) {
         if let expense = expense(withID: deleted.id, context: context) {
             expense.isSoftDeleted = false
             expense.markPendingSync()
@@ -80,7 +82,7 @@ enum ExpenseRepository {
             expense.createdAt = deleted.createdAt
             context.insert(expense)
         }
-        afterMutation(context: context)
+        afterMutation(context: context, effects: effects)
     }
 
     private static func expense(withID id: UUID, context: ModelContext) -> Expense? {
@@ -98,7 +100,7 @@ enum ExpenseRepository {
 
     // El nombre se guarda sin espacios alrededor. Que no se repita lo comprueba la ficha antes de guardar.
     @discardableResult
-    static func addCategory(name: String, icon: CategoryIcon, color: CategoryColor?, context: ModelContext) -> ExpenseCategory {
+    static func addCategory(name: String, icon: CategoryIcon, color: CategoryColor?, context: ModelContext, effects: ExpenseRepositoryEffects = .live) -> ExpenseCategory {
         let existing = context.categories(failureMessage: "Fallo al leer categorías existentes al añadir una categoría")
         let nextOrder = (existing.map(\.sortOrder).max() ?? -1) + 1
         let category = ExpenseCategory(
@@ -109,13 +111,13 @@ enum ExpenseRepository {
         )
         context.insert(category)
         context.saveOrLog(failureMessage: "Fallo al guardar la nueva categoría")
-        SyncCoordinator.shared.requestSync()
+        effects.requestSync()
         return category
     }
 
     // false si no se puede borrar (es la última categoría restante).
     @discardableResult
-    static func deleteCategory(_ category: ExpenseCategory, context: ModelContext) -> Bool {
+    static func deleteCategory(_ category: ExpenseCategory, context: ModelContext, effects: ExpenseRepositoryEffects = .live) -> Bool {
         let all = context.categories(failureMessage: "Fallo al leer categorías existentes al borrar una categoría")
         guard all.count > 1 else { return false }
 
@@ -133,10 +135,10 @@ enum ExpenseRepository {
         }
         // La categoría desaparece de SwiftData ya; su borrado queda apuntado para subirlo.
         category.localLastModified = .now
-        SyncStateStore.standard.addCategoryTombstone(RemoteCategory(category, isDeleted: true))
+        effects.syncState.addCategoryTombstone(RemoteCategory(category, isDeleted: true))
         context.delete(category)
         // Los gastos han cambiado de categoría: el widget muestra las categorías principales.
-        afterMutation(context: context)
+        afterMutation(context: context, effects: effects)
         return true
     }
 
@@ -147,7 +149,8 @@ enum ExpenseRepository {
         name: String,
         icon: CategoryIcon,
         color: CategoryColor?,
-        context: ModelContext
+        context: ModelContext,
+        effects: ExpenseRepositoryEffects = .live
     ) {
         let name = ExpenseLimits.clampedCategoryName(name.trimmingCharacters(in: .whitespacesAndNewlines))
         guard name != category.name || icon != category.icon || color != category.color else { return }
@@ -156,7 +159,7 @@ enum ExpenseRepository {
         category.color = color
         category.markPendingSync()
         // El widget muestra el nombre, el icono y el color de las categorías principales.
-        afterMutation(context: context)
+        afterMutation(context: context, effects: effects)
     }
 
     // MARK: - Gastos recurrentes
@@ -175,7 +178,8 @@ enum ExpenseRepository {
         isPaused: Bool,
         now: Date = .now,
         calendar: Calendar = .current,
-        context: ModelContext
+        context: ModelContext,
+        effects: ExpenseRepositoryEffects = .live
     ) {
         let currentNextDate = recurringExpense.isPaused && !isPaused
             ? resumedNextDate(of: recurringExpense, now: now, calendar: calendar)
@@ -201,7 +205,7 @@ enum ExpenseRepository {
         }
         recurringExpense.markPendingSync()
         RecurringExpenseGenerator.generateDueExpenses(context: context, now: now, calendar: calendar)
-        afterMutation(context: context)
+        afterMutation(context: context, effects: effects)
     }
 
     // Próxima repetición al reanudar una serie en pausa: la de hoy o la siguiente.
@@ -215,10 +219,10 @@ enum ExpenseRepository {
     }
 
     // Los gastos que ya creó se quedan como están.
-    static func deleteRecurringExpense(_ recurringExpense: RecurringExpense, context: ModelContext) {
+    static func deleteRecurringExpense(_ recurringExpense: RecurringExpense, context: ModelContext, effects: ExpenseRepositoryEffects = .live) {
         recurringExpense.isSoftDeleted = true
         recurringExpense.markPendingSync()
-        afterMutation(context: context)
+        afterMutation(context: context, effects: effects)
     }
 
     // El gasto es la primera repetición de la serie; las siguientes, hasta hoy, se crean en el acto.
@@ -241,9 +245,25 @@ enum ExpenseRepository {
     }
 
     // Guarda en el acto: un contexto creado a mano (LogExpenseIntent) no tiene autoguardado.
-    private static func afterMutation(context: ModelContext) {
+    private static func afterMutation(context: ModelContext, effects: ExpenseRepositoryEffects) {
         context.saveOrLog(failureMessage: "Fallo al guardar un cambio")
-        WidgetSnapshotRefresher.refresh(in: context)
-        SyncCoordinator.shared.requestSync()
+        effects.refreshWidget(context)
+        effects.requestSync()
+    }
+}
+
+// Lo que hace una escritura además de guardar en SwiftData. Por defecto, lo de verdad; los tests
+// pasan uno aislado para no tocar el widget, la sincronización ni el estado de sync del simulador.
+struct ExpenseRepositoryEffects {
+    var refreshWidget: @MainActor (ModelContext) -> Void
+    var requestSync: @MainActor () -> Void
+    var syncState: SyncStateStore
+
+    static var live: ExpenseRepositoryEffects {
+        ExpenseRepositoryEffects(
+            refreshWidget: { WidgetSnapshotRefresher.refresh(in: $0) },
+            requestSync: { SyncCoordinator.shared.requestSync() },
+            syncState: .standard
+        )
     }
 }
