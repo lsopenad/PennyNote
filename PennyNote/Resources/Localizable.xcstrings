@@ -1439,6 +1439,28 @@
         }
       }
     },
+    "Deshacer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deshacer"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "撤销"
+          }
+        }
+      }
+    },
     "Día": {
       "localizations": {
         "en": {
@@ -5133,6 +5155,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "该邮箱已有账户。请登录。"
+          }
+        }
+      }
+    },
+    "«%@» eliminado": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” deleted"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«%@» eliminado"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已删除“%@”"
           }
         }
       }

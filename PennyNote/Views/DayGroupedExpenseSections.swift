@@ -5,8 +5,8 @@ import SwiftUI
 struct DayGroupedExpenseSections: View {
     let expenses: [Expense]
     let onSelect: (Expense) -> Void
-    // Al deslizar para borrar; quien la usa pide la confirmación. nil desactiva el borrado deslizando.
-    var onDeleteRequest: ((Expense) -> Void)?
+    // Al deslizar para borrar; quien la usa borra el gasto. nil desactiva el borrado deslizando.
+    var onDelete: ((Expense) -> Void)?
 
     private var groups: [(day: Date, items: [Expense])] {
         let calendar = Calendar.current
@@ -25,8 +25,8 @@ struct DayGroupedExpenseSections: View {
                         .contentShape(Rectangle())
                         .onTapGesture { onSelect(expense) }
                 }
-                .onDelete(perform: onDeleteRequest.map { request in
-                    { offsets in offsets.map { group.items[$0] }.forEach(request) }
+                .onDelete(perform: onDelete.map { delete in
+                    { offsets in offsets.map { group.items[$0] }.forEach(delete) }
                 })
             }
         }

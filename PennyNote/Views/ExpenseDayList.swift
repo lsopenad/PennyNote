@@ -13,13 +13,13 @@ struct ExpenseDayList: View, Equatable {
 
     let filter: ExpenseFilter
     let onShowNeedsDetails: () -> Void
+    // Tras borrar un gasto deslizando, con la copia para deshacerlo.
+    let onDeleted: (DeletedExpense) -> Void
 
     @Query(filter: #Predicate<Expense> { !$0.isSoftDeleted }, sort: \Expense.date, order: .reverse)
     private var activeExpenses: [Expense]
 
     @State private var limit = Self.pageSize
-    @State private var expenseToDelete: Expense?
-    @State private var isDeleteConfirmationPresented = false
 
     var body: some View {
         let filtered = activeExpenses.filter(filter.matches)
@@ -40,9 +40,9 @@ struct ExpenseDayList: View, Equatable {
             DayGroupedExpenseSections(
                 expenses: visible,
                 onSelect: router.presentEdit,
-                onDeleteRequest: { expense in
-                    expenseToDelete = expense
-                    isDeleteConfirmationPresented = true
+                // Sin confirmación: el borrado se puede deshacer desde el aviso que muestra quien la usa.
+                onDelete: { expense in
+                    onDeleted(ExpenseRepository.deleteExpense(expense, context: modelContext))
                 }
             )
 
@@ -58,18 +58,6 @@ struct ExpenseDayList: View, Equatable {
         .listStyle(.plain)
         .refreshable {
             await sync.syncNow()
-        }
-        // Un solo diálogo para toda la lista: uno por fila tenía el mismo coste que swipeActions.
-        .confirmationDialog(
-            Text("¿Eliminar «\(expenseToDelete.map(Self.displayName) ?? "")»?", comment: "Confirmación al borrar deslizando; el nombre es el gasto, la categoría o el gasto recurrente"),
-            isPresented: $isDeleteConfirmationPresented,
-            titleVisibility: .visible,
-            presenting: expenseToDelete
-        ) { expense in
-            Button("Eliminar", role: .destructive) {
-                ExpenseRepository.deleteExpense(expense, context: modelContext)
-            }
-            Button("Cancelar", role: .cancel) {}
         }
         .onChange(of: filter) {
             limit = Self.pageSize
@@ -115,11 +103,6 @@ struct ExpenseDayList: View, Equatable {
         let lastDay = calendar.startOfDay(for: expenses[limit - 1].date)
         let end = expenses[limit...].firstIndex { calendar.startOfDay(for: $0.date) != lastDay } ?? expenses.endIndex
         return Array(expenses[..<end])
-    }
-
-    // El nombre que se ve en la fila: el título o, sin él, la categoría.
-    private static func displayName(_ expense: Expense) -> String {
-        expense.title.isEmpty ? expense.category.displayName : expense.title
     }
 
     // Solo el filtro: los datos llegan por el @Query y el entorno.

@@ -1,24 +1,49 @@
 import SwiftUI
+import SwiftData
 
 struct ExpenseListView: View {
     @Environment(AppRouter.self) private var router
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @Namespace private var searchAnimation
     @State private var isSearchActive = false
 
     @State private var filter = ExpenseFilter()
+    // Último gasto borrado deslizando, mientras se puede deshacer desde el aviso.
+    @State private var recentDeletion: DeletedExpense?
 
     var body: some View {
         @Bindable var router = router
         ZStack {
             NavigationStack(path: $router.navigationPath) {
-                ZStack(alignment: .bottomTrailing) {
-                    ExpenseDayList(filter: filter) {
-                        filter = ExpenseFilter(onlyNeedsDetails: true)
-                    }
+                ZStack(alignment: .bottom) {
+                    ExpenseDayList(
+                        filter: filter,
+                        onShowNeedsDetails: { filter = ExpenseFilter(onlyNeedsDetails: true) },
+                        onDeleted: { deleted in
+                            withAnimation(.snappy) { recentDeletion = deleted }
+                        }
+                    )
 
-                    addButton
+                    VStack(spacing: 0) {
+                        if let recentDeletion {
+                            UndoDeletionBanner(
+                                deleted: recentDeletion,
+                                onUndo: { undo(recentDeletion) },
+                                onDismiss: dismissUndo
+                            )
+                            .padding(.horizontal, 16)
+                            .transition(reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
+                        }
+
+                        addButton
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                    }
                 }
+                // El aviso solo tiene sentido viendo la lista: se cierra al ir a Estadísticas o Ajustes.
+                .onDisappear(perform: dismissUndo)
                 .navigationTitle("PennyNote")
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
@@ -68,6 +93,26 @@ struct ExpenseListView: View {
                 isSearchActive = false
             }
         }
+        // También al abrir la búsqueda o un formulario, y al pasar la app a segundo plano.
+        .onChange(of: isSearchActive) { _, isActive in
+            if isActive { dismissUndo() }
+        }
+        .onChange(of: router.isAddExpensePresented) { _, isPresented in
+            if isPresented { dismissUndo() }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background { dismissUndo() }
+        }
+    }
+
+    private func undo(_ deleted: DeletedExpense) {
+        ExpenseRepository.restoreExpense(deleted, context: modelContext)
+        dismissUndo()
+    }
+
+    private func dismissUndo() {
+        guard recentDeletion != nil else { return }
+        withAnimation(.snappy) { recentDeletion = nil }
     }
 
     private var addButton: some View {

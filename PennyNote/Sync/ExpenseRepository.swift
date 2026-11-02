@@ -50,10 +50,50 @@ enum ExpenseRepository {
         afterMutation(context: context)
     }
 
-    static func deleteExpense(_ expense: Expense, context: ModelContext) {
+    // Devuelve la copia con la que restoreExpense deshace el borrado.
+    @discardableResult
+    static func deleteExpense(_ expense: Expense, context: ModelContext) -> DeletedExpense {
+        let deleted = DeletedExpense(expense)
         expense.isSoftDeleted = true
         expense.markPendingSync()
         afterMutation(context: context)
+        return deleted
+    }
+
+    // Deshace un borrado. Si la sincronización ya quitó el gasto del móvil, se crea de nuevo con el
+    // mismo id. En los dos casos queda pendiente con fecha posterior al borrado, así que en el servidor
+    // gana esta versión y el gasto vuelve también en el resto de dispositivos.
+    static func restoreExpense(_ deleted: DeletedExpense, context: ModelContext) {
+        if let expense = expense(withID: deleted.id, context: context) {
+            expense.isSoftDeleted = false
+            expense.markPendingSync()
+        } else {
+            let expense = Expense(
+                id: deleted.id,
+                amount: deleted.amount,
+                date: deleted.date,
+                title: deleted.title,
+                paymentMethod: deleted.paymentMethod,
+                category: restoredCategory(for: deleted, context: context),
+                recurringExpenseID: deleted.recurringExpenseID
+            )
+            expense.createdAt = deleted.createdAt
+            context.insert(expense)
+        }
+        afterMutation(context: context)
+    }
+
+    private static func expense(withID id: UUID, context: ModelContext) -> Expense? {
+        var descriptor = FetchDescriptor<Expense>(predicate: #Predicate { $0.id == id })
+        descriptor.fetchLimit = 1
+        return context.fetchOrEmpty(descriptor, failureMessage: "Fallo al buscar el gasto para deshacer su borrado").first
+    }
+
+    // Si su categoría se borró entretanto, pasa a la de reserva, como los gastos al borrar una categoría.
+    private static func restoredCategory(for deleted: DeletedExpense, context: ModelContext) -> ExpenseCategory? {
+        guard let categoryID = deleted.categoryID else { return nil }
+        return context.category(withID: categoryID, failureMessage: "Fallo al buscar la categoría del gasto restaurado")
+            ?? SeedDataService.fallbackCategory(context: context)
     }
 
     @discardableResult
