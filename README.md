@@ -17,7 +17,17 @@ A fast expense tracker for iPhone. Sign in with email and password and your expe
 - Statistics: spending per day, per category and per payment method, and the last six months.
 - Home Screen widgets (small and medium) with the month's chart and top categories, and Lock Screen widgets with the total.
 - Control Center button and Siri/Shortcuts action to add an expense.
+- Quick expense: log just the amount from Siri, the Action button or the Lock Screen without opening the app, and fill in the details later (see below).
 - Works offline: changes are saved on the device and synced to your account ([Supabase](https://supabase.com)) when there is a connection.
+
+### Quick expense from the Lock Screen
+
+The **Quick Expense** action asks only for the amount in a system banner and saves the expense without opening PennyNote. It shows up in the list as *Needs Details*, so you can add the title and category later. To use it from the Lock Screen or Control Center:
+
+1. In **Shortcuts**, create a shortcut with PennyNote's **Quick Expense** action and leave the amount empty.
+2. Lock Screen: touch and hold → Customize → tap one of the bottom controls → **Run Shortcut** → choose that shortcut. In Control Center: Edit → Add a Control → Shortcuts → **Run Shortcut**.
+
+PennyNote's own Control Center button opens the app instead: iOS doesn't let an app's control ask for a value.
 
 ## Requirements
 
