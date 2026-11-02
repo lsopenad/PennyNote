@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.9.0",
+          "buildVersion": "18",
+          "date": "2026-11-02",
+          "localizedDescription": "Más de 150 monedas: elige cualquier moneda en uso desde Ajustes → Moneda, con búsqueda por nombre, código o símbolo. Arriba salen sugeridas tu moneda actual y la de tu región.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.9.0/PennyNote.ipa",
+          "size": 1974965,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.8.1",
           "buildVersion": "17",
           "date": "2026-11-02",
@@ -179,11 +188,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.8.1",
+      "version": "1.9.0",
       "versionDate": "2026-11-02",
-      "versionDescription": "El control «Añadir gasto» vuelve a abrir la app. Para apuntar un gasto rápido desde la pantalla de bloqueo sin abrir PennyNote, crea un atajo con la acción «Gasto rápido» y ponlo con el control «Ejecutar atajo».",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.8.1/PennyNote.ipa",
-      "size": 1951684
+      "versionDescription": "Más de 150 monedas: elige cualquier moneda en uso desde Ajustes → Moneda, con búsqueda por nombre, código o símbolo. Arriba salen sugeridas tu moneda actual y la de tu región.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.9.0/PennyNote.ipa",
+      "size": 1974965
     }
   ],
   "news": []
