@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.11.0",
+          "buildVersion": "22",
+          "date": "2026-11-02",
+          "localizedDescription": "El icono de una categoría se elige en una cuadrícula de símbolos ordenados por temas. Los emojis ya no están disponibles: las categorías que tenían uno pasan a mostrar una etiqueta; cámbiala desde la ficha de la categoría.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.11.0/PennyNote.ipa",
+          "size": 2032015,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.10.1",
           "buildVersion": "21",
           "date": "2026-11-02",
@@ -215,11 +224,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.10.1",
+      "version": "1.11.0",
       "versionDate": "2026-11-02",
-      "versionDescription": "Mantenimiento interno: las dependencias quedan fijadas para que cada versión se compile siempre igual. Sin cambios en la app.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.10.1/PennyNote.ipa",
-      "size": 2134021
+      "versionDescription": "El icono de una categoría se elige en una cuadrícula de símbolos ordenados por temas. Los emojis ya no están disponibles: las categorías que tenían uno pasan a mostrar una etiqueta; cámbiala desde la ficha de la categoría.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.11.0/PennyNote.ipa",
+      "size": 2032015
     }
   ],
   "news": []
