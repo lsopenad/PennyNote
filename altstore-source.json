@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.12.0",
+          "buildVersion": "23",
+          "date": "2026-11-02",
+          "localizedDescription": "Las categorías pueden tener color: elige uno de la paleta o uno personalizado en la ficha de la categoría. El icono se muestra sobre un círculo de ese color en la lista de gastos, Estadísticas y el widget. Las categorías sin color se ven igual que antes.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.12.0/PennyNote.ipa",
+          "size": 2070732,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.11.0",
           "buildVersion": "22",
           "date": "2026-11-02",
@@ -224,11 +233,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.11.0",
+      "version": "1.12.0",
       "versionDate": "2026-11-02",
-      "versionDescription": "El icono de una categoría se elige en una cuadrícula de símbolos ordenados por temas. Los emojis ya no están disponibles: las categorías que tenían uno pasan a mostrar una etiqueta; cámbiala desde la ficha de la categoría.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.11.0/PennyNote.ipa",
-      "size": 2032015
+      "versionDescription": "Las categorías pueden tener color: elige uno de la paleta o uno personalizado en la ficha de la categoría. El icono se muestra sobre un círculo de ese color en la lista de gastos, Estadísticas y el widget. Las categorías sin color se ven igual que antes.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.12.0/PennyNote.ipa",
+      "size": 2070732
     }
   ],
   "news": []
