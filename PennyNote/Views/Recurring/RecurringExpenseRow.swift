@@ -21,7 +21,7 @@ struct RecurringExpenseRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            CategoryIconBadge(icon: recurringExpense.category.displayIcon)
+            CategoryIconBadge(icon: recurringExpense.category.displayIcon, color: recurringExpense.category.displayColor)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(verbatim: name)

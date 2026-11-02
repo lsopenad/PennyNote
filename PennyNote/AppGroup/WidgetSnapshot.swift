@@ -7,17 +7,20 @@ struct WidgetSnapshot: Codable, Equatable {
     struct CategoryTotal: Codable, Equatable {
         let name: String
         let icon: CategoryIcon
+        // nil si la categoría no tiene color, también en lo que escribían la 1.11.0 y anteriores.
+        let color: CategoryColor?
         let total: Decimal
 
         private enum CodingKeys: String, CodingKey {
-            case name, icon, total
+            case name, icon, color, total
             // Lo que escribía la 1.9.1, que el widget puede leer hasta que la app se abra de nuevo.
             case legacySymbolName = "symbolName"
         }
 
-        init(name: String, icon: CategoryIcon, total: Decimal) {
+        init(name: String, icon: CategoryIcon, color: CategoryColor?, total: Decimal) {
             self.name = name
             self.icon = icon
+            self.color = color
             self.total = total
         }
 
@@ -28,6 +31,7 @@ struct WidgetSnapshot: Codable, Equatable {
                 ?? container.decode(String.self, forKey: .legacySymbolName)
             // El de «Sin categoría» no está en el catálogo: sin este caso se leería como fallback.
             icon = storedIcon == CategoryIcon.uncategorized.storedValue ? .uncategorized : CategoryIcon(storedValue: storedIcon)
+            color = CategoryColor(storedValue: try container.decodeIfPresent(String.self, forKey: .color))
             total = try container.decode(DecimalText.self, forKey: .total).value
         }
 
@@ -35,6 +39,7 @@ struct WidgetSnapshot: Codable, Equatable {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(name, forKey: .name)
             try container.encode(icon.storedValue, forKey: .icon)
+            try container.encodeIfPresent(color?.storedValue, forKey: .color)
             try container.encode(DecimalText(total), forKey: .total)
         }
     }

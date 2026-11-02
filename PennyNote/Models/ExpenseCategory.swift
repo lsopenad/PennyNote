@@ -9,10 +9,18 @@ final class ExpenseCategory {
     // PennyNoteMigrationPlan) y en la 1.10.0 también podía ser un emoji.
     @Attribute(originalName: "symbolName") private(set) var storedIcon: String
     var sortOrder: Int
+    // CategoryColor.storedValue, o nil si la categoría no tiene color. Se guarda el texto y no el enum
+    // para que un valor desconocido no impida leer la categoría.
+    private(set) var storedColor: String?
 
     var icon: CategoryIcon {
         get { CategoryIcon(storedValue: storedIcon) }
         set { storedIcon = newValue.storedValue }
+    }
+
+    var color: CategoryColor? {
+        get { CategoryColor(storedValue: storedColor) }
+        set { storedColor = newValue?.storedValue }
     }
 
     // Lo guardado no está en el catálogo y se muestra CategoryIcon.fallback en su lugar.
@@ -34,11 +42,13 @@ final class ExpenseCategory {
         id: UUID = UUID(),
         name: String,
         icon: CategoryIcon,
+        color: CategoryColor? = nil,
         sortOrder: Int
     ) {
         self.id = id
         self.name = name
         self.storedIcon = icon.storedValue
+        self.storedColor = color?.storedValue
         self.sortOrder = sortOrder
         self.localLastModified = .now
         self.syncStatus = .pending
@@ -72,5 +82,10 @@ extension Optional where Wrapped == ExpenseCategory {
 
     var displayIcon: CategoryIcon {
         self?.icon ?? ExpenseCategory.uncategorizedIcon
+    }
+
+    // «Sin categoría» no tiene color.
+    var displayColor: CategoryColor? {
+        self?.color
     }
 }

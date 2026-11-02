@@ -16,11 +16,11 @@ struct CategoryManagementView: View {
                     Button {
                         form = .edit(category)
                     } label: {
-                        Label {
+                        // Sin Label: en una lista agranda el icono y no cabría en el círculo.
+                        HStack(spacing: 12) {
+                            CategoryIconBadge(icon: category.icon, color: category.color, diameter: 30, font: .subheadline)
                             Text(category.name)
-                        } icon: {
-                            CategoryIconImage(icon: category.icon)
-                                .accessibilityHidden(true)
+                                .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
                         }
                     }
                     .foregroundStyle(.primary)

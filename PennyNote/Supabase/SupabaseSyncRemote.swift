@@ -7,7 +7,7 @@ struct SupabaseSyncRemote: SyncRemote {
     // El máximo de filas que devuelve PostgREST por petición en Supabase (max_rows).
     static let pageSize = 1000
 
-    private static let categoryColumns = "id,name,icon,sort_order,is_deleted,updated_at,server_updated_at"
+    private static let categoryColumns = "id,name,icon,color,sort_order,is_deleted,updated_at,server_updated_at"
     // amount::text: el importe llega como texto y no pierde precisión al decodificarlo.
     private static let expenseColumns = "id,amount::text,date,title,payment_method,category_id,recurring_expense_id,is_deleted,created_at,updated_at,server_updated_at"
     private static let recurringExpenseColumns = "id,amount::text,title,payment_method,category_id,frequency,start_date,next_date,is_paused,is_deleted,created_at,updated_at,server_updated_at"

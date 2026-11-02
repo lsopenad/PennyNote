@@ -83,7 +83,7 @@ struct HomeScreenWidgetView: View {
 
     private func categoryRow(_ category: WidgetSnapshot.CategoryTotal) -> some View {
         HStack(spacing: 6) {
-            CategoryIconBadge(icon: category.icon, diameter: 20, font: .caption2)
+            CategoryIconBadge(icon: category.icon, color: category.color, diameter: 20, font: .caption2)
             Text(category.name)
                 .font(.caption)
                 .lineLimit(1)
