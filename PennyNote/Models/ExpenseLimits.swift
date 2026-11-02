@@ -20,10 +20,25 @@ enum ExpenseLimits {
     }
 
     static func clampedTitle(_ title: String) -> String {
-        String(title.prefix(titleMaxLength))
+        prefix(title, maxCodePoints: titleMaxLength)
     }
 
     static func clampedCategoryName(_ name: String) -> String {
-        String(name.prefix(categoryNameMaxLength))
+        prefix(name, maxCodePoints: categoryNameMaxLength)
+    }
+
+    // Postgres (char_length) cuenta code points y no caracteres de Swift: un emoji con tono de piel o
+    // una bandera es un carácter y varios code points. Se corta por caracteres enteros, sin partir ninguno.
+    private static func prefix(_ text: String, maxCodePoints: Int) -> String {
+        guard text.unicodeScalars.count > maxCodePoints else { return text }
+        var result = ""
+        var codePoints = 0
+        for character in text {
+            let size = character.unicodeScalars.count
+            guard codePoints + size <= maxCodePoints else { break }
+            result.append(character)
+            codePoints += size
+        }
+        return result
     }
 }
