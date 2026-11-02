@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.8.0",
+          "buildVersion": "16",
+          "date": "2026-11-02",
+          "localizedDescription": "Gasto rápido: apunta solo la cantidad desde el control de la pantalla de bloqueo, Siri o el botón de acción, sin abrir la app. Los gastos sin título ni categoría salen como «Por completar» en la lista, con un aviso para rellenarlos después.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.8.0/PennyNote.ipa",
+          "size": 1952783,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.7.0",
           "buildVersion": "15",
           "date": "2026-11-01",
@@ -161,11 +170,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.7.0",
-      "versionDate": "2026-11-01",
-      "versionDescription": "La lista de gastos va fluida aunque tengas miles: muestra los más recientes y «Mostrar más» carga el resto. Al borrar deslizando en la lista principal, la confirmación sale arriba. Se quita el modo demo de la pantalla de inicio de sesión.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.7.0/PennyNote.ipa",
-      "size": 1940429
+      "version": "1.8.0",
+      "versionDate": "2026-11-02",
+      "versionDescription": "Gasto rápido: apunta solo la cantidad desde el control de la pantalla de bloqueo, Siri o el botón de acción, sin abrir la app. Los gastos sin título ni categoría salen como «Por completar» en la lista, con un aviso para rellenarlos después.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.8.0/PennyNote.ipa",
+      "size": 1952783
     }
   ],
   "news": []
