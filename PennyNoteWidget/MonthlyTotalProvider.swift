@@ -16,9 +16,9 @@ struct MonthlyTotalProvider: TimelineProvider {
             current: MonthSpending(monthStart: monthStart, dailyTotals: Array(sample.prefix(MonthSpending.empty(monthStart: monthStart).dailyTotals.count))),
             previous: MonthSpending(monthStart: previousStart, dailyTotals: Array(repeating: 12, count: 31)),
             topCategories: [
-                .init(name: "Comida", symbolName: "fork.knife", colorName: CategoryColor.blue.rawValue, total: 182.4),
-                .init(name: "Transporte", symbolName: "car.fill", colorName: CategoryColor.orange.rawValue, total: 64),
-                .init(name: "Ocio", symbolName: "gamecontroller.fill", colorName: CategoryColor.green.rawValue, total: 38.5),
+                .init(name: "Comida", icon: .symbol("fork.knife"), total: 182.4),
+                .init(name: "Transporte", icon: .symbol("car.fill"), total: 64),
+                .init(name: "Ocio", icon: .symbol("gamecontroller.fill"), total: 38.5),
             ]
         )
         return MonthlyTotalEntry(date: .now, display: WidgetDisplay(snapshot: snapshot, at: .now), currency: Self.currency)

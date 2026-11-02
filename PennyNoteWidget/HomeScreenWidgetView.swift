@@ -82,13 +82,8 @@ struct HomeScreenWidgetView: View {
     }
 
     private func categoryRow(_ category: WidgetSnapshot.CategoryTotal) -> some View {
-        let color = CategoryColor.color(named: category.colorName)
-        return HStack(spacing: 6) {
-            Image(systemName: category.symbolName)
-                .font(.caption2)
-                .foregroundStyle(color)
-                .frame(width: 20, height: 20)
-                .background(color.opacity(0.15), in: Circle())
+        HStack(spacing: 6) {
+            CategoryIconBadge(icon: category.icon, diameter: 20, font: .caption2)
             Text(category.name)
                 .font(.caption)
                 .lineLimit(1)

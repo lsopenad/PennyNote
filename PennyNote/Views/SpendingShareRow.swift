@@ -6,19 +6,14 @@ struct SpendingShareRow: View {
     @Environment(\.currency) private var currency
 
     let title: String
-    let symbolName: String
-    let color: Color
+    let icon: CategoryIcon
     let total: Decimal
     // Parte del total del mes, de 0 a 1.
     let fraction: Double
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: symbolName)
-                .font(.subheadline)
-                .foregroundStyle(color)
-                .frame(width: 30, height: 30)
-                .background(color.opacity(0.15), in: Circle())
+            CategoryIconBadge(icon: icon, diameter: 30, font: .subheadline)
 
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .firstTextBaseline) {
@@ -37,7 +32,7 @@ struct SpendingShareRow: View {
                     ZStack(alignment: .leading) {
                         Capsule().fill(.fill.tertiary)
                         Capsule()
-                            .fill(color)
+                            .fill(.tint)
                             .frame(width: geometry.size.width * min(max(fraction, 0), 1))
                     }
                 }
@@ -51,7 +46,7 @@ struct SpendingShareRow: View {
 
 #Preview {
     List {
-        SpendingShareRow(title: "Comida", symbolName: "fork.knife", color: .orange, total: 182.4, fraction: 0.42)
-        SpendingShareRow(title: "Transporte", symbolName: "car.fill", color: .blue, total: 60, fraction: 0.14)
+        SpendingShareRow(title: "Comida", icon: .emoji("🍕"), total: 182.4, fraction: 0.42)
+        SpendingShareRow(title: "Transporte", icon: .symbol("car.fill"), total: 60, fraction: 0.14)
     }
 }

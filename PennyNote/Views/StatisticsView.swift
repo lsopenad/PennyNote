@@ -174,8 +174,7 @@ struct StatisticsView: View {
             } label: {
                 SpendingShareRow(
                     title: name,
-                    symbolName: item.category.displaySymbolName,
-                    color: item.category.displayColor,
+                    icon: item.category.displayIcon,
                     total: item.total,
                     fraction: fraction(of: item.total, in: periodTotal)
                 )
@@ -196,8 +195,8 @@ struct StatisticsView: View {
             } label: {
                 SpendingShareRow(
                     title: String(localized: item.paymentMethod.title),
-                    symbolName: item.paymentMethod.symbolName,
-                    color: .accentColor,
+                    // Los métodos de pago se pintan como las categorías.
+                    icon: .symbol(item.paymentMethod.symbolName),
                     total: item.total,
                     fraction: fraction(of: item.total, in: periodTotal)
                 )

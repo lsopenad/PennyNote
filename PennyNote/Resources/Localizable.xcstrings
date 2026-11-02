@@ -7,6 +7,9 @@
     "%@": {
       "shouldTranslate": false
     },
+    "%@ %@": {
+      "shouldTranslate": false
+    },
     "%@ vs %@": {
       "localizations": {
         "en": {
@@ -361,6 +364,28 @@
         }
       }
     },
+    "Actividades": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activities"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actividades"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活动"
+          }
+        }
+      }
+    },
     "Ajustes": {
       "localizations": {
         "en": {
@@ -427,28 +452,6 @@
         }
       }
     },
-    "Amarillo": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yellow"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Amarillo"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "黄色"
-          }
-        }
-      }
-    },
     "Amazon": {
       "localizations": {
         "en": {
@@ -467,6 +470,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "亚马逊"
+          }
+        }
+      }
+    },
+    "Animales y naturaleza": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Animals & Nature"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Animales y naturaleza"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "动物与自然"
           }
         }
       }
@@ -493,28 +518,6 @@
         }
       }
     },
-    "Azul": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Blue"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Azul"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "蓝色"
-          }
-        }
-      }
-    },
     "Añade un gasto a PennyNote.": {
       "localizations": {
         "en": {
@@ -537,28 +540,6 @@
         }
       }
     },
-    "Añadir": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añadir"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "添加"
-          }
-        }
-      }
-    },
     "Añadir gasto": {
       "localizations": {
         "en": {
@@ -577,6 +558,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "添加支出"
+          }
+        }
+      }
+    },
+    "Banderas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flags"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Banderas"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "旗帜"
           }
         }
       }
@@ -709,6 +712,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除我的账户和数据"
+          }
+        }
+      }
+    },
+    "Buscar emoji": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search emoji"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscar emoji"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "搜索表情"
           }
         }
       }
@@ -889,6 +914,28 @@
         }
       }
     },
+    "Caras y emociones": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smileys & Emotion"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caras y emociones"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "笑脸与情感"
+          }
+        }
+      }
+    },
     "Categoría": {
       "localizations": {
         "en": {
@@ -1021,28 +1068,6 @@
         }
       }
     },
-    "Color": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Color"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Color"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "颜色"
-          }
-        }
-      }
-    },
     "Comida": {
       "localizations": {
         "en": {
@@ -1061,6 +1086,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "餐饮"
+          }
+        }
+      }
+    },
+    "Comida y bebida": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Food & Drink"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comida y bebida"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "食物与饮料"
           }
         }
       }
@@ -1417,6 +1464,28 @@
         }
       }
     },
+    "Descartar cambios": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard Changes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descartar cambios"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "放弃更改"
+          }
+        }
+      }
+    },
     "Desde": {
       "localizations": {
         "en": {
@@ -1461,6 +1530,28 @@
         }
       }
     },
+    "Dinero": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Money"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dinero"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "钱"
+          }
+        }
+      }
+    },
     "Día": {
       "localizations": {
         "en": {
@@ -1479,6 +1570,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "日"
+          }
+        }
+      }
+    },
+    "Editar categoría": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Category"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar categoría"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑类别"
           }
         }
       }
@@ -1743,6 +1856,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "邮箱或密码不正确。"
+          }
+        }
+      }
+    },
+    "Emoji": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emoji"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emoji"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "表情"
           }
         }
       }
@@ -2429,6 +2564,28 @@
         }
       }
     },
+    "Icono": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Icon"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Icono"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "图标"
+          }
+        }
+      }
+    },
     "Idioma": {
       "localizations": {
         "en": {
@@ -3023,28 +3180,6 @@
         }
       }
     },
-    "Menta": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mint"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Menta"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "薄荷绿"
-          }
-        }
-      }
-    },
     "Menú del día": {
       "localizations": {
         "en": {
@@ -3177,28 +3312,6 @@
         }
       }
     },
-    "Morado": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Purple"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Morado"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "紫色"
-          }
-        }
-      }
-    },
     "Mostrar más": {
       "localizations": {
         "en": {
@@ -3299,28 +3412,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "支付方式"
-          }
-        }
-      }
-    },
-    "Naranja": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Orange"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Naranja"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "橙色"
           }
         }
       }
@@ -3633,6 +3724,28 @@
         }
       }
     },
+    "Nombre": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名称"
+          }
+        }
+      }
+    },
     "Nombre, código o símbolo": {
       "localizations": {
         "en": {
@@ -3717,6 +3830,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "支出笔数"
+          }
+        }
+      }
+    },
+    "Objetos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objects"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objetos"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "物品"
           }
         }
       }
@@ -3959,6 +4094,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "自定义"
+          }
+        }
+      }
+    },
+    "Personas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "People & Body"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personas"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "人物与身体"
+          }
+        }
+      }
+    },
+    "Personas y mascotas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "People & Pets"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personas y mascotas"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "人物与宠物"
           }
         }
       }
@@ -4293,28 +4472,6 @@
         }
       }
     },
-    "Rojo": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Red"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rojo"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "红色"
-          }
-        }
-      }
-    },
     "Ropa": {
       "localizations": {
         "en": {
@@ -4333,28 +4490,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "服装"
-          }
-        }
-      }
-    },
-    "Rosa": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pink"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rosa"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "粉色"
           }
         }
       }
@@ -4443,6 +4578,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "可在 iOS 设置中更改。默认情况下，应用使用 iPhone 的语言。"
+          }
+        }
+      }
+    },
+    "Seguir editando": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep Editing"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguir editando"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "继续编辑"
           }
         }
       }
@@ -4645,6 +4802,50 @@
         }
       }
     },
+    "Símbolo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Symbol"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Símbolo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "符号"
+          }
+        }
+      }
+    },
+    "Símbolos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Symbols"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Símbolos"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "符号"
+          }
+        }
+      }
+    },
     "Tarjeta": {
       "localizations": {
         "en": {
@@ -4759,6 +4960,28 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Tipo de icono": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Icon Type"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo de icono"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "图标类型"
           }
         }
       }
@@ -5005,28 +5228,6 @@
         }
       }
     },
-    "Turquesa": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Teal"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Turquesa"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "青色"
-          }
-        }
-      }
-    },
     "Tus gastos se mostrarán en esta moneda. Puedes cambiarla en Ajustes.": {
       "localizations": {
         "en": {
@@ -5115,24 +5316,46 @@
         }
       }
     },
-    "Verde": {
+    "Viajes y lugares": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Green"
+            "value": "Travel & Places"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verde"
+            "value": "Viajes y lugares"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "绿色"
+            "value": "旅行与地点"
+          }
+        }
+      }
+    },
+    "Ya hay una categoría con este nombre.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A category with this name already exists."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya hay una categoría con este nombre."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已有同名类别。"
           }
         }
       }
@@ -5247,6 +5470,28 @@
         }
       }
     },
+    "¿Descartar los cambios?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard changes?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Descartar los cambios?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要放弃更改吗？"
+          }
+        }
+      }
+    },
     "¿Eliminar gasto recurrente?": {
       "localizations": {
         "en": {
@@ -5309,28 +5554,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "忘记密码了？请向 PennyNote 的管理员索取临时密码，之后在设置中更改。"
-          }
-        }
-      }
-    },
-    "Índigo": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indigo"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Índigo"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "靛蓝色"
           }
         }
       }

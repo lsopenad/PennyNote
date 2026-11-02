@@ -9,7 +9,7 @@ struct CategoryPickerView: View {
         Picker("Categoría", selection: $selection) {
             Text(ExpenseCategory.uncategorizedLabel).tag(ExpenseCategory?.none)
             ForEach(categories) { category in
-                Label(category.name, systemImage: category.symbolName)
+                CategoryMenuLabel(name: category.name, icon: category.icon)
                     .tag(ExpenseCategory?.some(category))
             }
         }

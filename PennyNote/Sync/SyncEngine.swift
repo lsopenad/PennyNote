@@ -136,7 +136,7 @@ final class SyncEngine {
                 let category = ExpenseCategory(
                     id: remoteCategory.id,
                     name: remoteCategory.name,
-                    symbolName: remoteCategory.symbolName,
+                    icon: CategoryIcon(storedValue: remoteCategory.icon),
                     sortOrder: remoteCategory.sortOrder
                 )
                 category.update(from: remoteCategory)
@@ -345,9 +345,8 @@ extension ExpenseCategory {
 
     fileprivate func update(from remote: RemoteCategory) {
         name = remote.name
-        symbolName = remote.symbolName
+        icon = CategoryIcon(storedValue: remote.icon)
         sortOrder = remote.sortOrder
-        color = remote.colorName.flatMap(CategoryColor.init(rawValue:))
         localLastModified = remote.updatedAt
         syncStatus = .synced
     }

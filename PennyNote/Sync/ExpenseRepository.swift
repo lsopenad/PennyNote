@@ -96,16 +96,15 @@ enum ExpenseRepository {
             ?? SeedDataService.fallbackCategory(context: context)
     }
 
+    // El nombre se guarda sin espacios alrededor. Que no se repita lo comprueba la ficha antes de guardar.
     @discardableResult
-    static func addCategory(name: String, symbolName: String, context: ModelContext) -> ExpenseCategory {
+    static func addCategory(name: String, icon: CategoryIcon, context: ModelContext) -> ExpenseCategory {
         let existing = context.categories(failureMessage: "Fallo al leer categorías existentes al añadir una categoría")
         let nextOrder = (existing.map(\.sortOrder).max() ?? -1) + 1
-        let color = CategoryColor.nextAvailable(excluding: existing.compactMap(\.color))
         let category = ExpenseCategory(
-            name: ExpenseLimits.clampedCategoryName(name),
-            symbolName: symbolName,
-            sortOrder: nextOrder,
-            color: color
+            name: ExpenseLimits.clampedCategoryName(name.trimmingCharacters(in: .whitespacesAndNewlines)),
+            icon: icon,
+            sortOrder: nextOrder
         )
         context.insert(category)
         context.saveOrLog(failureMessage: "Fallo al guardar la nueva categoría")
@@ -140,10 +139,15 @@ enum ExpenseRepository {
         return true
     }
 
-    // El color marca como pendiente la categoría, no sus gastos.
-    static func setColor(_ color: CategoryColor, for category: ExpenseCategory, context: ModelContext) {
-        category.color = color
+    // Renombrar o cambiar el icono marca como pendiente la categoría, no sus gastos. Sin cambios no
+    // escribe nada, para no subir la categoría por guardar la ficha tal cual.
+    static func updateCategory(_ category: ExpenseCategory, name: String, icon: CategoryIcon, context: ModelContext) {
+        let name = ExpenseLimits.clampedCategoryName(name.trimmingCharacters(in: .whitespacesAndNewlines))
+        guard name != category.name || icon != category.icon else { return }
+        category.name = name
+        category.icon = icon
         category.markPendingSync()
+        // El widget muestra el nombre y el icono de las categorías principales.
         afterMutation(context: context)
     }
 

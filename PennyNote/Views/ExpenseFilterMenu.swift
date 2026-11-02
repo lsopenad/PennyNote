@@ -13,7 +13,7 @@ struct ExpenseFilterMenu: View {
             Section("Categoría") {
                 ForEach(categories) { category in
                     Toggle(isOn: $filter.categoryIDs.containing(category.id)) {
-                        Label(category.name, systemImage: category.symbolName)
+                        CategoryMenuLabel(name: category.name, icon: category.icon)
                     }
                 }
                 Toggle(ExpenseCategory.uncategorizedLabel, isOn: $filter.includesUncategorized)
