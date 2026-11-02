@@ -1,21 +1,47 @@
+# Reglas seleccionadas de https://github.com/github/gitignore (Swift.gitignore y Global/macOS.gitignore)
+# más las propias del proyecto.
+
 # Generado por xcodegen a partir de project.yml — no se versiona, se regenera con `xcodegen generate`.
 /PennyNote.xcodeproj/
 /Generated/
-
-# Xcode
-xcuserdata/
-*.xcuserstate
-DerivedData/
-
-# macOS
-.DS_Store
-
-# Swift Package Manager
-.build/
-.swiftpm/
 
 # Artefactos de release (.xcarchive / .ipa generados por scripts/build-ipa.sh)
 /build/
 
 # Configuración local de Supabase (URL y anon key del proyecto). Plantilla: Config/Supabase.example.xcconfig
 /Config/Supabase.xcconfig
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Supabase CLI (estado local)
+supabase/.temp/
+supabase/.branches/
+
+# Secretos y firma: nunca se versionan
+.env
+.env.*
+!.env.example
+*.p12
+*.mobileprovision
+*.cer
