@@ -5,8 +5,11 @@ import SwiftUI
 struct AmountInput {
     var text: String
 
-    init(_ amount: Decimal? = nil) {
-        text = amount.map { "\($0)" } ?? ""
+    // Con el separador decimal que muestra el teclado: «43,34» en España. `value` entiende los dos, así
+    // que el importe se conserva tal cual, sin redondear ni agrupar miles.
+    init(_ amount: Decimal? = nil, locale: Locale = .current) {
+        let separator = locale.decimalSeparator == "," ? "," : "."
+        text = amount.map { "\($0)".replacingOccurrences(of: ".", with: separator) } ?? ""
     }
 
     // Solo dígitos con un separador decimal como mucho. Decimal(string:) se queda sin avisar con lo
