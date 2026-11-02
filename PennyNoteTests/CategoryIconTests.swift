@@ -7,11 +7,13 @@ import UIKit
 @MainActor
 struct CategoryIconTests {
     private let context: ModelContext
+    private let recorder: RecordingRepositoryEffects
 
     init() throws {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Expense.self, ExpenseCategory.self, RecurringExpense.self, configurations: configuration)
         context = ModelContext(container)
+        recorder = try RecordingRepositoryEffects()
     }
 
     @Test(arguments: ["fork.knife", "car.fill", "ellipsis.circle.fill"])
@@ -59,7 +61,7 @@ struct CategoryIconTests {
     }
 
     @Test func addCategoryTrimsTheName() {
-        let category = ExpenseRepository.addCategory(name: "  Viajes ", icon: .init(symbolName: "airplane"), color: nil, context: context)
+        let category = ExpenseRepository.addCategory(name: "  Viajes ", icon: .init(symbolName: "airplane"), color: nil, context: context, effects: recorder.effects)
 
         #expect(category.name == "Viajes")
         #expect(category.icon == .init(symbolName: "airplane"))
@@ -70,7 +72,7 @@ struct CategoryIconTests {
         let category = insertSyncedCategory()
         let before = category.localLastModified
 
-        ExpenseRepository.updateCategory(category, name: "Restaurantes ", icon: .init(symbolName: "takeoutbag.and.cup.and.straw.fill"), color: nil, context: context)
+        ExpenseRepository.updateCategory(category, name: "Restaurantes ", icon: .init(symbolName: "takeoutbag.and.cup.and.straw.fill"), color: nil, context: context, effects: recorder.effects)
 
         #expect(category.name == "Restaurantes")
         #expect(category.icon == .init(symbolName: "takeoutbag.and.cup.and.straw.fill"))
@@ -82,7 +84,7 @@ struct CategoryIconTests {
     @Test func updateCategoryWithoutChangesWritesNothing() {
         let category = insertSyncedCategory()
 
-        ExpenseRepository.updateCategory(category, name: "Comida", icon: .init(symbolName: "fork.knife"), color: nil, context: context)
+        ExpenseRepository.updateCategory(category, name: "Comida", icon: .init(symbolName: "fork.knife"), color: nil, context: context, effects: recorder.effects)
 
         #expect(category.syncStatus == .synced)
     }

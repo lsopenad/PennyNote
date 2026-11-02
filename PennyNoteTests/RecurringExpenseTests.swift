@@ -6,6 +6,7 @@ import Testing
 @MainActor
 struct RecurringExpenseTests {
     private let context: ModelContext
+    private let recorder: RecordingRepositoryEffects
     private let calendar: Calendar = {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(identifier: "Europe/Madrid")!
@@ -16,6 +17,7 @@ struct RecurringExpenseTests {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Expense.self, ExpenseCategory.self, RecurringExpense.self, configurations: configuration)
         context = ModelContext(container)
+        recorder = try RecordingRepositoryEffects()
     }
 
     // MARK: - Fechas
@@ -126,7 +128,7 @@ struct RecurringExpenseTests {
     @Test func makingAnOldExpenseRecurringFillsUpToToday() throws {
         let start = try #require(Calendar.current.date(byAdding: .month, value: -3, to: .now))
 
-        ExpenseRepository.addExpense(amount: 9.99, date: start, title: "Netflix", category: nil, repeatFrequency: .monthly, context: context)
+        ExpenseRepository.addExpense(amount: 9.99, date: start, title: "Netflix", category: nil, repeatFrequency: .monthly, context: context, effects: recorder.effects)
 
         let template = try #require(try context.fetch(FetchDescriptor<RecurringExpense>()).first)
         let expenses = try fetchExpenses()
@@ -161,7 +163,7 @@ struct RecurringExpenseTests {
         let template = insertTemplate(start: date(2026, 9, 5), next: date(2026, 9, 5))
         RecurringExpenseGenerator.generateDueExpenses(context: context, now: date(2026, 10, 30), calendar: calendar)
 
-        ExpenseRepository.deleteRecurringExpense(template, context: context)
+        ExpenseRepository.deleteRecurringExpense(template, context: context, effects: recorder.effects)
 
         #expect(template.isSoftDeleted)
         #expect(try fetchExpenses().count == 2)
@@ -189,7 +191,8 @@ struct RecurringExpenseTests {
             isPaused: isPaused,
             now: now,
             calendar: calendar,
-            context: context
+            context: context,
+            effects: recorder.effects
         )
     }
 

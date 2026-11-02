@@ -6,19 +6,21 @@ import Testing
 @MainActor
 struct ExpenseUndoDeletionTests {
     private let context: ModelContext
+    private let recorder: RecordingRepositoryEffects
 
     init() throws {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
         let container = try ModelContainer(for: Expense.self, ExpenseCategory.self, RecurringExpense.self, configurations: configuration)
         context = ModelContext(container)
+        recorder = try RecordingRepositoryEffects()
     }
 
     @Test func restoresExpenseStillOnThePhone() throws {
         let expense = insertSyncedExpense(category: insertCategory("Comida"))
 
-        let deleted = ExpenseRepository.deleteExpense(expense, context: context)
+        let deleted = ExpenseRepository.deleteExpense(expense, context: context, effects: recorder.effects)
         let deletedAt = expense.localLastModified
-        ExpenseRepository.restoreExpense(deleted, context: context)
+        ExpenseRepository.restoreExpense(deleted, context: context, effects: recorder.effects)
 
         let restored = try #require(try fetchExpenses().first)
         #expect(restored === expense)
@@ -34,11 +36,11 @@ struct ExpenseUndoDeletionTests {
         let expense = insertSyncedExpense(category: category, recurringExpenseID: recurringExpenseID)
         let original = DeletedExpense(expense)
 
-        let deleted = ExpenseRepository.deleteExpense(expense, context: context)
+        let deleted = ExpenseRepository.deleteExpense(expense, context: context, effects: recorder.effects)
         let deletedAt = expense.localLastModified
         context.delete(expense)
         try context.save()
-        ExpenseRepository.restoreExpense(deleted, context: context)
+        ExpenseRepository.restoreExpense(deleted, context: context, effects: recorder.effects)
 
         let restored = try #require(try fetchExpenses().first)
         #expect(DeletedExpense(restored) == original)
@@ -53,11 +55,11 @@ struct ExpenseUndoDeletionTests {
         let category = insertCategory("Comida")
         let expense = insertSyncedExpense(category: category)
 
-        let deleted = ExpenseRepository.deleteExpense(expense, context: context)
+        let deleted = ExpenseRepository.deleteExpense(expense, context: context, effects: recorder.effects)
         context.delete(expense)
         context.delete(category)
         try context.save()
-        ExpenseRepository.restoreExpense(deleted, context: context)
+        ExpenseRepository.restoreExpense(deleted, context: context, effects: recorder.effects)
 
         let restored = try #require(try fetchExpenses().first)
         #expect(restored.category === fallback)
