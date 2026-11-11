@@ -176,14 +176,15 @@ final class SyncEngine {
         let locals = Dictionary(allExpenses().map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
 
         for remoteExpense in remoteExpenses {
+            let keepsDeletion = Self.keepsDeletionLocally(recurringExpenseID: remoteExpense.recurringExpenseID)
             if let local = locals[remoteExpense.id] {
                 guard !Self.localWins(local.syncStatus, local.localLastModified, over: remoteExpense.updatedAt) else { continue }
-                if remoteExpense.isDeleted {
+                if remoteExpense.isDeleted && !keepsDeletion && local.recurringExpenseID == nil {
                     context.delete(local)
                 } else {
                     local.update(from: remoteExpense, categoriesByID: categoriesByID)
                 }
-            } else if !remoteExpense.isDeleted {
+            } else if !remoteExpense.isDeleted || keepsDeletion {
                 let expense = Expense(id: remoteExpense.id, amount: remoteExpense.amount)
                 expense.update(from: remoteExpense, categoriesByID: categoriesByID)
                 context.insert(expense)
@@ -230,6 +231,14 @@ final class SyncEngine {
     // fecha es la misma escritura (la nuestra, de vuelta) y da igual cuál se quede.
     static func localWins(_ status: SyncStatus, _ localModified: Date, over remoteModified: Date) -> Bool {
         status == .pending && localModified > remoteModified
+    }
+
+    // Los borrados de gastos creados por un recurrente se quedan en el móvil como borrados: si la serie
+    // vuelve a un día ya generado, el generador los ve y no los crea otra vez (el servidor descartaría la
+    // copia por ser más antigua que su borrado, y este iPhone la mostraría para siempre). El resto se
+    // eliminan: no hace falta guardarlos.
+    static func keepsDeletionLocally(recurringExpenseID: UUID?) -> Bool {
+        recurringExpenseID != nil
     }
 
     private static func pullStart(after cursor: Date?) -> Date? {
@@ -290,8 +299,9 @@ final class SyncEngine {
             try await remote.upsertExpenses(batch)
             let sentDates = Dictionary(batch.map { ($0.id, $0.updatedAt) }, uniquingKeysWith: { first, _ in first })
             for expense in expenses(withIDs: Array(sentDates.keys)) where sentDates[expense.id] == expense.localLastModified {
-                // Un borrado ya subido no hace falta guardarlo más: el servidor conserva la marca.
-                if expense.isSoftDeleted {
+                // Un borrado ya subido no hace falta guardarlo más (el servidor conserva la marca), salvo
+                // el de un gasto creado por un recurrente: ver keepsDeletionLocally.
+                if expense.isSoftDeleted && !Self.keepsDeletionLocally(recurringExpenseID: expense.recurringExpenseID) {
                     context.delete(expense)
                 } else {
                     expense.syncStatus = .synced
@@ -341,7 +351,7 @@ extension Expense {
         paymentMethod = PaymentMethod(serverCode: remote.paymentMethod) ?? .other
         category = remote.categoryID.flatMap { categoriesByID[$0] }
         recurringExpenseID = remote.recurringExpenseID
-        isSoftDeleted = false
+        isSoftDeleted = remote.isDeleted
         createdAt = remote.createdAt
         localLastModified = remote.updatedAt
         syncStatus = .synced
