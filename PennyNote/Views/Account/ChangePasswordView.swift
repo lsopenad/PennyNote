@@ -6,13 +6,14 @@ struct ChangePasswordView: View {
     @Environment(AccountSession.self) private var session
     @Environment(\.dismiss) private var dismiss
 
+    @State private var currentPassword = ""
     @State private var password = ""
     @State private var passwordConfirmation = ""
     @State private var operation = AccountOperation()
     @State private var isDonePresented = false
 
     private var canSubmit: Bool {
-        PasswordRules.isValid(password) && password == passwordConfirmation && !operation.isWorking
+        !currentPassword.isEmpty && PasswordRules.isValid(password) && password == passwordConfirmation && !operation.isWorking
     }
 
     var body: some View {
@@ -23,6 +24,8 @@ struct ChangePasswordView: View {
                     .textContentType(.username)
                     .disabled(true)
                     .foregroundStyle(.secondary)
+                SecureField("Contraseña actual", text: $currentPassword)
+                    .textContentType(.password)
                 SecureField("Contraseña nueva", text: $password)
                     .textContentType(.newPassword)
                 SecureField("Repite la contraseña", text: $passwordConfirmation)
@@ -53,8 +56,8 @@ struct ChangePasswordView: View {
 
     private func changePassword() {
         guard canSubmit else { return }
-        operation.run { [session, password] in
-            try await session.updatePassword(password)
+        operation.run { [session, currentPassword, password] in
+            try await session.updatePassword(current: currentPassword, new: password)
             isDonePresented = true
         }
     }

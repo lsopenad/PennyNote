@@ -26,6 +26,10 @@ enum AccountErrorMessage {
             String(localized: "Esta versión de la app no tiene configurado el servidor.")
         case .emailConfirmationRequired:
             String(localized: "Cuenta creada, pero el servidor pide confirmar el email y no envía correos. Avisa a quien administra PennyNote.")
+        case .wrongCurrentPassword:
+            String(localized: "La contraseña actual no es correcta.")
+        case .signedOut:
+            String(localized: "La sesión ha caducado. Vuelve a iniciar sesión.")
         }
     }
 
