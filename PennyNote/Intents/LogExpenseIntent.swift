@@ -36,13 +36,17 @@ struct LogExpenseIntent: AppIntent {
 
         let validAmount = try ExpenseIntentValidation.amount(from: amount)
 
-        ExpenseRepository.addExpense(
-            amount: validAmount,
-            date: .now,
-            title: expenseTitle,
-            category: matchedCategory,
-            context: context
-        )
+        do {
+            try ExpenseRepository.addExpense(
+                amount: validAmount,
+                date: .now,
+                title: expenseTitle,
+                category: matchedCategory,
+                context: context
+            )
+        } catch {
+            throw LogExpenseError.saveFailed
+        }
 
         return .result()
     }
@@ -53,6 +57,7 @@ enum LogExpenseError: Error, CustomLocalizedStringResourceConvertible {
     case tooManyDecimals
     case signedOut
     case storeUnavailable
+    case saveFailed
 
     var localizedStringResource: LocalizedStringResource {
         switch self {
@@ -60,6 +65,7 @@ enum LogExpenseError: Error, CustomLocalizedStringResourceConvertible {
         case .tooManyDecimals: "La cantidad tiene más decimales de los que usa la moneda de tu cuenta."
         case .signedOut: "Inicia sesión en PennyNote para registrar gastos."
         case .storeUnavailable: "No se han podido abrir los datos de PennyNote. Abre la app y vuelve a intentarlo."
+        case .saveFailed: "No se ha podido guardar el gasto. Inténtalo de nuevo."
         }
     }
 }

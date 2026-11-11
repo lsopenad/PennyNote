@@ -19,6 +19,7 @@ struct AddEditExpenseView: View {
     // Las sugerencias solo se ofrecen al añadir un gasto o al completar uno pendiente: al editar uno
     // completo, corregir una errata no debe cambiar nada más.
     private let offersSuggestions: Bool
+    @State private var isSaveErrorPresented = false
     @State private var suggestionIndex: ExpenseSuggestionIndex?
     @State private var autofill: ExpenseAutofill
     @FocusState private var isTitleFocused: Bool
@@ -124,6 +125,11 @@ struct AddEditExpenseView: View {
                 }
             }
             .animation(suggestionAnimation, value: suggestions.map(\.id))
+            .alert("No se ha podido guardar el gasto", isPresented: $isSaveErrorPresented) {
+                Button("Aceptar", role: .cancel) {}
+            } message: {
+                Text("Inténtalo de nuevo. Si sigue fallando, cierra PennyNote y vuelve a abrirla.")
+            }
             .navigationTitle(expenseToEdit == nil ? Text("Añadir gasto") : Text("Editar gasto"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -165,27 +171,33 @@ struct AddEditExpenseView: View {
         // Un gasto que ya viene de un recurrente no puede empezar otro.
         let repeatFrequency = sourceRecurringExpenses.isEmpty ? repeatFrequency : nil
 
-        if let expense = expenseToEdit {
-            ExpenseRepository.updateExpense(
-                expense,
-                amount: amount,
-                date: date,
-                title: title,
-                paymentMethod: paymentMethod,
-                category: category,
-                repeatFrequency: repeatFrequency,
-                context: modelContext
-            )
-        } else {
-            ExpenseRepository.addExpense(
-                amount: amount,
-                date: date,
-                title: title,
-                paymentMethod: paymentMethod,
-                category: category,
-                repeatFrequency: repeatFrequency,
-                context: modelContext
-            )
+        do {
+            if let expense = expenseToEdit {
+                try ExpenseRepository.updateExpense(
+                    expense,
+                    amount: amount,
+                    date: date,
+                    title: title,
+                    paymentMethod: paymentMethod,
+                    category: category,
+                    repeatFrequency: repeatFrequency,
+                    context: modelContext
+                )
+            } else {
+                try ExpenseRepository.addExpense(
+                    amount: amount,
+                    date: date,
+                    title: title,
+                    paymentMethod: paymentMethod,
+                    category: category,
+                    repeatFrequency: repeatFrequency,
+                    context: modelContext
+                )
+            }
+        } catch {
+            // El formulario se queda abierto con lo escrito, para volver a intentarlo.
+            isSaveErrorPresented = true
+            return
         }
 
         dismiss()

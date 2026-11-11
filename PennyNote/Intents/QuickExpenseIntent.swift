@@ -33,12 +33,16 @@ struct QuickExpenseIntent: AppIntent {
         }
         let validAmount = try ExpenseIntentValidation.amount(from: requestedAmount)
 
-        ExpenseRepository.addExpense(
-            amount: validAmount,
-            date: .now,
-            category: nil,
-            context: ModelContext(SharedModelContainer.container)
-        )
+        do {
+            try ExpenseRepository.addExpense(
+                amount: validAmount,
+                date: .now,
+                category: nil,
+                context: ModelContext(SharedModelContainer.container)
+            )
+        } catch {
+            throw LogExpenseError.saveFailed
+        }
 
         let formattedAmount = DisplayFormat.currency(validAmount, in: CurrencySettings.shared.currency)
         return .result(dialog: "Gasto de \(formattedAmount) guardado")

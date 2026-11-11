@@ -14,7 +14,7 @@ enum ExpenseRepository {
         repeatFrequency: RecurrenceFrequency? = nil,
         context: ModelContext,
         effects: ExpenseRepositoryEffects = .live
-    ) {
+    ) throws {
         let expense = Expense(
             amount: amount,
             date: date,
@@ -26,7 +26,7 @@ enum ExpenseRepository {
         if let repeatFrequency {
             makeRecurring(expense, frequency: repeatFrequency, context: context)
         }
-        afterMutation(context: context, effects: effects)
+        try saveExpenseChange(context: context, effects: effects)
     }
 
     static func updateExpense(
@@ -39,7 +39,7 @@ enum ExpenseRepository {
         repeatFrequency: RecurrenceFrequency? = nil,
         context: ModelContext,
         effects: ExpenseRepositoryEffects = .live
-    ) {
+    ) throws {
         expense.amount = amount
         expense.date = date
         expense.title = ExpenseLimits.clampedTitle(title)
@@ -49,7 +49,7 @@ enum ExpenseRepository {
         if let repeatFrequency {
             makeRecurring(expense, frequency: repeatFrequency, context: context)
         }
-        afterMutation(context: context, effects: effects)
+        try saveExpenseChange(context: context, effects: effects)
     }
 
     // Devuelve la copia con la que restoreExpense deshace el borrado.
@@ -247,6 +247,21 @@ enum ExpenseRepository {
         RecurringExpenseGenerator.generateDueExpenses(context: context)
     }
 
+    // Para los gastos que el usuario espera ver guardados (formulario y Atajos): si falla el guardado, se
+    // deshace el cambio y se lanza el error, para avisar en vez de darlo por guardado. Un contexto creado
+    // a mano (los intents) no tiene autoguardado: hay que guardar en el acto.
+    private static func saveExpenseChange(context: ModelContext, effects: ExpenseRepositoryEffects) throws {
+        do {
+            try effects.save(context)
+        } catch {
+            Log.data.error("Fallo al guardar un gasto: \(error.localizedDescription)")
+            context.rollback()
+            throw error
+        }
+        effects.refreshWidget(context)
+        effects.requestSync()
+    }
+
     // Guarda en el acto: un contexto creado a mano (LogExpenseIntent) no tiene autoguardado.
     private static func afterMutation(context: ModelContext, effects: ExpenseRepositoryEffects) {
         context.saveOrLog(failureMessage: "Fallo al guardar un cambio")
@@ -261,12 +276,15 @@ struct ExpenseRepositoryEffects {
     var refreshWidget: @MainActor (ModelContext) -> Void
     var requestSync: @MainActor () -> Void
     var syncState: SyncStateStore
+    // Inyectable para que los tests puedan simular un guardado que falla.
+    var save: @MainActor (ModelContext) throws -> Void
 
     static var live: ExpenseRepositoryEffects {
         ExpenseRepositoryEffects(
             refreshWidget: { WidgetSnapshotRefresher.refresh(in: $0) },
             requestSync: { SyncCoordinator.shared.requestSync() },
-            syncState: .standard
+            syncState: .standard,
+            save: { try $0.save() }
         )
     }
 }
