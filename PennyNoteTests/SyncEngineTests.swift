@@ -417,7 +417,102 @@ struct SyncEngineTests {
         try await engine.sync()
 
         #expect(remote.expenses[generatedID]?.isDeleted == true)
-        #expect(try fetchExpenses().allSatisfy { $0.id != generatedID })
+        // Puede seguir en el móvil, pero como borrado.
+        #expect(try fetchExpenses().allSatisfy { $0.id != generatedID || $0.isSoftDeleted })
+    }
+
+    // Borrado y subido aquí; después la serie se reinicia en ese día (p. ej. al editar «Próximo
+    // gasto»). No debe volver: el servidor descartaría la copia y este iPhone la mostraría para siempre.
+    @Test func deletedGeneratedExpenseIsNotRecreatedWhenTheSeriesGoesBack() async throws {
+        try engine.prepareLocalData(for: userID)
+        let start = try #require(Calendar.current.date(byAdding: .day, value: -1, to: .now))
+        let template = RecurringExpense(amount: 5, frequency: .monthly, startDate: start, nextDate: start)
+        context.insert(template)
+        try await engine.sync()
+        let generated = try #require(try fetchExpenses().first { $0.recurringExpenseID == template.id })
+        let generatedID = generated.id
+
+        generated.isSoftDeleted = true
+        generated.markPendingSync()
+        try await engine.sync()
+        // Pasa el tiempo: otro cambio hace que las bajadas siguientes ya no vuelvan a pedir ese borrado
+        // (sin esto, el margen del cursor lo volvería a bajar y taparía el fallo).
+        remote.add(expense: 1)
+        try await engine.sync()
+
+        // Como ExpenseRepository.updateRecurringExpense al reiniciar la serie en ese día.
+        template.startDate = start
+        template.nextDate = start
+        template.markPendingSync()
+        RecurringExpenseGenerator.generateDueExpenses(context: context)
+        try await engine.sync()
+
+        #expect(remote.expenses[generatedID]?.isDeleted == true)
+        #expect(try fetchExpenses().filter { $0.recurringExpenseID == template.id && !$0.isSoftDeleted }.isEmpty)
+    }
+
+    // Lo mismo, pero el borrado llega de otro móvil.
+    @Test func generatedExpenseDeletedElsewhereIsNotRecreatedWhenTheSeriesGoesBack() async throws {
+        try engine.prepareLocalData(for: userID)
+        let start = try #require(Calendar.current.date(byAdding: .day, value: -1, to: .now))
+        let template = RecurringExpense(amount: 5, frequency: .monthly, startDate: start, nextDate: start)
+        context.insert(template)
+        try await engine.sync()
+        let generatedID = try #require(try fetchExpenses().first { $0.recurringExpenseID == template.id }?.id)
+
+        remote.edit(expense: generatedID) { $0.isDeleted = true }
+        try await engine.sync()
+        remote.add(expense: 1)
+        try await engine.sync()
+
+        template.startDate = start
+        template.nextDate = start
+        template.markPendingSync()
+        RecurringExpenseGenerator.generateDueExpenses(context: context)
+        try await engine.sync()
+
+        #expect(remote.expenses[generatedID]?.isDeleted == true)
+        #expect(try fetchExpenses().filter { $0.recurringExpenseID == template.id && !$0.isSoftDeleted }.isEmpty)
+    }
+
+    // El borrado de un gasto generado que este móvil nunca tuvo también se guarda, para que el
+    // generador no lo cree aquí.
+    @Test func remoteDeletionOfAnUnknownGeneratedExpenseIsKept() async throws {
+        try engine.prepareLocalData(for: userID)
+        let templateID = UUID()
+        remote.add(expense: 7)
+        let remoteID = try #require(remote.expenses.keys.first)
+        remote.edit(expense: remoteID) {
+            $0.recurringExpenseID = templateID
+            $0.isDeleted = true
+        }
+
+        try await engine.sync()
+
+        let kept = try #require(try fetchExpenses().first { $0.id == remoteID })
+        #expect(kept.isSoftDeleted)
+        #expect(kept.recurringExpenseID == templateID)
+        #expect(kept.syncStatus == .synced)
+    }
+
+    // Justo después de subir el borrado (sin otra pasada), el gasto sigue en el móvil como borrado.
+    @Test func uploadedDeletionOfAGeneratedExpenseIsKeptLocally() async throws {
+        try engine.prepareLocalData(for: userID)
+        let start = try #require(Calendar.current.date(byAdding: .day, value: -1, to: .now))
+        let template = RecurringExpense(amount: 5, frequency: .monthly, startDate: start, nextDate: start)
+        context.insert(template)
+        try await engine.sync()
+        let generated = try #require(try fetchExpenses().first { $0.recurringExpenseID == template.id })
+        let generatedID = generated.id
+
+        generated.isSoftDeleted = true
+        generated.markPendingSync()
+        try await engine.sync()
+
+        // Se vuelve a buscar por id: si la sincronización lo hubiera eliminado, leer `generated` fallaría.
+        let kept = try #require(try fetchExpenses().first { $0.id == generatedID })
+        #expect(kept.isSoftDeleted)
+        #expect(kept.syncStatus == .synced)
     }
 
     @Test func recurringExpenseRowRoundTripsThroughJSON() throws {
