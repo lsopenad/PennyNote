@@ -3485,6 +3485,28 @@
         }
       }
     },
+    "Inténtalo de nuevo. Si sigue fallando, cierra PennyNote y vuelve a abrirla.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again. If it keeps failing, quit PennyNote and open it again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inténtalo de nuevo. Si sigue fallando, cierra PennyNote y vuelve a abrirla."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请重试。如果仍然失败，请退出 PennyNote 后重新打开。"
+          }
+        }
+      }
+    },
     "Inversión": {
       "localizations": {
         "en": {
@@ -4619,6 +4641,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法连接到服务器。"
+          }
+        }
+      }
+    },
+    "No se ha podido guardar el gasto": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Save the Expense"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido guardar el gasto"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法保存支出"
+          }
+        }
+      }
+    },
+    "No se ha podido guardar el gasto. Inténtalo de nuevo.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't save the expense. Try again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se ha podido guardar el gasto. Inténtalo de nuevo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法保存支出。请重试。"
           }
         }
       }

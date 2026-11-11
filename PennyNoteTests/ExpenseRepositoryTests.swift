@@ -66,11 +66,41 @@ struct ExpenseRepositoryTests {
         #expect(recorder.syncRequestCount == 0)
     }
 
-    @Test func writesRefreshTheWidgetAndRequestASync() {
-        ExpenseRepository.addExpense(amount: 12, date: .now, category: nil, context: context, effects: recorder.effects)
+    @Test func writesRefreshTheWidgetAndRequestASync() throws {
+        try ExpenseRepository.addExpense(amount: 12, date: .now, category: nil, context: context, effects: recorder.effects)
 
         #expect(recorder.widgetRefreshCount == 1)
         #expect(recorder.syncRequestCount == 1)
+    }
+
+    // Si no se puede guardar, se avisa (lanza), no queda nada a medias y no se refresca ni sincroniza.
+    @Test func addingAnExpenseThatCannotBeSavedThrowsAndLeavesNothing() throws {
+        recorder.failsToSave = true
+
+        #expect(throws: RecordingRepositoryEffects.SaveFailure.self) {
+            try ExpenseRepository.addExpense(amount: 12, date: .now, category: nil, context: context, effects: recorder.effects)
+        }
+
+        #expect(try context.fetch(FetchDescriptor<Expense>()).isEmpty)
+        #expect(recorder.widgetRefreshCount == 0)
+        #expect(recorder.syncRequestCount == 0)
+    }
+
+    @Test func editingAnExpenseThatCannotBeSavedThrowsAndKeepsTheSavedValues() throws {
+        let expense = Expense(amount: 10, date: .now, title: "Pan")
+        context.insert(expense)
+        try context.save()
+        recorder.failsToSave = true
+
+        #expect(throws: RecordingRepositoryEffects.SaveFailure.self) {
+            try ExpenseRepository.updateExpense(
+                expense, amount: 20, date: .now, title: "Pan y leche", paymentMethod: .cash, category: nil,
+                context: context, effects: recorder.effects
+            )
+        }
+
+        #expect(expense.amount == 10)
+        #expect(expense.title == "Pan")
     }
 
     // Es el comportamiento actual: una categoría nueva aún no tiene gastos que mostrar en el widget.

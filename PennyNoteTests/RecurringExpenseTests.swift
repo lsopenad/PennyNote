@@ -128,7 +128,7 @@ struct RecurringExpenseTests {
     @Test func makingAnOldExpenseRecurringFillsUpToToday() throws {
         let start = try #require(Calendar.current.date(byAdding: .month, value: -3, to: .now))
 
-        ExpenseRepository.addExpense(amount: 9.99, date: start, title: "Netflix", category: nil, repeatFrequency: .monthly, context: context, effects: recorder.effects)
+        try ExpenseRepository.addExpense(amount: 9.99, date: start, title: "Netflix", category: nil, repeatFrequency: .monthly, context: context, effects: recorder.effects)
 
         let template = try #require(try context.fetch(FetchDescriptor<RecurringExpense>()).first)
         let expenses = try fetchExpenses()
