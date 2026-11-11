@@ -73,8 +73,9 @@ final class AccountSession {
 
     // Solo con sesión iniciada. No hay recuperación por email (el proyecto no tiene SMTP): una
     // contraseña olvidada la restablece quien administra Supabase y el usuario la cambia aquí.
-    func updatePassword(_ password: String) async throws {
+    func updatePassword(current currentPassword: String, new password: String) async throws {
         let client = try requireClient()
+        try await verifyCurrentPassword(currentPassword, client: client)
         try await client.auth.update(user: UserAttributes(password: password))
         // Si se cambia porque alguien más tenía acceso, sus sesiones dejan de valer; esta sigue abierta.
         do {
@@ -105,8 +106,10 @@ final class AccountSession {
     }
 
     // Borra el usuario en el servidor (y en cascada sus datos) y después lo de este móvil.
-    func deleteAccount() async throws {
-        try await requireClient().rpc("delete_my_account").execute()
+    func deleteAccount(password: String) async throws {
+        let client = try requireClient()
+        try await verifyCurrentPassword(password, client: client)
+        try await client.rpc("delete_my_account").execute()
         do {
             try await sync.deactivateAndWipeLocalData()
         } catch {
@@ -119,6 +122,18 @@ final class AccountSession {
     }
 
     // MARK: - Privado
+
+    // Antes de cambiar la contraseña o borrar la cuenta: que no baste con tener un momento el iPhone
+    // desbloqueado con la app abierta. Sin correo no hay reautenticación de Supabase, así que se vuelve
+    // a iniciar sesión con el email de la sesión; con el mismo usuario, apply(_:) no reactiva nada.
+    private func verifyCurrentPassword(_ password: String, client: SupabaseClient) async throws {
+        guard let email = userEmail else { throw AccountError.signedOut }
+        do {
+            try await client.auth.signIn(email: email, password: password)
+        } catch let error as AuthError where error.errorCode == .invalidCredentials {
+            throw AccountError.wrongCurrentPassword
+        }
+    }
 
     private func listenForAuthChanges(_ client: SupabaseClient) {
         Task { [weak self] in
@@ -173,4 +188,8 @@ final class AccountSession {
 enum AccountError: Error {
     case notConfigured
     case emailConfirmationRequired
+    // La contraseña actual que se ha escrito para confirmar una acción no es la de la cuenta.
+    case wrongCurrentPassword
+    // Se pidió una acción de cuenta sin sesión iniciada.
+    case signedOut
 }

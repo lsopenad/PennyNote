@@ -8,6 +8,8 @@ struct AccountSettingsSections: View {
     @State private var isSignOutConfirmationPresented = false
     @State private var unsyncedChangeCount: Int?
     @State private var isDeleteConfirmationPresented = false
+    @State private var isDeletePasswordPresented = false
+    @State private var deletePassword = ""
     @State private var operation = AccountOperation()
 
     var body: some View {
@@ -49,6 +51,14 @@ struct AccountSettingsSections: View {
                 isDeleteConfirmationPresented = true
             }
             .disabled(operation.isWorking)
+            .alert("Escribe tu contraseña", isPresented: $isDeletePasswordPresented) {
+                SecureField("Contraseña", text: $deletePassword)
+                    .textContentType(.password)
+                Button("Borrar cuenta y datos", role: .destructive, action: deleteAccount)
+                Button("Cancelar", role: .cancel) {}
+            } message: {
+                Text("Para borrar la cuenta, confirma que eres tú.")
+            }
         } footer: {
             Text("Borra la cuenta y todos sus gastos y categorías, del servidor y de este iPhone. No se puede deshacer.")
         }
@@ -57,7 +67,10 @@ struct AccountSettingsSections: View {
             isPresented: $isDeleteConfirmationPresented,
             titleVisibility: .visible
         ) {
-            Button("Borrar cuenta y datos", role: .destructive, action: deleteAccount)
+            Button("Borrar cuenta y datos", role: .destructive) {
+                deletePassword = ""
+                isDeletePasswordPresented = true
+            }
         } message: {
             Text("Se borrarán todos tus gastos y categorías. No se puede deshacer.")
         }
@@ -112,8 +125,8 @@ struct AccountSettingsSections: View {
     }
 
     private func deleteAccount() {
-        operation.run { [session] in
-            try await session.deleteAccount()
+        operation.run { [session, deletePassword] in
+            try await session.deleteAccount(password: deletePassword)
         }
     }
 }

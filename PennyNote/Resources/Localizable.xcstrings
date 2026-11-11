@@ -1637,6 +1637,28 @@
         }
       }
     },
+    "Contraseña actual": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current password"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contraseña actual"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前密码"
+          }
+        }
+      }
+    },
     "Contraseña cambiada": {
       "localizations": {
         "en": {
@@ -2425,6 +2447,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "门票"
+          }
+        }
+      }
+    },
+    "Escribe tu contraseña": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter Your Password"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe tu contraseña"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入你的密码"
           }
         }
       }
@@ -3569,6 +3613,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "金额必须大于 0。"
+          }
+        }
+      }
+    },
+    "La contraseña actual no es correcta.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The current password is incorrect."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La contraseña actual no es correcta."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前密码不正确。"
           }
         }
       }
@@ -5037,6 +5103,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "面包店"
+          }
+        }
+      }
+    },
+    "Para borrar la cuenta, confirma que eres tú.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To delete your account, confirm it's you."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para borrar la cuenta, confirma que eres tú."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要删除账户，请确认是你本人。"
           }
         }
       }
