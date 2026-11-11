@@ -9,13 +9,14 @@ final class SyncStateStore {
 
     private enum Keys {
         static let ownerUserID = "sync.ownerUserID"
+        static let storeIdentity = "sync.storeIdentity"
         static let categoriesCursor = "sync.categoriesCursor"
         static let expensesCursor = "sync.expensesCursor"
         static let recurringExpensesCursor = "sync.recurringExpensesCursor"
         static let categoryTombstones = "sync.categoryTombstones"
         static let lastSyncDate = "sync.lastSyncDate"
         static let hasActiveSession = "sync.hasActiveSession"
-        static let all = [ownerUserID, categoriesCursor, expensesCursor, recurringExpensesCursor, categoryTombstones, lastSyncDate, hasActiveSession]
+        static let all = [ownerUserID, categoriesCursor, expensesCursor, recurringExpensesCursor, categoryTombstones, lastSyncDate, hasActiveSession, storeIdentity]
     }
 
     init(defaults: UserDefaults) {
@@ -26,6 +27,12 @@ final class SyncStateStore {
     var ownerUserID: UUID? {
         get { defaults.string(forKey: Keys.ownerUserID).flatMap(UUID.init(uuidString:)) }
         set { defaults.set(newValue?.uuidString, forKey: Keys.ownerUserID) }
+    }
+
+    // Ruta del almacén SwiftData con el que se sincronizó por última vez: los cursores solo valen para él.
+    var storeIdentity: String? {
+        get { defaults.string(forKey: Keys.storeIdentity) }
+        set { defaults.set(newValue, forKey: Keys.storeIdentity) }
     }
 
     // Hay sesión iniciada y los datos locales ya son suyos. Se guarda porque LogExpenseIntent puede
@@ -79,6 +86,13 @@ final class SyncStateStore {
 
     func addCategoryTombstone(_ tombstone: RemoteCategory) {
         categoryTombstones = categoryTombstones.filter { $0.id != tombstone.id } + [tombstone]
+    }
+
+    // La próxima pasada vuelve a bajarlo todo.
+    func resetCursors() {
+        categoriesCursor = nil
+        expensesCursor = nil
+        recurringExpensesCursor = nil
     }
 
     func reset() {

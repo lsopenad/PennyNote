@@ -46,6 +46,11 @@ final class SyncCoordinator {
     private func readyEngine() -> SyncEngine? {
         if let engine { return engine }
         guard let activeUser else { return nil }
+        // Un almacén vacío en memoria sembraría categorías duplicadas y avanzaría los cursores del real.
+        guard !SharedModelContainer.isInMemoryFallback else {
+            Log.sync.error("No se sincroniza: el almacén local es el de respaldo en memoria")
+            return nil
+        }
         let engine = SyncEngine(context: container.mainContext, remote: activeUser.remote, state: state, currency: currency)
         do {
             try engine.prepareLocalData(for: activeUser.id)

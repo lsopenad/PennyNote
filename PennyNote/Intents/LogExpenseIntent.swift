@@ -26,6 +26,7 @@ struct LogExpenseIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult {
         try ExpenseIntentValidation.requireActiveSession()
+        try ExpenseIntentValidation.requireUsableStore()
 
         let context = ModelContext(SharedModelContainer.container)
         let matchedCategory = context.category(
@@ -51,12 +52,14 @@ enum LogExpenseError: Error, CustomLocalizedStringResourceConvertible {
     case invalidAmount
     case tooManyDecimals
     case signedOut
+    case storeUnavailable
 
     var localizedStringResource: LocalizedStringResource {
         switch self {
         case .invalidAmount: "La cantidad tiene que ser mayor que 0."
         case .tooManyDecimals: "La cantidad tiene más decimales de los que usa la moneda de tu cuenta."
         case .signedOut: "Inicia sesión en PennyNote para registrar gastos."
+        case .storeUnavailable: "No se han podido abrir los datos de PennyNote. Abre la app y vuelve a intentarlo."
         }
     }
 }

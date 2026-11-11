@@ -19,7 +19,16 @@ struct RootView: View {
         case .signedOut:
             AuthView()
         case .signedIn:
-            mainContent
+            if SharedModelContainer.isInMemoryFallback {
+                // Lo que se apuntara aquí se perdería al cerrar la app.
+                ContentUnavailableView(
+                    "No se han podido abrir tus datos",
+                    systemImage: "exclamationmark.triangle",
+                    description: Text("Cierra PennyNote del todo y vuelve a abrirla. Tus gastos no se han perdido: siguen en este iPhone y en tu cuenta.")
+                )
+            } else {
+                mainContent
+            }
         }
     }
 
