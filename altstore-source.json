@@ -26,6 +26,15 @@
       },
       "versions": [
         {
+          "version": "1.13.2",
+          "buildVersion": "27",
+          "date": "2026-11-11",
+          "localizedDescription": "Más seguro y sin sorpresas: cambiar la contraseña y borrar la cuenta piden antes la contraseña actual. Si no se puede guardar un gasto, el formulario y los atajos te avisan en vez de darlo por guardado. Al cerrar sesión o al caducar la sesión se borran también el widget y los ficheros exportados. Un gasto recurrente que has borrado ya no vuelve a aparecer, y si la app abre sus datos desde otro sitio los vuelve a bajar enteros en vez de duplicar las categorías.",
+          "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.13.2/PennyNote.ipa",
+          "size": 2131658,
+          "minOSVersion": "18.0"
+        },
+        {
           "version": "1.13.1",
           "buildVersion": "26",
           "date": "2026-11-03",
@@ -260,11 +269,11 @@
           "minOSVersion": "18.0"
         }
       ],
-      "version": "1.13.1",
-      "versionDate": "2026-11-03",
-      "versionDescription": "Sugerencias más claras: la parte del título que coincide sale en negrita, las filas aparecen sin que el formulario dé saltos y un ✨ junto a la categoría o el método de pago indica que se han rellenado solos. El importe de una sugerencia o de un gasto que editas sale con coma decimal en español.",
-      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.13.1/PennyNote.ipa",
-      "size": 2117470
+      "version": "1.13.2",
+      "versionDate": "2026-11-11",
+      "versionDescription": "Más seguro y sin sorpresas: cambiar la contraseña y borrar la cuenta piden antes la contraseña actual. Si no se puede guardar un gasto, el formulario y los atajos te avisan en vez de darlo por guardado. Al cerrar sesión o al caducar la sesión se borran también el widget y los ficheros exportados. Un gasto recurrente que has borrado ya no vuelve a aparecer, y si la app abre sus datos desde otro sitio los vuelve a bajar enteros en vez de duplicar las categorías.",
+      "downloadURL": "https://github.com/lsopenad/PennyNote/releases/download/v1.13.2/PennyNote.ipa",
+      "size": 2131658
     }
   ],
   "news": []
