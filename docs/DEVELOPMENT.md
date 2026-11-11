@@ -59,7 +59,7 @@ La anon key acaba dentro del `.ipa` publicado: es pública por diseño. Lo que p
 - SwiftData sigue siendo la fuente local: la app funciona sin conexión y sincroniza al abrirse, tras cada cambio (con 2 s de margen), al tirar hacia abajo en la lista y desde Ajustes.
 - Gana la última modificación (`updated_at`, la pone el móvil); un trigger del servidor descarta una versión más antigua que la guardada. Para pedir solo lo cambiado se usa `server_updated_at`, que pone el servidor.
 - Los borrados son lógicos (`is_deleted`) para que lleguen a los demás dispositivos.
-- Sin sesión no hay datos en el iPhone: se bajan de la cuenta al iniciar sesión (y una cuenta nueva recibe las categorías de serie). Al cerrar sesión se sube lo pendiente y se borran los datos del iPhone.
+- Los datos se bajan de la cuenta al iniciar sesión (y una cuenta nueva recibe las categorías de serie). Al cerrar sesión o borrar la cuenta se sube lo pendiente y se borran del iPhone los datos, el widget y los ficheros exportados. Si la sesión caduca o se revoca sin cerrarla, los gastos se quedan en el iPhone (la app no los muestra ni los sincroniza) para subir lo pendiente si vuelve a entrar la misma cuenta, pero el widget y las exportaciones se borran; si entra otra cuenta, se borran antes de sincronizar.
 - Un proyecto gratuito se pausa tras una semana sin uso; se reactiva desde el panel y no pierde datos.
 
 ## Abrir el proyecto

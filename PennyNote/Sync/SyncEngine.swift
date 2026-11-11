@@ -88,6 +88,13 @@ final class SyncEngine {
             + (currency.isPending ? 1 : 0)
     }
 
+    // Copias de los datos del usuario fuera de SwiftData: el snapshot del widget y los ficheros
+    // exportados. Se borran al salir de la cuenta y al perder la sesión.
+    nonisolated static func clearDeviceCopies() {
+        WidgetSnapshotStore.clear()
+        ExportFile.removeTemporaryFiles()
+    }
+
     // Borra todos los datos del móvil y el estado de la sincronización (al cerrar sesión o borrar la cuenta).
     // removeDeviceCopies borra lo que vive fuera de SwiftData; los tests pasan uno propio para no tocar el
     // widget del simulador.
@@ -95,15 +102,17 @@ final class SyncEngine {
         context: ModelContext,
         state: SyncStateStore,
         currency: CurrencySettings,
-        removeDeviceCopies: () -> Void = { WidgetSnapshotStore.clear() }
+        removeDeviceCopies: () -> Void = { SyncEngine.clearDeviceCopies() }
     ) throws {
+        // Aunque falle el guardado: tras borrar la cuenta se sale igualmente, y el widget y las
+        // exportaciones no deben quedarse en el iPhone.
+        defer { removeDeviceCopies() }
         try context.fetch(FetchDescriptor<Expense>()).forEach(context.delete)
         try context.fetch(FetchDescriptor<RecurringExpense>()).forEach(context.delete)
         try context.fetch(FetchDescriptor<ExpenseCategory>()).forEach(context.delete)
         try context.save()
         state.reset()
         currency.reset()
-        removeDeviceCopies()
     }
 
     // MARK: - Bajar

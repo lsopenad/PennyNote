@@ -124,4 +124,23 @@ struct ExportTests {
         #expect(ExportRange.all.interval(from: .now, to: .now) == nil)
         #expect(ExportRange.all.fileName(for: nil) == "PennyNote")
     }
+
+    // MARK: - Ficheros temporales
+
+    // Lo usa también el cierre de sesión: no debe quedar ninguna exportación en el iPhone.
+    @Test func removingTemporaryFilesDeletesWrittenExports() throws {
+        let file = ExportFile(
+            rows: [try row("Pan", amount: "1", date: try date(2026, 1, 2))],
+            format: .csv,
+            currency: .eur,
+            fileName: "PennyNote",
+            periodTitle: "Enero"
+        )
+        let url = try file.write()
+        #expect(FileManager.default.fileExists(atPath: url.path))
+
+        ExportFile.removeTemporaryFiles()
+
+        #expect(!FileManager.default.fileExists(atPath: url.path))
+    }
 }
