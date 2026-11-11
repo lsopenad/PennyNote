@@ -74,14 +74,21 @@ final class SyncEngine {
     }
 
     // Borra todos los datos del móvil y el estado de la sincronización (al cerrar sesión o borrar la cuenta).
-    static func wipeLocalData(context: ModelContext, state: SyncStateStore, currency: CurrencySettings) throws {
+    // removeDeviceCopies borra lo que vive fuera de SwiftData; los tests pasan uno propio para no tocar el
+    // widget del simulador.
+    static func wipeLocalData(
+        context: ModelContext,
+        state: SyncStateStore,
+        currency: CurrencySettings,
+        removeDeviceCopies: () -> Void = { WidgetSnapshotStore.clear() }
+    ) throws {
         try context.fetch(FetchDescriptor<Expense>()).forEach(context.delete)
         try context.fetch(FetchDescriptor<RecurringExpense>()).forEach(context.delete)
         try context.fetch(FetchDescriptor<ExpenseCategory>()).forEach(context.delete)
         try context.save()
         state.reset()
         currency.reset()
-        WidgetSnapshotStore.clear()
+        removeDeviceCopies()
     }
 
     // MARK: - Bajar

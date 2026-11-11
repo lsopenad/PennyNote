@@ -199,8 +199,12 @@ struct SyncEngineTests {
 
         currency.choose(.jpy)
 
-        try SyncEngine.wipeLocalData(context: context, state: state, currency: currency)
+        var removedDeviceCopies = false
+        try SyncEngine.wipeLocalData(context: context, state: state, currency: currency) {
+            removedDeviceCopies = true
+        }
 
+        #expect(removedDeviceCopies)
         #expect(try fetchExpenses().isEmpty)
         #expect(try fetchCategories().isEmpty)
         #expect(state.ownerUserID == nil)
