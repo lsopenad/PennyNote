@@ -64,8 +64,9 @@ final class SyncCoordinator {
         return engine
     }
 
-    // Deja de sincronizar sin tocar los datos (sesión caducada o revocada): si se vuelve a entrar con
-    // la misma cuenta, lo pendiente se sube entonces.
+    // Deja de sincronizar (sesión caducada o revocada). Los datos de SwiftData se conservan: si se vuelve a
+    // entrar con la misma cuenta, lo pendiente se sube entonces. El widget y las exportaciones sí se
+    // borran: sin sesión no deben verse ni quedarse en el iPhone.
     func deactivate() {
         debounceTask?.cancel()
         debounceTask = nil
@@ -73,6 +74,7 @@ final class SyncCoordinator {
         activeUser = nil
         lastErrorMessage = nil
         state.hasActiveSession = false
+        SyncEngine.clearDeviceCopies()
     }
 
     // Al cerrar sesión o borrar la cuenta: espera a la pasada en curso y borra los datos del móvil.
