@@ -26,8 +26,9 @@ enum SeedDataService {
         do {
             existingCount = try context.fetchCount(descriptor)
         } catch {
+            // Sin saber si hay categorías no se siembra: duplicaría las de la cuenta.
             Log.data.error("Fallo al comprobar categorías existentes antes de sembrar: \(error.localizedDescription)")
-            existingCount = 0
+            return
         }
         guard existingCount == 0 else { return }
 

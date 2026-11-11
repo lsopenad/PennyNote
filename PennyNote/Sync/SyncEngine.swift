@@ -28,6 +28,7 @@ final class SyncEngine {
 
     // Deja los datos locales listos para el usuario que acaba de iniciar sesión.
     func prepareLocalData(for userID: UUID) throws {
+        adoptCurrentStore()
         switch state.ownerUserID {
         case userID:
             return
@@ -40,6 +41,20 @@ final class SyncEngine {
             try Self.wipeLocalData(context: context, state: state, currency: currency)
             state.ownerUserID = userID
         }
+    }
+
+    // Los cursores son de un almacén concreto. Si ahora se abre otro (sin App Group, otro grupo tras
+    // volver a firmar la app o uno nuevo tras un fallo), se baja todo de nuevo: con los cursores del
+    // anterior solo llegaría lo último y se sembrarían categorías duplicadas en una cuenta que ya las
+    // tiene. La primera vez (sin almacén apuntado) se adopta el actual.
+    private func adoptCurrentStore() {
+        let identity = context.container.configurations.first?.url.path ?? ""
+        guard state.storeIdentity != identity else { return }
+        if state.storeIdentity != nil {
+            Log.sync.notice("El almacén local no es el de la última sincronización; se vuelve a bajar todo")
+            state.resetCursors()
+        }
+        state.storeIdentity = identity
     }
 
     // Devuelve los cambios que siguen pendientes al terminar, calculados con lo que ya ha leído la

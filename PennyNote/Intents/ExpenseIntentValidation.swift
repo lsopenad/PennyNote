@@ -11,6 +11,13 @@ enum ExpenseIntentValidation {
         }
     }
 
+    // Con el almacén de respaldo en memoria, el gasto se perdería al terminar el atajo.
+    static func requireUsableStore() throws {
+        guard !SharedModelContainer.isInMemoryFallback else {
+            throw LogExpenseError.storeUnavailable
+        }
+    }
+
     static func amount(from value: Double) throws -> Decimal {
         // Nunca Decimal(double) directo: se convierte vía texto para evitar artefactos binarios.
         let amount = Decimal(string: String(value)) ?? Decimal(value)

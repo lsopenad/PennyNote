@@ -25,6 +25,47 @@ struct SyncEngineTests {
 
     // MARK: - Primer login
 
+    // Los cursores eran de otro almacén (otro App Group o el de la app): se baja todo otra vez y, como
+    // llegan las categorías de la cuenta, no se siembran las de serie.
+    @Test func anotherStoreDownloadsEverythingAgain() async throws {
+        let remoteCategory = remote.add(category: "Viajes")
+        remote.add(expense: 12)
+        state.ownerUserID = userID
+        state.storeIdentity = "/otro/almacen.store"
+        state.categoriesCursor = .distantFuture
+        state.expensesCursor = .distantFuture
+        state.recurringExpensesCursor = .distantFuture
+
+        try engine.prepareLocalData(for: userID)
+        try await engine.sync()
+
+        #expect(try fetchCategories().map(\.id) == [remoteCategory.id])
+        #expect(try fetchExpenses().count == 1)
+        #expect(state.storeIdentity == context.container.configurations.first?.url.path)
+    }
+
+    // Con el mismo almacén, los cursores se conservan.
+    @Test func sameStoreKeepsTheCursors() throws {
+        state.ownerUserID = userID
+        state.storeIdentity = context.container.configurations.first?.url.path
+        state.expensesCursor = .distantFuture
+
+        try engine.prepareLocalData(for: userID)
+
+        #expect(state.expensesCursor == .distantFuture)
+    }
+
+    // Primera vez con esta versión (sin almacén apuntado): se adopta el actual sin volver a bajar todo.
+    @Test func firstRunAdoptsTheCurrentStore() throws {
+        state.ownerUserID = userID
+        state.expensesCursor = .distantFuture
+
+        try engine.prepareLocalData(for: userID)
+
+        #expect(state.expensesCursor == .distantFuture)
+        #expect(state.storeIdentity == context.container.configurations.first?.url.path)
+    }
+
     @Test func newAccountGetsDefaultCategoriesUploaded() async throws {
         try engine.prepareLocalData(for: userID)
         try await engine.sync()

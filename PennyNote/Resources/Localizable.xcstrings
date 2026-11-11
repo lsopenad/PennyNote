@@ -1395,6 +1395,28 @@
         }
       }
     },
+    "Cierra PennyNote del todo y vuelve a abrirla. Tus gastos no se han perdido: siguen en este iPhone y en tu cuenta.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quit PennyNote completely and open it again. Your expenses aren't lost: they're still on this iPhone and in your account."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cierra PennyNote del todo y vuelve a abrirla. Tus gastos no se han perdido: siguen en este iPhone y en tu cuenta."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请完全退出 PennyNote 后重新打开。你的支出没有丢失：它们仍保存在此 iPhone 和你的账户中。"
+          }
+        }
+      }
+    },
     "Cine": {
       "localizations": {
         "en": {
@@ -4597,6 +4619,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法连接到服务器。"
+          }
+        }
+      }
+    },
+    "No se han podido abrir los datos de PennyNote. Abre la app y vuelve a intentarlo.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't open PennyNote's data. Open the app and try again."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han podido abrir los datos de PennyNote. Abre la app y vuelve a intentarlo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开 PennyNote 的数据。请打开 App 后重试。"
+          }
+        }
+      }
+    },
+    "No se han podido abrir tus datos": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't Open Your Data"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se han podido abrir tus datos"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开你的数据"
           }
         }
       }

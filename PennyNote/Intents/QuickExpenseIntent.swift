@@ -23,6 +23,7 @@ struct QuickExpenseIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
         try ExpenseIntentValidation.requireActiveSession()
+        try ExpenseIntentValidation.requireUsableStore()
 
         let requestedAmount: Double
         if let amount {
