@@ -1,7 +1,6 @@
 import SwiftUI
 import SwiftData
 
-@main
 struct PennyNoteApp: App {
     @Environment(\.scenePhase) private var scenePhase
 
